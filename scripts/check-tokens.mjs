@@ -5,8 +5,8 @@
 //
 // Primitives (src/tokens/primitives) hold raw values.
 // Semantic tokens (src/tokens/semantic) may ONLY alias primitives, and the
-// colors they pair must meet WCAG contrast. Color ramps are checked by
-// scripts/color-ramps.mjs, which this script also runs.
+// colors they pair must meet WCAG contrast. Color ramps are generated and checked by
+// scripts/brand.mjs, which this script also runs.
 
 import { readFileSync, readdirSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
@@ -88,7 +88,7 @@ const ALIAS = /^\{([^{}]+)\}$/
 function resolveAlias(where, ref, expectedType) {
   const m = typeof ref === 'string' && ref.match(ALIAS)
   if (!m) {
-    fail(where, `raw value ${JSON.stringify(ref)}; semantic tokens must alias a primitive like "{color.slate.900}"`)
+    fail(where, `raw value ${JSON.stringify(ref)}; semantic tokens must alias a primitive like "{color.neutral.900}"`)
     return undefined
   }
   const target = primitives[m[1]]
@@ -202,7 +202,7 @@ for (const [fileA, a] of names) {
 
 // ---- colors: ramp contrast rules and generated-file freshness ----
 try {
-  execFileSync(process.execPath, [join(ROOT, 'scripts/color-ramps.mjs'), '--check'], { stdio: 'pipe' })
+  execFileSync(process.execPath, [join(ROOT, 'scripts/brand.mjs'), '--check'], { stdio: 'pipe' })
 } catch (e) {
   fail('color ramps', (e.stderr?.toString() || 'color check failed').trim())
 }

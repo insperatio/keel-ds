@@ -28,7 +28,7 @@ const OUT = join(ROOT, 'src/styles/keel.css')
 
 const primitives = Object.assign(
   {},
-  ...['color', 'typography', 'layout', 'effects'].map((f) => flatten(read(`src/tokens/primitives/${f}.tokens.json`))),
+  ...['color', 'brand', 'typography', 'layout', 'effects'].map((f) => flatten(read(`src/tokens/primitives/${f}.tokens.json`))),
 )
 const light = flatten(read('src/tokens/semantic/light.tokens.json'))
 const dark = flatten(read('src/tokens/semantic/dark.tokens.json'))

@@ -3,14 +3,8 @@
   "font": {
     "family": {
       "$type": "fontFamily",
-      "sans": {
-        "$value": ["Manrope Variable", "Manrope", "ui-sans-serif", "system-ui", "sans-serif"],
-        "$description": "Interface and headings. Variable font, weights 200-800."
-      },
-      "mono": {
-        "$value": ["ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "monospace"],
-        "$description": "Code and tabular IDs. System stack, no download."
-      }
+      "mono": { "$value": ["ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "monospace"], "$description": "Code and tabular IDs. System stack, no download." },
+      "$description": "font.family.sans comes from the brand file (brand.tokens.json); mono is shared."
     },
     "weight": {
       "$type": "fontWeight",
