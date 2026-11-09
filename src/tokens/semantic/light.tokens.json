@@ -24,10 +24,10 @@
         "$description": "Text on surface.inverse"
       },
       "link": {
-        "$value": "{color.indigo.600}"
+        "$value": "{color.blue.600}"
       },
       "link-hover": {
-        "$value": "{color.indigo.700}"
+        "$value": "{color.blue.700}"
       },
       "danger": {
         "$value": "{color.red.700}",
@@ -85,7 +85,7 @@
     },
     "focus": {
       "ring": {
-        "$value": "{color.indigo.500}",
+        "$value": "{color.blue.500}",
         "$description": "2px ring on every focusable element"
       },
       "ring-offset": {
@@ -96,14 +96,14 @@
     "action": {
       "primary": {
         "bg": {
-          "$value": "{color.indigo.600}",
+          "$value": "{color.blue.600}",
           "$description": "One primary action per view"
         },
         "bg-hover": {
-          "$value": "{color.indigo.700}"
+          "$value": "{color.blue.700}"
         },
         "bg-active": {
-          "$value": "{color.indigo.800}"
+          "$value": "{color.blue.800}"
         },
         "fg": {
           "$value": "{color.base.white}"
@@ -164,14 +164,14 @@
     },
     "selected": {
       "bg": {
-        "$value": "{color.indigo.50}",
+        "$value": "{color.blue.50}",
         "$description": "Selected row, active nav item. Always pair with selected.indicator."
       },
       "fg": {
-        "$value": "{color.indigo.700}"
+        "$value": "{color.blue.700}"
       },
       "indicator": {
-        "$value": "{color.indigo.600}",
+        "$value": "{color.blue.600}",
         "$description": "Non-color cue for selection (left bar, check, underline). The tint alone is not enough (WCAG 1.4.1)."
       }
     },
@@ -229,7 +229,7 @@
         }
       },
       "info": {
-        "$description": "Neutral, not indigo: indigo is reserved for actions.",
+        "$description": "Neutral, not blue: blue is reserved for actions.",
         "bg": {
           "$value": "{color.slate.100}"
         },

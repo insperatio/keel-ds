@@ -24,10 +24,10 @@
         "$description": "Text on surface.inverse"
       },
       "link": {
-        "$value": "{color.indigo.300}"
+        "$value": "{color.blue.300}"
       },
       "link-hover": {
-        "$value": "{color.indigo.200}"
+        "$value": "{color.blue.200}"
       },
       "danger": {
         "$value": "{color.red.300}",
@@ -85,7 +85,7 @@
     },
     "focus": {
       "ring": {
-        "$value": "{color.indigo.400}",
+        "$value": "{color.blue.400}",
         "$description": "2px ring on every focusable element"
       },
       "ring-offset": {
@@ -96,18 +96,18 @@
     "action": {
       "primary": {
         "bg": {
-          "$value": "{color.indigo.400}",
+          "$value": "{color.blue.400}",
           "$description": "One primary action per view"
         },
         "bg-hover": {
-          "$value": "{color.indigo.300}"
+          "$value": "{color.blue.300}"
         },
         "bg-active": {
-          "$value": "{color.indigo.200}"
+          "$value": "{color.blue.200}"
         },
         "fg": {
-          "$value": "{color.indigo.950}",
-          "$description": "Dark label on a light indigo button: white would fail contrast here"
+          "$value": "{color.blue.950}",
+          "$description": "Dark label on a light blue button: white would fail contrast here"
         }
       },
       "secondary": {
@@ -166,14 +166,14 @@
     },
     "selected": {
       "bg": {
-        "$value": "{color.indigo.950}",
+        "$value": "{color.blue.950}",
         "$description": "Selected row, active nav item. Always pair with selected.indicator."
       },
       "fg": {
-        "$value": "{color.indigo.200}"
+        "$value": "{color.blue.200}"
       },
       "indicator": {
-        "$value": "{color.indigo.300}",
+        "$value": "{color.blue.300}",
         "$description": "Non-color cue for selection (left bar, check, underline). The tint alone is not enough (WCAG 1.4.1)."
       }
     },
@@ -231,7 +231,7 @@
         }
       },
       "info": {
-        "$description": "Neutral, not indigo: indigo is reserved for actions.",
+        "$description": "Neutral, not blue: blue is reserved for actions.",
         "bg": {
           "$value": "{color.slate.900}"
         },
