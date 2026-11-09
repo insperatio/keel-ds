@@ -129,13 +129,21 @@ async function exportJson() {
   return out
 }
 
-figma.showUI(__html__, { width: 380, height: 460, themeColors: true })
-figma.ui.onmessage = async (msg) => {
-  try {
-    if (msg.type === 'push') figma.ui.postMessage({ type: 'pushed', report: await push() })
-    if (msg.type === 'export') figma.ui.postMessage({ type: 'exported', json: JSON.stringify(await exportJson(), null, 2) })
-    if (msg.type === 'close') figma.closePlugin()
-  } catch (e) {
-    figma.ui.postMessage({ type: 'error', message: String(e && e.message ? e.message : e) })
+// Menu: Plugins > Development > Keel tokens > Update Figma from repo | Export Figma variables
+if (figma.command === 'push') {
+  push()
+    .then((r) => figma.closePlugin(`Keel: ${r.created} variables created, ${r.updated} updated, ${r.styles} styles synced`))
+    .catch((e) => figma.closePlugin('Keel update failed: ' + (e && e.message ? e.message : e)))
+} else {
+  figma.showUI(__html__, { width: 380, height: 460, themeColors: true })
+  figma.ui.onmessage = async (msg) => {
+    try {
+      if (msg.type === 'push') figma.ui.postMessage({ type: 'pushed', report: await push() })
+      if (msg.type === 'export') figma.ui.postMessage({ type: 'exported', json: JSON.stringify(await exportJson(), null, 2) })
+      if (msg.type === 'close') figma.closePlugin()
+    } catch (e) {
+      figma.ui.postMessage({ type: 'error', message: String(e && e.message ? e.message : e) })
+    }
   }
+  if (figma.command === 'export') exportJson().then((j) => figma.ui.postMessage({ type: 'exported', json: JSON.stringify(j, null, 2) }))
 }

@@ -21,7 +21,9 @@ on every plan, needs no token or network access, and runs the same code every ti
 2. Menu → Plugins → Development → **Import plugin from manifest…**
 3. Choose `figma/plugin/manifest.json` from your clone of this repo.
 
-The plugin now appears under Plugins → Development → **Keel tokens**.
+The plugin now appears under Plugins → Development → **Keel tokens**, with two menu items:
+**Update Figma from repo** (runs straight away and shows a summary at the bottom of the screen) and
+**Export Figma variables** (opens a window with the JSON and a download button).
 
 ## Repo → Figma
 
