@@ -125,6 +125,120 @@
       "$type": "color",
       "$description": "Cool neutral. Text, surfaces, borders."
     },
+    "blue": {
+      "50": {
+        "$value": "#F0F6FF",
+        "$extensions": {
+          "com.keel.oklch": "oklch(0.97 0.014 260)",
+          "com.keel.contrast": {
+            "onWhite": 1.09,
+            "onBlack": 19.33
+          }
+        }
+      },
+      "100": {
+        "$value": "#DBE9FF",
+        "$extensions": {
+          "com.keel.oklch": "oklch(0.93 0.034 260)",
+          "com.keel.contrast": {
+            "onWhite": 1.23,
+            "onBlack": 17.11
+          }
+        }
+      },
+      "200": {
+        "$value": "#BCD6FF",
+        "$extensions": {
+          "com.keel.oklch": "oklch(0.87 0.064 260)",
+          "com.keel.contrast": {
+            "onWhite": 1.48,
+            "onBlack": 14.2
+          }
+        }
+      },
+      "300": {
+        "$value": "#92BCFF",
+        "$extensions": {
+          "com.keel.oklch": "oklch(0.79 0.106 260)",
+          "com.keel.contrast": {
+            "onWhite": 1.93,
+            "onBlack": 10.86
+          }
+        }
+      },
+      "400": {
+        "$value": "#5E99FD",
+        "$extensions": {
+          "com.keel.oklch": "oklch(0.69 0.16 260)",
+          "com.keel.contrast": {
+            "onWhite": 2.82,
+            "onBlack": 7.45
+          }
+        }
+      },
+      "500": {
+        "$value": "#337AEF",
+        "$extensions": {
+          "com.keel.oklch": "oklch(0.6 0.19 260)",
+          "com.keel.contrast": {
+            "onWhite": 4.06,
+            "onBlack": 5.17
+          }
+        }
+      },
+      "600": {
+        "$value": "#105FD9",
+        "$extensions": {
+          "com.keel.oklch": "oklch(0.52 0.2 260)",
+          "com.keel.contrast": {
+            "onWhite": 5.74,
+            "onBlack": 3.66
+          }
+        }
+      },
+      "700": {
+        "$value": "#064EB8",
+        "$extensions": {
+          "com.keel.oklch": "oklch(0.455 0.18 260)",
+          "com.keel.contrast": {
+            "onWhite": 7.53,
+            "onBlack": 2.79
+          }
+        }
+      },
+      "800": {
+        "$value": "#073E93",
+        "$extensions": {
+          "com.keel.oklch": "oklch(0.39 0.15 260)",
+          "com.keel.contrast": {
+            "onWhite": 9.91,
+            "onBlack": 2.12
+          }
+        }
+      },
+      "900": {
+        "$value": "#082F6C",
+        "$extensions": {
+          "com.keel.oklch": "oklch(0.32 0.115 260)",
+          "com.keel.contrast": {
+            "onWhite": 12.86,
+            "onBlack": 1.63
+          }
+        }
+      },
+      "950": {
+        "$value": "#061F49",
+        "$extensions": {
+          "com.keel.oklch": "oklch(0.25 0.085 260)",
+          "com.keel.contrast": {
+            "onWhite": 16.15,
+            "onBlack": 1.3
+          }
+        }
+      },
+      "$type": "color",
+      "$description": "Accent. Actions only: buttons, links, focus, selection."
+    },
     "indigo": {
       "50": {
         "$value": "#F2F4FF",
@@ -237,7 +351,7 @@
         }
       },
       "$type": "color",
-      "$description": "Accent. Actions only: buttons, links, focus, selection."
+      "$description": "Alternate accent, kept for theming (Day 10). Not used by the default theme."
     },
     "green": {
       "50": {

@@ -1,0 +1,377 @@
+{
+  "$description": "Keel semantic tokens, dark mode. Same names as light.tokens.json, re-pointed at the dark end of the ramps. Every value is an alias to a primitive.",
+  "color": {
+    "$type": "color",
+    "text": {
+      "primary": {
+        "$value": "{color.slate.50}",
+        "$description": "Body text and headings"
+      },
+      "secondary": {
+        "$value": "{color.slate.300}",
+        "$description": "Supporting text, descriptions"
+      },
+      "tertiary": {
+        "$value": "{color.slate.400}",
+        "$description": "Captions, metadata, placeholders"
+      },
+      "disabled": {
+        "$value": "{color.slate.600}",
+        "$description": "Disabled labels only (exempt from contrast rules)"
+      },
+      "inverse": {
+        "$value": "{color.slate.900}",
+        "$description": "Text on surface.inverse"
+      },
+      "link": {
+        "$value": "{color.blue.300}"
+      },
+      "link-hover": {
+        "$value": "{color.blue.200}"
+      },
+      "danger": {
+        "$value": "{color.red.300}",
+        "$description": "Error messages"
+      },
+      "success": {
+        "$value": "{color.green.300}"
+      },
+      "warning": {
+        "$value": "{color.amber.300}"
+      }
+    },
+    "surface": {
+      "page": {
+        "$value": "{color.slate.950}",
+        "$description": "App background"
+      },
+      "subtle": {
+        "$value": "{color.slate.900}",
+        "$description": "Sidebars, table headers, quiet sections"
+      },
+      "raised": {
+        "$value": "{color.slate.900}",
+        "$description": "Cards (pair with border.subtle or shadow.md)"
+      },
+      "sunken": {
+        "$value": "{color.base.black}",
+        "$description": "Code blocks and wells, darker than the page"
+      },
+      "overlay": {
+        "$value": "{color.slate.900}",
+        "$description": "Popovers, menus, dialogs. Same fill as cards in dark mode; separate them with border.default and shadow.lg or xl. (slate.800 dropped tertiary text to 4.48:1.)"
+      },
+      "inverse": {
+        "$value": "{color.slate.50}",
+        "$description": "Tooltips, toasts on light pages"
+      }
+    },
+    "border": {
+      "subtle": {
+        "$value": "{color.slate.800}",
+        "$description": "Dividers, card outlines (decorative)"
+      },
+      "default": {
+        "$value": "{color.slate.700}",
+        "$description": "Table cells, secondary button outline"
+      },
+      "control": {
+        "$value": "{color.slate.500}",
+        "$description": "Inputs, selects, checkboxes. Must reach 3:1 (WCAG 1.4.11)."
+      },
+      "control-hover": {
+        "$value": "{color.slate.400}"
+      }
+    },
+    "focus": {
+      "ring": {
+        "$value": "{color.blue.400}",
+        "$description": "2px ring on every focusable element"
+      },
+      "ring-offset": {
+        "$value": "{color.slate.950}",
+        "$description": "2px gap between element and ring"
+      }
+    },
+    "action": {
+      "primary": {
+        "bg": {
+          "$value": "{color.blue.400}",
+          "$description": "One primary action per view"
+        },
+        "bg-hover": {
+          "$value": "{color.blue.300}"
+        },
+        "bg-active": {
+          "$value": "{color.blue.200}"
+        },
+        "fg": {
+          "$value": "{color.blue.950}",
+          "$description": "Dark label on a light blue button: white would fail contrast here"
+        }
+      },
+      "secondary": {
+        "bg": {
+          "$value": "{color.slate.900}"
+        },
+        "bg-hover": {
+          "$value": "{color.slate.800}"
+        },
+        "bg-active": {
+          "$value": "{color.slate.700}"
+        },
+        "fg": {
+          "$value": "{color.slate.50}"
+        },
+        "border": {
+          "$value": "{color.slate.500}",
+          "$description": "Must reach 3:1 against the page: the outline is the only edge of the button (WCAG 1.4.11)."
+        }
+      },
+      "ghost": {
+        "bg-hover": {
+          "$value": "{color.slate.800}"
+        },
+        "bg-active": {
+          "$value": "{color.slate.700}"
+        },
+        "fg": {
+          "$value": "{color.slate.200}"
+        }
+      },
+      "danger": {
+        "bg": {
+          "$value": "{color.red.400}",
+          "$description": "Destructive actions only"
+        },
+        "bg-hover": {
+          "$value": "{color.red.300}"
+        },
+        "bg-active": {
+          "$value": "{color.red.200}"
+        },
+        "fg": {
+          "$value": "{color.red.950}",
+          "$description": "Dark label on a light red button"
+        }
+      },
+      "disabled": {
+        "bg": {
+          "$value": "{color.slate.800}"
+        },
+        "fg": {
+          "$value": "{color.slate.600}"
+        }
+      }
+    },
+    "selected": {
+      "bg": {
+        "$value": "{color.blue.950}",
+        "$description": "Selected row, active nav item. Always pair with selected.indicator."
+      },
+      "fg": {
+        "$value": "{color.blue.200}"
+      },
+      "indicator": {
+        "$value": "{color.blue.300}",
+        "$description": "Non-color cue for selection (left bar, check, underline). The tint alone is not enough (WCAG 1.4.1)."
+      }
+    },
+    "status": {
+      "success": {
+        "bg": {
+          "$value": "{color.green.950}"
+        },
+        "border": {
+          "$value": "{color.green.800}"
+        },
+        "fg": {
+          "$value": "{color.green.300}"
+        },
+        "solid": {
+          "$value": "{color.green.400}"
+        },
+        "on-solid": {
+          "$value": "{color.green.950}"
+        }
+      },
+      "warning": {
+        "bg": {
+          "$value": "{color.amber.950}"
+        },
+        "border": {
+          "$value": "{color.amber.800}"
+        },
+        "fg": {
+          "$value": "{color.amber.300}"
+        },
+        "solid": {
+          "$value": "{color.amber.400}"
+        },
+        "on-solid": {
+          "$value": "{color.amber.950}",
+          "$description": "Warning fills take dark text, never white"
+        }
+      },
+      "danger": {
+        "bg": {
+          "$value": "{color.red.950}"
+        },
+        "border": {
+          "$value": "{color.red.800}"
+        },
+        "fg": {
+          "$value": "{color.red.300}"
+        },
+        "solid": {
+          "$value": "{color.red.400}"
+        },
+        "on-solid": {
+          "$value": "{color.red.950}"
+        }
+      },
+      "info": {
+        "$description": "Neutral, not blue: blue is reserved for actions.",
+        "bg": {
+          "$value": "{color.slate.900}"
+        },
+        "border": {
+          "$value": "{color.slate.700}"
+        },
+        "fg": {
+          "$value": "{color.slate.300}"
+        },
+        "solid": {
+          "$value": "{color.slate.300}"
+        },
+        "on-solid": {
+          "$value": "{color.slate.950}"
+        }
+      }
+    }
+  },
+  "text-style": {
+    "$type": "typography",
+    "display": {
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": "{font.size.5xl}",
+        "lineHeight": "{font.line-height.5xl}",
+        "fontWeight": "{font.weight.bold}",
+        "letterSpacing": "{font.letter-spacing.tight}"
+      }
+    },
+    "heading-xl": {
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": "{font.size.3xl}",
+        "lineHeight": "{font.line-height.3xl}",
+        "fontWeight": "{font.weight.semibold}",
+        "letterSpacing": "{font.letter-spacing.tight}"
+      }
+    },
+    "heading-lg": {
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": "{font.size.2xl}",
+        "lineHeight": "{font.line-height.2xl}",
+        "fontWeight": "{font.weight.semibold}",
+        "letterSpacing": "{font.letter-spacing.tight}"
+      }
+    },
+    "heading-md": {
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": "{font.size.xl}",
+        "lineHeight": "{font.line-height.xl}",
+        "fontWeight": "{font.weight.semibold}",
+        "letterSpacing": "{font.letter-spacing.normal}"
+      }
+    },
+    "heading-sm": {
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": "{font.size.lg}",
+        "lineHeight": "{font.line-height.lg}",
+        "fontWeight": "{font.weight.semibold}",
+        "letterSpacing": "{font.letter-spacing.normal}"
+      }
+    },
+    "body-lg": {
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": "{font.size.lg}",
+        "lineHeight": "{font.line-height.lg}",
+        "fontWeight": "{font.weight.regular}",
+        "letterSpacing": "{font.letter-spacing.normal}"
+      }
+    },
+    "body-md": {
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": "{font.size.md}",
+        "lineHeight": "{font.line-height.md}",
+        "fontWeight": "{font.weight.regular}",
+        "letterSpacing": "{font.letter-spacing.normal}"
+      },
+      "$description": "Default text"
+    },
+    "body-sm": {
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": "{font.size.sm}",
+        "lineHeight": "{font.line-height.sm}",
+        "fontWeight": "{font.weight.regular}",
+        "letterSpacing": "{font.letter-spacing.normal}"
+      }
+    },
+    "label-md": {
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": "{font.size.sm}",
+        "lineHeight": "{font.line-height.sm}",
+        "fontWeight": "{font.weight.medium}",
+        "letterSpacing": "{font.letter-spacing.normal}"
+      },
+      "$description": "Buttons, form labels, tabs"
+    },
+    "label-sm": {
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": "{font.size.xs}",
+        "lineHeight": "{font.line-height.xs}",
+        "fontWeight": "{font.weight.medium}",
+        "letterSpacing": "{font.letter-spacing.normal}"
+      },
+      "$description": "Badges, small buttons"
+    },
+    "caption": {
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": "{font.size.xs}",
+        "lineHeight": "{font.line-height.xs}",
+        "fontWeight": "{font.weight.regular}",
+        "letterSpacing": "{font.letter-spacing.normal}"
+      }
+    },
+    "overline": {
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": "{font.size.xs}",
+        "lineHeight": "{font.line-height.xs}",
+        "fontWeight": "{font.weight.semibold}",
+        "letterSpacing": "{font.letter-spacing.wide}"
+      },
+      "$description": "Uppercase section labels"
+    },
+    "code": {
+      "$value": {
+        "fontFamily": "{font.family.mono}",
+        "fontSize": "{font.size.sm}",
+        "lineHeight": "{font.line-height.sm}",
+        "fontWeight": "{font.weight.regular}",
+        "letterSpacing": "{font.letter-spacing.normal}"
+      }
+    }
+  }
+}
