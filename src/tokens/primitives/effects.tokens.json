@@ -1,0 +1,47 @@
+{
+  "$description": "Keel primitive shadows and motion. Shadows are tinted with slate-950 so they read as cool, not muddy gray.",
+  "shadow": {
+    "$type": "shadow",
+    "sm": {
+      "$description": "Resting controls that lift slightly (segmented control thumb)",
+      "$value": [
+        { "color": "#060C130F", "offsetX": { "value": 0, "unit": "px" }, "offsetY": { "value": 1, "unit": "px" }, "blur": { "value": 2, "unit": "px" }, "spread": { "value": 0, "unit": "px" } }
+      ]
+    },
+    "md": {
+      "$description": "Cards that need to lift off the page",
+      "$value": [
+        { "color": "#060C130F", "offsetX": { "value": 0, "unit": "px" }, "offsetY": { "value": 1, "unit": "px" }, "blur": { "value": 2, "unit": "px" }, "spread": { "value": 0, "unit": "px" } },
+        { "color": "#060C131A", "offsetX": { "value": 0, "unit": "px" }, "offsetY": { "value": 4, "unit": "px" }, "blur": { "value": 8, "unit": "px" }, "spread": { "value": -2, "unit": "px" } }
+      ]
+    },
+    "lg": {
+      "$description": "Popovers, menus, toasts",
+      "$value": [
+        { "color": "#060C130F", "offsetX": { "value": 0, "unit": "px" }, "offsetY": { "value": 2, "unit": "px" }, "blur": { "value": 4, "unit": "px" }, "spread": { "value": 0, "unit": "px" } },
+        { "color": "#060C131F", "offsetX": { "value": 0, "unit": "px" }, "offsetY": { "value": 12, "unit": "px" }, "blur": { "value": 24, "unit": "px" }, "spread": { "value": -4, "unit": "px" } }
+      ]
+    },
+    "xl": {
+      "$description": "Dialogs and sheets",
+      "$value": [
+        { "color": "#060C1314", "offsetX": { "value": 0, "unit": "px" }, "offsetY": { "value": 4, "unit": "px" }, "blur": { "value": 8, "unit": "px" }, "spread": { "value": 0, "unit": "px" } },
+        { "color": "#060C1329", "offsetX": { "value": 0, "unit": "px" }, "offsetY": { "value": 24, "unit": "px" }, "blur": { "value": 48, "unit": "px" }, "spread": { "value": -8, "unit": "px" } }
+      ]
+    }
+  },
+  "duration": {
+    "$type": "duration",
+    "instant": { "$value": { "value": 0, "unit": "ms" }, "$description": "Used when the user prefers reduced motion" },
+    "fast": { "$value": { "value": 100, "unit": "ms" }, "$description": "Hover, press, focus" },
+    "base": { "$value": { "value": 160, "unit": "ms" }, "$description": "Toggles, tabs, small reveals" },
+    "slow": { "$value": { "value": 240, "unit": "ms" }, "$description": "Popovers, menus, toasts entering" },
+    "slower": { "$value": { "value": 360, "unit": "ms" }, "$description": "Dialogs and sheets" }
+  },
+  "easing": {
+    "$type": "cubicBezier",
+    "standard": { "$value": [0.2, 0, 0, 1], "$description": "Default for anything that moves or resizes" },
+    "enter": { "$value": [0, 0, 0, 1], "$description": "Elements appearing: fast start, gentle stop" },
+    "exit": { "$value": [0.3, 0, 1, 1], "$description": "Elements leaving: gentle start, quick finish" }
+  }
+}
