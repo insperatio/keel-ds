@@ -110,6 +110,11 @@ const PAIRS = [
   ['text.secondary', 'surface.subtle', 4.5, 'supporting text on subtle sections'],
   ['text.tertiary', 'surface.page', 4.5, 'captions and placeholders'],
   ['text.tertiary', 'surface.subtle', 4.5, 'captions on subtle sections'],
+  ['text.primary', 'surface.raised', 4.5, 'text on cards'],
+  ['text.secondary', 'surface.raised', 4.5, 'supporting text on cards'],
+  ['text.primary', 'surface.overlay', 4.5, 'text in popovers and dialogs'],
+  ['text.secondary', 'surface.overlay', 4.5, 'supporting text in popovers and dialogs'],
+  ['text.tertiary', 'surface.overlay', 4.5, 'captions in popovers and dialogs'],
   ['text.link', 'surface.page', 4.5, 'links'],
   ['text.link-hover', 'surface.page', 4.5, 'hovered links'],
   ['text.link', 'surface.subtle', 4.5, 'links on subtle sections'],
@@ -178,6 +183,16 @@ for (const [file, toks] of Object.entries(semanticFiles)) {
     const ok = ratio >= min
     if (!ok) fail(`${file} ${fg} on ${bg}`, `${ratio}:1, needs ${min}:1 (${why})`)
     report.push(`${ok ? 'pass' : 'FAIL'}  ${file}  ${fg} on ${bg}  ${ratio}:1`)
+  }
+}
+
+// Every mode must define exactly the same names, so components never hit a missing token.
+const names = Object.entries(semanticFiles).map(([file, toks]) => [file, new Set(Object.keys(toks))])
+for (const [fileA, a] of names) {
+  for (const [fileB, b] of names) {
+    if (fileA >= fileB) continue
+    for (const n of a) if (!b.has(n)) fail(fileB, `missing ${n} (defined in ${fileA})`)
+    for (const n of b) if (!a.has(n)) fail(fileA, `missing ${n} (defined in ${fileB})`)
   }
 }
 
