@@ -8,12 +8,14 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "tokens": "npm run tokens:brand && npm run tokens:build && npm run tokens:check",
+    "tokens": "npm run tokens:brand && npm run tokens:build && npm run figma:plugin && npm run tokens:check",
     "tokens:brand": "node scripts/brand.mjs",
     "tokens:brand:check": "node scripts/brand.mjs --check",
     "tokens:build": "node scripts/build-tokens.mjs",
     "tokens:build:check": "node scripts/build-tokens.mjs --check",
-    "tokens:check": "node scripts/check-tokens.mjs"
+    "tokens:check": "node scripts/check-tokens.mjs",
+    "figma:plugin": "node scripts/figma-plugin.mjs",
+    "figma:diff": "node scripts/figma-diff.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

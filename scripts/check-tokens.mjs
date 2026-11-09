@@ -214,6 +214,13 @@ try {
   fail('src/styles/keel.css', (e.stderr?.toString() || 'CSS check failed').trim())
 }
 
+// ---- the Figma plugin must carry the current tokens ----
+try {
+  execFileSync(process.execPath, [join(ROOT, 'scripts/figma-plugin.mjs'), '--check'], { stdio: 'pipe' })
+} catch (e) {
+  fail('figma/plugin/code.js', (e.stderr?.toString() || 'Figma plugin check failed').trim())
+}
+
 if (process.argv.includes('--verbose')) console.log(report.join('\n') + '\n')
 if (errors.length) {
   console.error(`Token check failed (${errors.length}):\n- ` + errors.join('\n- '))
