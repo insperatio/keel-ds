@@ -1,0 +1,28 @@
+{
+  "$description": "The one file that defines a brand. Everything else in Keel is shared. To rebrand: copy this file, change the values, point scripts/brand.mjs at it (BRAND=yourbrand), run `npm run tokens`. See docs/brand.md.",
+  "name": "Keel",
+  "logo": {
+    "$description": "Reserved for the app shell (Day 24). wordmark is used until an image is provided; src is a path under public/.",
+    "wordmark": "Keel",
+    "src": null,
+    "alt": "Keel"
+  },
+  "accent": {
+    "$description": "The action color: buttons, links, focus, selection. Give a hue (0-360, OKLCH) or a seed hex like \"#105FD9\". Lightness is adjusted automatically so white text on the button passes WCAG AA.",
+    "hue": 260
+  },
+  "neutral": {
+    "$description": "Grays for text, surfaces and borders. hue sets the tint direction (255 cool, 70 warm); tint is none, subtle or strong.",
+    "hue": 255,
+    "tint": "subtle"
+  },
+  "font": {
+    "$description": "Interface typeface. Install its package and import it at the top of src/index.css.",
+    "sans": ["Manrope Variable", "Manrope"],
+    "package": "@fontsource-variable/manrope"
+  },
+  "radius": {
+    "$description": "Corner style: sharp (half), default, or rounded (1.5x). Pills and avatars stay fully round.",
+    "style": "default"
+  }
+}

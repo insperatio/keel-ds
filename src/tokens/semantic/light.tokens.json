@@ -4,19 +4,19 @@
     "$type": "color",
     "text": {
       "primary": {
-        "$value": "{color.slate.900}",
+        "$value": "{color.neutral.900}",
         "$description": "Body text and headings"
       },
       "secondary": {
-        "$value": "{color.slate.600}",
+        "$value": "{color.neutral.600}",
         "$description": "Supporting text, descriptions"
       },
       "tertiary": {
-        "$value": "{color.slate.500}",
+        "$value": "{color.neutral.500}",
         "$description": "Captions, metadata, placeholders. Lightest readable gray."
       },
       "disabled": {
-        "$value": "{color.slate.400}",
+        "$value": "{color.neutral.400}",
         "$description": "Disabled labels only (exempt from contrast rules)"
       },
       "inverse": {
@@ -24,10 +24,10 @@
         "$description": "Text on surface.inverse"
       },
       "link": {
-        "$value": "{color.blue.600}"
+        "$value": "{color.accent.600}"
       },
       "link-hover": {
-        "$value": "{color.blue.700}"
+        "$value": "{color.accent.700}"
       },
       "danger": {
         "$value": "{color.red.700}",
@@ -46,7 +46,7 @@
         "$description": "App background"
       },
       "subtle": {
-        "$value": "{color.slate.50}",
+        "$value": "{color.neutral.50}",
         "$description": "Sidebars, table headers, quiet sections"
       },
       "raised": {
@@ -54,7 +54,7 @@
         "$description": "Cards (pair with border.subtle or shadow.md)"
       },
       "sunken": {
-        "$value": "{color.slate.100}",
+        "$value": "{color.neutral.100}",
         "$description": "Wells, code blocks, inset areas"
       },
       "overlay": {
@@ -62,30 +62,30 @@
         "$description": "Popovers, menus, dialogs (pair with shadow.lg or xl)"
       },
       "inverse": {
-        "$value": "{color.slate.900}",
+        "$value": "{color.neutral.900}",
         "$description": "Tooltips, toasts on light pages"
       }
     },
     "border": {
       "subtle": {
-        "$value": "{color.slate.200}",
+        "$value": "{color.neutral.200}",
         "$description": "Dividers, card outlines (decorative)"
       },
       "default": {
-        "$value": "{color.slate.300}",
+        "$value": "{color.neutral.300}",
         "$description": "Table cells, secondary button outline"
       },
       "control": {
-        "$value": "{color.slate.400}",
+        "$value": "{color.neutral.400}",
         "$description": "Inputs, selects, checkboxes. Must reach 3:1 (WCAG 1.4.11)."
       },
       "control-hover": {
-        "$value": "{color.slate.500}"
+        "$value": "{color.neutral.500}"
       }
     },
     "focus": {
       "ring": {
-        "$value": "{color.blue.500}",
+        "$value": "{color.accent.500}",
         "$description": "2px ring on every focusable element"
       },
       "ring-offset": {
@@ -96,14 +96,14 @@
     "action": {
       "primary": {
         "bg": {
-          "$value": "{color.blue.600}",
+          "$value": "{color.accent.600}",
           "$description": "One primary action per view"
         },
         "bg-hover": {
-          "$value": "{color.blue.700}"
+          "$value": "{color.accent.700}"
         },
         "bg-active": {
-          "$value": "{color.blue.800}"
+          "$value": "{color.accent.800}"
         },
         "fg": {
           "$value": "{color.base.white}"
@@ -114,28 +114,28 @@
           "$value": "{color.base.white}"
         },
         "bg-hover": {
-          "$value": "{color.slate.100}"
+          "$value": "{color.neutral.100}"
         },
         "bg-active": {
-          "$value": "{color.slate.200}"
+          "$value": "{color.neutral.200}"
         },
         "fg": {
-          "$value": "{color.slate.900}"
+          "$value": "{color.neutral.900}"
         },
         "border": {
-          "$value": "{color.slate.400}",
+          "$value": "{color.neutral.400}",
           "$description": "Must reach 3:1 against the page: the outline is the only edge of the button (WCAG 1.4.11)."
         }
       },
       "ghost": {
         "bg-hover": {
-          "$value": "{color.slate.100}"
+          "$value": "{color.neutral.100}"
         },
         "bg-active": {
-          "$value": "{color.slate.200}"
+          "$value": "{color.neutral.200}"
         },
         "fg": {
-          "$value": "{color.slate.700}"
+          "$value": "{color.neutral.700}"
         }
       },
       "danger": {
@@ -155,23 +155,23 @@
       },
       "disabled": {
         "bg": {
-          "$value": "{color.slate.100}"
+          "$value": "{color.neutral.100}"
         },
         "fg": {
-          "$value": "{color.slate.400}"
+          "$value": "{color.neutral.400}"
         }
       }
     },
     "selected": {
       "bg": {
-        "$value": "{color.blue.50}",
+        "$value": "{color.accent.50}",
         "$description": "Selected row, active nav item. Always pair with selected.indicator."
       },
       "fg": {
-        "$value": "{color.blue.700}"
+        "$value": "{color.accent.700}"
       },
       "indicator": {
-        "$value": "{color.blue.600}",
+        "$value": "{color.accent.600}",
         "$description": "Non-color cue for selection (left bar, check, underline). The tint alone is not enough (WCAG 1.4.1)."
       }
     },
@@ -229,18 +229,18 @@
         }
       },
       "info": {
-        "$description": "Neutral, not blue: blue is reserved for actions.",
+        "$description": "Neutral, not accent: the accent is reserved for actions.",
         "bg": {
-          "$value": "{color.slate.100}"
+          "$value": "{color.neutral.100}"
         },
         "border": {
-          "$value": "{color.slate.300}"
+          "$value": "{color.neutral.300}"
         },
         "fg": {
-          "$value": "{color.slate.700}"
+          "$value": "{color.neutral.700}"
         },
         "solid": {
-          "$value": "{color.slate.700}"
+          "$value": "{color.neutral.700}"
         },
         "on-solid": {
           "$value": "{color.base.white}"

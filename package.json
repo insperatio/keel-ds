@@ -8,12 +8,12 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "tokens:colors": "node scripts/color-ramps.mjs",
-    "tokens:colors:check": "node scripts/color-ramps.mjs --check",
-    "tokens:check": "node scripts/check-tokens.mjs",
+    "tokens": "npm run tokens:brand && npm run tokens:build && npm run tokens:check",
+    "tokens:brand": "node scripts/brand.mjs",
+    "tokens:brand:check": "node scripts/brand.mjs --check",
     "tokens:build": "node scripts/build-tokens.mjs",
     "tokens:build:check": "node scripts/build-tokens.mjs --check",
-    "tokens": "npm run tokens:colors && npm run tokens:build && npm run tokens:check"
+    "tokens:check": "node scripts/check-tokens.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
