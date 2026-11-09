@@ -9,11 +9,12 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "tokens:colors": "node scripts/color-ramps.mjs",
-    "tokens:colors:check": "node scripts/color-ramps.mjs --check"
+    "tokens:colors:check": "node scripts/color-ramps.mjs --check",
+    "tokens:check": "node scripts/check-tokens.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
-    "@fontsource-variable/geist": "^5.3.0",
+    "@fontsource-variable/manrope": "^5.3.0",
     "@tailwindcss/vite": "^4.3.5",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.5.2",

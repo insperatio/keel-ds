@@ -1,0 +1,55 @@
+{
+  "$description": "Keel primitive typography. Raw values only; components use the semantic text styles defined on Day 7.",
+  "font": {
+    "family": {
+      "$type": "fontFamily",
+      "sans": {
+        "$value": ["Manrope Variable", "Manrope", "ui-sans-serif", "system-ui", "sans-serif"],
+        "$description": "Interface and headings. Variable font, weights 200-800."
+      },
+      "mono": {
+        "$value": ["ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "monospace"],
+        "$description": "Code and tabular IDs. System stack, no download."
+      }
+    },
+    "weight": {
+      "$type": "fontWeight",
+      "regular": { "$value": 400, "$description": "Body text" },
+      "medium": { "$value": 500, "$description": "Labels, buttons, emphasis in body" },
+      "semibold": { "$value": 600, "$description": "Headings, table headers" },
+      "bold": { "$value": 700, "$description": "Display headings only" }
+    },
+    "size": {
+      "$type": "dimension",
+      "$description": "Scale steps sit on whole pixels. Use these only; never an in-between size.",
+      "xs": { "$value": { "value": 12, "unit": "px" } },
+      "sm": { "$value": { "value": 14, "unit": "px" } },
+      "md": { "$value": { "value": 16, "unit": "px" }, "$description": "Default body size" },
+      "lg": { "$value": { "value": 18, "unit": "px" } },
+      "xl": { "$value": { "value": 20, "unit": "px" } },
+      "2xl": { "$value": { "value": 24, "unit": "px" } },
+      "3xl": { "$value": { "value": 30, "unit": "px" } },
+      "4xl": { "$value": { "value": 36, "unit": "px" } },
+      "5xl": { "$value": { "value": 48, "unit": "px" } }
+    },
+    "line-height": {
+      "$type": "dimension",
+      "$description": "Paired by name with font.size (xs pairs with xs). Every value is on the 4px grid.",
+      "xs": { "$value": { "value": 16, "unit": "px" } },
+      "sm": { "$value": { "value": 20, "unit": "px" } },
+      "md": { "$value": { "value": 24, "unit": "px" } },
+      "lg": { "$value": { "value": 28, "unit": "px" } },
+      "xl": { "$value": { "value": 28, "unit": "px" } },
+      "2xl": { "$value": { "value": 32, "unit": "px" } },
+      "3xl": { "$value": { "value": 36, "unit": "px" } },
+      "4xl": { "$value": { "value": 44, "unit": "px" } },
+      "5xl": { "$value": { "value": 56, "unit": "px" } }
+    },
+    "letter-spacing": {
+      "$type": "dimension",
+      "tight": { "$value": { "value": -0.02, "unit": "em" }, "$description": "Sizes 24px and up" },
+      "normal": { "$value": { "value": 0, "unit": "em" } },
+      "wide": { "$value": { "value": 0.04, "unit": "em" }, "$description": "Uppercase labels only" }
+    }
+  }
+}
