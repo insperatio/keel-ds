@@ -124,7 +124,8 @@
           "$value": "{color.slate.50}"
         },
         "border": {
-          "$value": "{color.slate.700}"
+          "$value": "{color.slate.500}",
+          "$description": "Must reach 3:1 against the page: the outline is the only edge of the button (WCAG 1.4.11)."
         }
       },
       "ghost": {
@@ -166,10 +167,14 @@
     "selected": {
       "bg": {
         "$value": "{color.indigo.950}",
-        "$description": "Selected row, active nav item"
+        "$description": "Selected row, active nav item. Always pair with selected.indicator."
       },
       "fg": {
         "$value": "{color.indigo.200}"
+      },
+      "indicator": {
+        "$value": "{color.indigo.300}",
+        "$description": "Non-color cue for selection (left bar, check, underline). The tint alone is not enough (WCAG 1.4.1)."
       }
     },
     "status": {
