@@ -207,6 +207,13 @@ try {
   fail('color ramps', (e.stderr?.toString() || 'color check failed').trim())
 }
 
+// ---- generated CSS must match the tokens ----
+try {
+  execFileSync(process.execPath, [join(ROOT, 'scripts/build-tokens.mjs'), '--check'], { stdio: 'pipe' })
+} catch (e) {
+  fail('src/styles/keel.css', (e.stderr?.toString() || 'CSS check failed').trim())
+}
+
 if (process.argv.includes('--verbose')) console.log(report.join('\n') + '\n')
 if (errors.length) {
   console.error(`Token check failed (${errors.length}):\n- ` + errors.join('\n- '))
