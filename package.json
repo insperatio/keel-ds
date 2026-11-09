@@ -10,7 +10,10 @@
     "preview": "vite preview",
     "tokens:colors": "node scripts/color-ramps.mjs",
     "tokens:colors:check": "node scripts/color-ramps.mjs --check",
-    "tokens:check": "node scripts/check-tokens.mjs"
+    "tokens:check": "node scripts/check-tokens.mjs",
+    "tokens:build": "node scripts/build-tokens.mjs",
+    "tokens:build:check": "node scripts/build-tokens.mjs --check",
+    "tokens": "npm run tokens:colors && npm run tokens:build && npm run tokens:check"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
