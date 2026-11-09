@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { brand } from '@/brand.generated'
 import {
   colorGroups,
@@ -14,25 +14,7 @@ import {
   textStyles,
   type ColorRole,
 } from './token-data'
-
-type Mode = 'light' | 'dark'
-
-function useMode(): [Mode, (m: Mode) => void] {
-  const [mode, setMode] = useState<Mode>(() => {
-    try {
-      const saved = localStorage.getItem('keel-mode')
-      if (saved === 'light' || saved === 'dark') return saved
-    } catch {}
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-  })
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', mode === 'dark')
-    try {
-      localStorage.setItem('keel-mode', mode)
-    } catch {}
-  }, [mode])
-  return [mode, setMode]
-}
+import { PageLinks, useMode, type Mode } from './shell'
 
 const SECTIONS = [
   ['color', 'Color'],
@@ -151,6 +133,7 @@ export default function TokensPage() {
       <header className="sticky top-0 z-10 border-b border-line-subtle bg-surface-page/95 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center gap-6 px-6 py-3">
           <span className="text-heading-sm">{brand.logo.wordmark}</span>
+          <PageLinks current="tokens" />
           <nav aria-label="Token sections" className="hidden flex-1 gap-1 md:flex">
             {SECTIONS.map(([id, label]) => (
               <a key={id} href={`#${id}`} className="rounded-md px-2 py-1 text-label-md text-action-ghost-fg hover:bg-action-ghost-bg-hover">
