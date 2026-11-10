@@ -81,6 +81,9 @@
       },
       "control-hover": {
         "$value": "{color.neutral.400}"
+      },
+      "danger": {
+        "$value": "{color.red.400}"
       }
     },
     "focus": {

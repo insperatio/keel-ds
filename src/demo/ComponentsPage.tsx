@@ -1,7 +1,11 @@
 import { useState } from 'react'
-import { ArrowRight, ChevronDown, Copy, Download, MoreHorizontal, Pencil, Plus, Settings, Trash2, X } from 'lucide-react'
+import { ArrowRight, ChevronDown, Copy, Download, MoreHorizontal, Pencil, Plus, Search, Settings, Trash2, X } from 'lucide-react'
 import { brand } from '@/brand.generated'
 import { Button, IconButton } from '@/components/ui/button'
+import { Field, FieldDescription, FieldError, FieldLabel } from '@/components/ui/field'
+import { Form } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { Select, SelectGroup, SelectItem, SelectSeparator } from '@/components/ui/select'
 import { PageLinks, useMode } from './shell'
 
 const VARIANTS = ['primary', 'secondary', 'ghost', 'danger'] as const
@@ -46,6 +50,39 @@ function SaveDemo() {
     >
       {saving ? 'Saving…' : 'Save changes'}
     </Button>
+  )
+}
+
+const ROLES = [
+  { value: 'viewer', label: 'Viewer' },
+  { value: 'editor', label: 'Editor' },
+  { value: 'admin', label: 'Admin' },
+  { value: 'owner', label: 'Owner' },
+]
+
+function FieldBox({ children }: { children: React.ReactNode }) {
+  return <div className="w-full max-w-xs self-start">{children}</div>
+}
+
+function EmailDemo() {
+  const [submitted, setSubmitted] = useState<string | null>(null)
+  return (
+    <Form className="w-full max-w-md" onFormSubmit={(values) => setSubmitted(String(values.email))}>
+      <Field name="email">
+        <FieldLabel>Work email</FieldLabel>
+        <Input type="email" required placeholder="name@example.com" autoComplete="email" />
+        <FieldError match="valueMissing">Enter your work email.</FieldError>
+        <FieldError match="typeMismatch">Enter an email like name@example.com.</FieldError>
+      </Field>
+      <div className="flex items-center gap-3">
+        <Button type="submit" variant="primary">
+          Send invite
+        </Button>
+        <p role="status" className="text-body-sm text-fg-secondary">
+          {submitted ? `Invite sent to ${submitted}` : ''}
+        </p>
+      </div>
+    </Form>
   )
 }
 
@@ -160,6 +197,149 @@ export default function ComponentsPage() {
           <p className="text-body-sm text-fg-secondary">
             Name it for the action, not the picture: <Code>label="Delete row"</Code>, not <Code>label="Trash"</Code>.
           </p>
+        </Section>
+        <Section
+          id="input"
+          title="Input"
+          blurb="Single-line text entry. Always inside a Field with a visible label: the placeholder is a format hint, never the label, because it disappears as soon as someone types."
+        >
+          <Example title="Field anatomy" note="Label, control, then help text. Field links them, so screen readers read the label and help text with the input.">
+            <FieldBox>
+              <Field>
+                <FieldLabel>Project name</FieldLabel>
+                <Input placeholder="e.g. Spring launch" />
+                <FieldDescription>Shown to everyone on the team.</FieldDescription>
+              </Field>
+            </FieldBox>
+            <FieldBox>
+              <Field>
+                <FieldLabel optional>Reference code</FieldLabel>
+                <Input />
+                <FieldDescription>Mark the few optional fields, not the many required ones.</FieldDescription>
+              </Field>
+            </FieldBox>
+          </Example>
+
+          <Example title="Sizes" note="Same heights as Button. Use the size of the buttons in the same row.">
+            {SIZES.map((s) => (
+              <FieldBox key={s}>
+                <Field>
+                  <FieldLabel>Size {s}</FieldLabel>
+                  <Input size={s} placeholder={s === 'sm' ? '32px' : s === 'md' ? '40px, default' : '48px'} />
+                </Field>
+              </FieldBox>
+            ))}
+          </Example>
+
+          <Example title="States" note="Invalid adds a red border and an error message with an icon, so it never relies on color alone.">
+            <FieldBox>
+              <Field invalid>
+                <FieldLabel>Username</FieldLabel>
+                <Input defaultValue="mj" />
+                <FieldError>Use at least 3 characters.</FieldError>
+              </Field>
+            </FieldBox>
+            <FieldBox>
+              <Field disabled>
+                <FieldLabel>Account ID</FieldLabel>
+                <Input defaultValue="KEEL-2041" />
+                <FieldDescription>Set by your admin.</FieldDescription>
+              </Field>
+            </FieldBox>
+          </Example>
+
+          <Example title="Validation" note="Uses the browser's own checks. Errors appear after submit, then update as you fix them. Try sending it empty, then with a broken email.">
+            <EmailDemo />
+          </Example>
+        </Section>
+
+        <Section
+          id="select"
+          title="Select"
+          blurb="Pick one option from a short list, about 3 to 15. Fewer that all fit on screen: radio buttons. Long or searchable lists: a combobox."
+        >
+          <Example title="Basic" note="The chosen option gets a check mark, so selection isn't shown by color alone. Arrow keys and type-ahead work.">
+            <FieldBox>
+              <Field name="role">
+                <FieldLabel>Role</FieldLabel>
+                <Select items={ROLES} placeholder="Choose a role">
+                  {ROLES.map((r) => (
+                    <SelectItem key={r.value} value={r.value}>
+                      {r.label}
+                    </SelectItem>
+                  ))}
+                </Select>
+                <FieldDescription>Controls what they can change.</FieldDescription>
+              </Field>
+            </FieldBox>
+            <FieldBox>
+              <Field name="timezone">
+                <FieldLabel>Time zone</FieldLabel>
+                <Select defaultValue="et" items={{ et: 'Eastern (ET)', ct: 'Central (CT)', mt: 'Mountain (MT)', pt: 'Pacific (PT)', gmt: 'London (GMT)', cet: 'Berlin (CET)' }}>
+                  <SelectGroup label="Americas">
+                    <SelectItem value="et">Eastern (ET)</SelectItem>
+                    <SelectItem value="ct">Central (CT)</SelectItem>
+                    <SelectItem value="mt">Mountain (MT)</SelectItem>
+                    <SelectItem value="pt">Pacific (PT)</SelectItem>
+                  </SelectGroup>
+                  <SelectSeparator />
+                  <SelectGroup label="Europe">
+                    <SelectItem value="gmt">London (GMT)</SelectItem>
+                    <SelectItem value="cet">Berlin (CET)</SelectItem>
+                  </SelectGroup>
+                </Select>
+              </Field>
+            </FieldBox>
+          </Example>
+
+          <Example title="States">
+            <FieldBox>
+              <Field invalid>
+                <FieldLabel>Plan</FieldLabel>
+                <Select items={{ free: 'Free', team: 'Team' }} placeholder="Choose a plan">
+                  <SelectItem value="free">Free</SelectItem>
+                  <SelectItem value="team">Team</SelectItem>
+                  <SelectItem value="enterprise" disabled>
+                    Enterprise (contact sales)
+                  </SelectItem>
+                </Select>
+                <FieldError>Choose a plan to continue.</FieldError>
+              </Field>
+            </FieldBox>
+            <FieldBox>
+              <Field disabled>
+                <FieldLabel>Region</FieldLabel>
+                <Select defaultValue="us" items={{ us: 'United States' }}>
+                  <SelectItem value="us">United States</SelectItem>
+                </Select>
+                <FieldDescription>Can't change after setup.</FieldDescription>
+              </Field>
+            </FieldBox>
+          </Example>
+        </Section>
+
+        <Section id="form-row" title="In a row" blurb="Input, Select and Button share heights, so a toolbar lines up without extra work.">
+          <Example title="Filter bar, size sm">
+            <div className="flex w-full flex-wrap items-end gap-3">
+              <Field className="w-64">
+                <FieldLabel>Search</FieldLabel>
+                <Input size="sm" type="search" placeholder="Name or email" />
+              </Field>
+              <Field className="w-44">
+                <FieldLabel>Role</FieldLabel>
+                <Select size="sm" items={ROLES} defaultValue="editor">
+                  {ROLES.map((r) => (
+                    <SelectItem key={r.value} value={r.value}>
+                      {r.label}
+                    </SelectItem>
+                  ))}
+                </Select>
+              </Field>
+              <Button size="sm" iconStart={<Search />}>
+                Apply
+              </Button>
+            </div>
+          </Example>
         </Section>
       </main>
     </div>

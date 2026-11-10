@@ -145,6 +145,10 @@ const PAIRS = [
   ['status.info.on-solid', 'status.info.solid', 4.5, 'solid info badge'],
   ['border.control', 'surface.page', 3, 'input borders (WCAG 1.4.11)'],
   ['border.control', 'surface.subtle', 3, 'input borders on subtle sections'],
+  ['border.control', 'surface.raised', 3, 'input borders (inputs sit on surface.raised)'],
+  ['border.danger', 'surface.raised', 3, 'invalid field border (WCAG 1.4.11)'],
+  ['border.danger', 'surface.subtle', 3, 'invalid field border on subtle sections'],
+  ['text.danger', 'surface.subtle', 4.5, 'field error message on subtle sections'],
   ['focus.ring', 'surface.page', 3, 'focus ring (WCAG 2.4.11)'],
   ['focus.ring', 'surface.subtle', 3, 'focus ring on subtle sections'],
 ]
