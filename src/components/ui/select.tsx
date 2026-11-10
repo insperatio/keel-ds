@@ -37,6 +37,7 @@ function SelectTrigger({ size, className, placeholder }: { size?: ControlSize; c
   return (
     <SelectPrimitive.Trigger
       data-slot="select-trigger"
+      data-size={size ?? 'md'}
       className={cn(
         controlVariants({ size }),
         'group flex cursor-default items-center justify-between gap-2 text-left',

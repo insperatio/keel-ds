@@ -16,6 +16,7 @@ function Input({ className, size, type = 'text', ...props }: InputProps) {
   return (
     <InputPrimitive
       data-slot="input"
+      data-size={size ?? 'md'}
       type={type}
       className={cn(controlVariants({ size }), 'placeholder:text-fg-tertiary', className)}
       {...props}

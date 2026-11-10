@@ -90,7 +90,16 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
+    /* Resting outline color = ring color, so components that animate colors don't fade
+       the ring in from black when focus arrives. The ring appears at full color at once. */
+    outline-color: var(--keel-focus-ring);
+  }
+  /* Every focusable element gets Keel's ring by default: 2px focus.ring, 2px offset
+     (3:1 against every surface, checked). Components may restyle it, never remove it. */
+  :focus-visible {
+    outline: 2px solid var(--keel-focus-ring);
+    outline-offset: 2px;
   }
   body {
     @apply bg-background text-foreground text-body-md;
