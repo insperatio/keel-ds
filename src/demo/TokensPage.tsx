@@ -14,7 +14,9 @@ import {
   textStyles,
   type ColorRole,
 } from './token-data'
-import { PageLinks, useMode, type Mode } from './shell'
+import { PageHeader } from '@/components/ui/app-shell'
+import { DemoLayout } from './DemoLayout'
+import { useMode, type Mode } from './shell'
 
 const SECTIONS = [
   ['color', 'Color'],
@@ -121,46 +123,19 @@ function MotionDemo({ ms, easing }: { ms: number; easing: string }) {
   )
 }
 
-export default function TokensPage() {
-  const [mode, setMode] = useMode()
+export default function TokensPage({ section }: { section: string | null }) {
+  const [mode] = useMode()
   const counts = `${colorRoles.length} color roles · ${textStyles.length} text styles · ${spacing.length} spacing steps · ${radii.length} radii · ${shadows.length} shadows`
 
   return (
-    <div className="min-h-screen bg-surface-page text-fg-primary">
-      <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:rounded-lg focus:bg-surface-overlay focus:px-3 focus:py-2">
-        Skip to content
-      </a>
-      <header className="sticky top-0 z-10 border-b border-line-subtle bg-surface-page/95 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center gap-6 px-6 py-3">
-          <span className="text-heading-sm">{brand.logo.wordmark}</span>
-          <PageLinks current="tokens" />
-          <nav aria-label="Token sections" className="hidden flex-1 gap-1 md:flex">
-            {SECTIONS.map(([id, label]) => (
-              <a key={id} href={`#${id}`} className="rounded-md px-2 py-1 text-label-md text-action-ghost-fg hover:bg-action-ghost-bg-hover">
-                {label}
-              </a>
-            ))}
-          </nav>
-          <button
-            type="button"
-            aria-pressed={mode === 'dark'}
-            onClick={() => setMode(mode === 'dark' ? 'light' : 'dark')}
-            className="ml-auto rounded-lg border border-action-secondary-border bg-action-secondary-bg px-3 py-1.5 text-label-md text-action-secondary-fg hover:bg-action-secondary-bg-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring"
-          >
-            Dark mode: {mode === 'dark' ? 'on' : 'off'}
-          </button>
-        </div>
-      </header>
-
-      <main id="main" className="mx-auto max-w-6xl px-6">
-        <div className="py-12">
-          <p className="text-overline uppercase text-fg-tertiary">Design tokens</p>
-          <h1 className="mt-2 text-heading-xl">{brand.name} tokens</h1>
-          <p className="mt-3 max-w-2xl text-body-lg text-fg-secondary">
-            Every value in {brand.name}, read straight from the token files. Components use only these names. Switch modes to see each role re-point.
-          </p>
-          <p className="mt-4 text-body-sm text-fg-tertiary">{counts}</p>
-        </div>
+    <DemoLayout page="tokens" section={section} sidebarTitle="Token sections" sections={[{ title: 'Foundations', items: SECTIONS.map(([id, label]) => [id, label]) }]}>
+      <PageHeader
+        overline="Design tokens"
+        title={`${brand.name} tokens`}
+        description={`Every value in ${brand.name}, read straight from the token files. Components use only these names. Switch modes to see each role re-point.`}
+      >
+        <p className="text-body-sm text-fg-tertiary">{counts}</p>
+      </PageHeader>
 
         <Section id="color" title="Color roles" blurb="Semantic colors components use. Each shows its Tailwind class, the ramp step it points to in this mode, and its contrast where it carries text.">
           <div className="grid gap-12">
@@ -288,10 +263,6 @@ export default function TokensPage() {
             ))}
           </ul>
         </Section>
-      </main>
-      <footer className="border-t border-line-subtle py-8 text-center text-body-sm text-fg-tertiary">
-        {brand.name} · a token-driven design system by MJ · Insperatio Designs LLC
-      </footer>
-    </div>
+    </DemoLayout>
   )
 }

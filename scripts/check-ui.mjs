@@ -9,6 +9,7 @@
 // 3. Target size: everything clickable is at least 24 x 24px, or has enough space
 //    around it (WCAG 2.5.8).
 // 4. axe-core: no WCAG 2.2 A/AA violations.
+// 5. Reflow: no sideways scrolling at 320 and 375px wide (WCAG 1.4.10).
 import { readFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { chromium } from 'playwright'
@@ -141,7 +142,17 @@ for (const mode of ['light', 'dark']) {
     )
     for (const v of violations) fail(`${where}: axe ${v}`)
 
-    console.log(`${where.padEnd(17)} ${sizes.length} sized controls, ${stops.length} focus stops, ${violations.length} axe violations`)
+    // 5. Reflow
+    const overflow = []
+    for (const width of [320, 375]) {
+      await page.setViewportSize({ width, height: 800 })
+      await page.waitForTimeout(150)
+      const w = await page.evaluate(() => document.documentElement.scrollWidth)
+      if (w > width) overflow.push(width)
+      if (w > width) fail(`${where}: page is ${w}px wide at a ${width}px viewport (sideways scrolling)`)
+    }
+
+    console.log(`${where.padEnd(17)} ${sizes.length} sized controls, ${stops.length} focus stops, ${violations.length} axe violations, ${overflow.length ? 'overflows' : 'reflows'} at 320/375`)
     await ctx.close()
   }
 }
@@ -153,4 +164,4 @@ if (failures.length) {
   console.error(`\nUI check failed (${failures.length}):\n- ` + failures.join('\n- '))
   process.exit(1)
 }
-console.log('\nUI check passed: sizes, focus rings, target sizes and axe, in light and dark.')
+console.log('\nUI check passed: sizes, focus rings, target sizes, axe and reflow, in light and dark.')

@@ -20,7 +20,8 @@ import { cn } from '@/lib/utils'
  * know it exists) but not opened.
  */
 function Tabs({ className, ...props }: TabsPrimitive.Root.Props & { className?: string }) {
-  return <TabsPrimitive.Root data-slot="tabs" className={cn('flex flex-col', className)} {...props} />
+  // min-w-0: inside a flex row, let the tab row scroll instead of widening the page
+  return <TabsPrimitive.Root data-slot="tabs" className={cn('flex min-w-0 max-w-full flex-col', className)} {...props} />
 }
 
 type TabsListProps = Omit<TabsPrimitive.List.Props, 'className'> & {
