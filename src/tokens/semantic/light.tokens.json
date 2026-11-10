@@ -61,6 +61,10 @@
         "$value": "{color.base.white}",
         "$description": "Popovers, menus, dialogs (pair with shadow.lg or xl)"
       },
+      "row-hover": {
+        "$value": "{color.neutral.50}",
+        "$description": "Hovered row in tables and lists (tables sit on surface.raised). One step from raised: lighter in light mode, darker in dark mode, so text and checkboxes in the row keep their contrast."
+      },
       "inverse": {
         "$value": "{color.neutral.900}",
         "$description": "Tooltips, toasts on light pages"

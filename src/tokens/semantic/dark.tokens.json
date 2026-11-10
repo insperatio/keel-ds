@@ -61,6 +61,9 @@
         "$value": "{color.neutral.900}",
         "$description": "Popovers, menus, dialogs. Same fill as cards in dark mode; separate them with border.default and shadow.lg or xl. (neutral.800 dropped tertiary text to 4.48:1.)"
       },
+      "row-hover": {
+        "$value": "{color.neutral.950}"
+      },
       "inverse": {
         "$value": "{color.neutral.50}",
         "$description": "Tooltips, toasts on light pages"
