@@ -29,6 +29,7 @@ import { Select, SelectGroup, SelectItem, SelectSeparator } from '@/components/u
 import { Switch } from '@/components/ui/switch'
 import { Table, TableBody, TableCell, TableEmpty, TableHead, TableHeader, TableRow, type Sort } from '@/components/ui/table'
 import { Tab, Tabs, TabsList, TabsPanel } from '@/components/ui/tabs'
+import { useToast } from '@/components/ui/toast'
 import { PageLinks, useMode } from './shell'
 
 const VARIANTS = ['primary', 'secondary', 'ghost', 'danger'] as const
@@ -416,6 +417,43 @@ function TermsDialog() {
         </DialogFooter>
       </DialogContent>
     </Dialog>
+  )
+}
+
+function ToastDemo() {
+  const toast = useToast()
+  const [archived, setArchived] = useState(false)
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-wrap gap-3">
+        <Button onClick={() => toast.success('Changes saved')}>Success</Button>
+        <Button onClick={() => toast.info('New version available', { description: 'Refresh to get the latest features.' })}>Info</Button>
+        <Button onClick={() => toast.warning('Storage almost full', { description: '41 of 50 GB used. Upgrade or clean up files.' })}>Warning</Button>
+        <Button onClick={() => toast.error('Couldn’t save changes', { description: 'Check your connection and try again.' })}>Error</Button>
+      </div>
+      <div className="flex flex-wrap items-center gap-3">
+        <Button
+          onClick={() => {
+            setArchived(true)
+            toast.info('Project archived', { action: { label: 'Undo', onClick: () => setArchived(false) } })
+          }}
+        >
+          Archive with undo
+        </Button>
+        <Button
+          onClick={() =>
+            toast.promise(new Promise((resolve) => setTimeout(resolve, 1500)), {
+              loading: 'Publishing…',
+              success: 'Published',
+              error: 'Couldn’t publish',
+            })
+          }
+        >
+          Publish (loading, then success)
+        </Button>
+        <p className="text-body-sm text-fg-secondary">Project: {archived ? 'archived' : 'active'}</p>
+      </div>
+    </div>
   )
 }
 
@@ -915,6 +953,19 @@ export default function ComponentsPage() {
 
           <Example title="Long content" note="The body scrolls; the title and the footer stay in place.">
             <TermsDialog />
+          </Example>
+        </Section>
+
+        <Section
+          id="toast"
+          title="Toast"
+          blurb="A short, temporary message about something that just happened. Never the only place important information or an action lives."
+        >
+          <Example
+            title="Types and timing"
+            note="Success and info close after 5 seconds (10 with an action); hover or focus pauses them. Warning and error stay until dismissed. Press F6 to reach the toasts by keyboard."
+          >
+            <ToastDemo />
           </Example>
         </Section>
 
