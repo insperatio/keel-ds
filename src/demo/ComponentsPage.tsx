@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { ArrowRight, ChevronDown, Copy, Download, MoreHorizontal, Pencil, Plus, Search, Settings, Trash2, X } from 'lucide-react'
+import { AlertTriangle, ArrowRight, CheckCircle2, Circle, XCircle, ChevronDown, Copy, Download, MoreHorizontal, Pencil, Plus, Search, Settings, Trash2, X } from 'lucide-react'
 import { brand } from '@/brand.generated'
+import { Badge } from '@/components/ui/badge'
 import { Button, IconButton } from '@/components/ui/button'
 import { Checkbox, CheckboxGroup } from '@/components/ui/checkbox'
 import { Field, FieldDescription, FieldError, FieldLabel } from '@/components/ui/field'
@@ -8,6 +9,7 @@ import { Form } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Select, SelectGroup, SelectItem, SelectSeparator } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
+import { Tab, Tabs, TabsList, TabsPanel } from '@/components/ui/tabs'
 import { PageLinks, useMode } from './shell'
 
 const VARIANTS = ['primary', 'secondary', 'ghost', 'danger'] as const
@@ -152,6 +154,16 @@ function SettingsDemo() {
     </div>
   )
 }
+
+const TONES = ['neutral', 'success', 'warning', 'danger'] as const
+
+const DEPLOYS = [
+  { name: 'keel-docs', when: '2 min ago', status: 'success' as const, label: 'Live' },
+  { name: 'keel-registry', when: '14 min ago', status: 'warning' as const, label: 'Slow build' },
+  { name: 'keel-storybook', when: '1 hr ago', status: 'danger' as const, label: 'Failed' },
+  { name: 'keel-site', when: 'Queued', status: 'neutral' as const, label: 'Waiting' },
+]
+const STATUS_ICON = { success: <CheckCircle2 />, warning: <AlertTriangle />, danger: <XCircle />, neutral: <Circle /> }
 
 export default function ComponentsPage() {
   const [mode, setMode] = useMode()
@@ -425,6 +437,107 @@ export default function ComponentsPage() {
         >
           <Example title="Settings list" note="Label first, switch at the end of the row. The thumb moves and changes color when on.">
             <SettingsDemo />
+          </Example>
+        </Section>
+
+        <Section
+          id="badge"
+          title="Badge"
+          blurb="A short label for status or a count. Not clickable, so there's no accent tone: in Keel, accent means you can act on it. The words carry the meaning, not the color."
+        >
+          <Example title="Tones" note="Subtle is the default. Solid is for the one item that has to stand out.">
+            <div className="grid gap-3 self-start">
+              {(['subtle', 'solid'] as const).map((v) => (
+                <div key={v} className="flex flex-wrap items-center gap-2">
+                  <span className="w-14 text-body-sm text-fg-secondary">{v}</span>
+                  {TONES.map((t) => (
+                    <Badge key={t} tone={t} variant={v}>
+                      {t[0].toUpperCase() + t.slice(1)}
+                    </Badge>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </Example>
+
+          <Example title="Sizes and icons" note="sm (20px) for tables and dense lists, md (24px) next to headings. Icons are decorative.">
+            <Badge size="sm" tone="success" icon={<CheckCircle2 />}>
+              Passed
+            </Badge>
+            <Badge size="md" tone="success" icon={<CheckCircle2 />}>
+              Passed
+            </Badge>
+            <Badge size="md" tone="danger" variant="solid" icon={<XCircle />}>
+              2 errors
+            </Badge>
+          </Example>
+
+          <Example title="In a list" note="Same tone, same meaning everywhere: success is done, warning needs a look, danger is broken, neutral is waiting or unknown.">
+            <ul className="w-full max-w-lg divide-y divide-line-subtle rounded-xl border border-line-subtle bg-surface-raised">
+              {DEPLOYS.map((d) => (
+                <li key={d.name} className="flex items-center justify-between gap-4 px-4 py-3">
+                  <span className="flex flex-col">
+                    <span className="text-label-md text-fg-primary">{d.name}</span>
+                    <span className="text-body-sm text-fg-tertiary">{d.when}</span>
+                  </span>
+                  <Badge tone={d.status} icon={STATUS_ICON[d.status]}>
+                    {d.label}
+                  </Badge>
+                </li>
+              ))}
+            </ul>
+          </Example>
+        </Section>
+
+        <Section
+          id="tabs"
+          title="Tabs"
+          blurb="Switch between 2 to 7 views of the same thing without leaving the page. Not for steps in order, and not for links to other pages."
+        >
+          <Example title="Basic" note="Arrow keys move between tabs; Tab moves into the panel. The underline slides to the active tab.">
+            <Tabs defaultValue="overview" className="w-full">
+              <TabsList label="Project sections">
+                <Tab value="overview">Overview</Tab>
+                <Tab value="activity" count={12}>
+                  Activity
+                </Tab>
+                <Tab value="members" count={4}>
+                  Members
+                </Tab>
+                <Tab value="billing" disabled>
+                  Billing
+                </Tab>
+              </TabsList>
+              <TabsPanel value="overview">
+                <p className="max-w-xl text-body-md text-fg-secondary">The project at a glance: owner, status and the latest release.</p>
+              </TabsPanel>
+              <TabsPanel value="activity">
+                <p className="max-w-xl text-body-md text-fg-secondary">12 events this week, newest first.</p>
+              </TabsPanel>
+              <TabsPanel value="members">
+                <p className="max-w-xl text-body-md text-fg-secondary">4 people can see this project.</p>
+              </TabsPanel>
+              <TabsPanel value="billing">
+                <p className="max-w-xl text-body-md text-fg-secondary">Billing is managed by your organization.</p>
+              </TabsPanel>
+            </Tabs>
+          </Example>
+
+          <Example title="Many tabs" note="When tabs don't fit, the row scrolls sideways instead of wrapping. More than 7 usually means you need a different pattern.">
+            <Tabs defaultValue="t1" className="w-full max-w-sm">
+              <TabsList label="Report months">
+                {['January', 'February', 'March', 'April', 'May', 'June'].map((m, i) => (
+                  <Tab key={m} value={`t${i + 1}`}>
+                    {m}
+                  </Tab>
+                ))}
+              </TabsList>
+              {['January', 'February', 'March', 'April', 'May', 'June'].map((m, i) => (
+                <TabsPanel key={m} value={`t${i + 1}`}>
+                  <p className="text-body-md text-fg-secondary">{m} report.</p>
+                </TabsPanel>
+              ))}
+            </Tabs>
           </Example>
         </Section>
 
