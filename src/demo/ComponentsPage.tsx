@@ -10,6 +10,7 @@ import { Form } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Select, SelectGroup, SelectItem, SelectSeparator } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
+import { Table, TableBody, TableCell, TableEmpty, TableHead, TableHeader, TableRow, type Sort } from '@/components/ui/table'
 import { Tab, Tabs, TabsList, TabsPanel } from '@/components/ui/tabs'
 import { PageLinks, useMode } from './shell'
 
@@ -170,6 +171,120 @@ const PROJECTS = [
   { id: 'atlas', name: 'Atlas redesign', desc: 'Marketing site, 14 pages', status: 'success' as const, label: 'On track', updated: 'Updated 2 hours ago' },
   { id: 'harbor', name: 'Harbor app', desc: 'Mobile web checkout', status: 'warning' as const, label: 'At risk', updated: 'Updated yesterday' },
   { id: 'compass', name: 'Compass reports', desc: 'Internal dashboards', status: 'neutral' as const, label: 'Planning', updated: 'Updated Nov 2' },
+]
+
+const MEMBERS = [
+  { id: 'u1', name: 'Ada Lovelace', email: 'ada@example.com', role: 'Owner', seats: 12, active: '2026-11-09' },
+  { id: 'u2', name: 'Grace Hopper', email: 'grace@example.com', role: 'Admin', seats: 8, active: '2026-11-10' },
+  { id: 'u3', name: 'Alan Turing', email: 'alan@example.com', role: 'Editor', seats: 3, active: '2026-10-28' },
+  { id: 'u4', name: 'Katherine Johnson', email: 'katherine@example.com', role: 'Editor', seats: 5, active: '2026-11-04' },
+  { id: 'u5', name: 'Edsger Dijkstra', email: 'edsger@example.com', role: 'Viewer', seats: 1, active: '2026-09-30' },
+]
+type MemberKey = 'name' | 'seats' | 'active'
+
+function MembersTable() {
+  const [sortKey, setSortKey] = useState<MemberKey>('name')
+  const [dir, setDir] = useState<Exclude<Sort, 'none'>>('ascending')
+  const [selected, setSelected] = useState<string[]>(['u2'])
+  const [query, setQuery] = useState('')
+  const rows = MEMBERS.filter((m) => (m.name + m.email).toLowerCase().includes(query.toLowerCase())).sort((a, b) => {
+    const r = sortKey === 'seats' ? a.seats - b.seats : String(a[sortKey]).localeCompare(String(b[sortKey]))
+    return dir === 'ascending' ? r : -r
+  })
+  const sortOf = (k: MemberKey): Sort => (k === sortKey ? dir : 'none')
+  const toggleSort = (k: MemberKey) => {
+    if (k === sortKey) setDir(dir === 'ascending' ? 'descending' : 'ascending')
+    else {
+      setSortKey(k)
+      setDir('ascending')
+    }
+  }
+  const visibleIds = rows.map((r) => r.id)
+  const checkedVisible = visibleIds.filter((id) => selected.includes(id))
+  return (
+    <div className="flex w-full flex-col gap-3">
+      <div className="flex flex-wrap items-end gap-3">
+        <Field className="w-64">
+          <FieldLabel>Filter members</FieldLabel>
+          <Input size="sm" type="search" placeholder="Name or email" value={query} onValueChange={setQuery} />
+        </Field>
+        <p role="status" className="pb-1.5 text-body-sm text-fg-secondary">
+          {selected.length} selected
+        </p>
+      </div>
+      <Table caption="Team members">
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-12">
+              <Checkbox
+                aria-label="Select all members"
+                checked={checkedVisible.length > 0 && checkedVisible.length === visibleIds.length}
+                indeterminate={checkedVisible.length > 0 && checkedVisible.length < visibleIds.length}
+                disabled={visibleIds.length === 0}
+                onCheckedChange={(on) => setSelected(on ? [...new Set([...selected, ...visibleIds])] : selected.filter((id) => !visibleIds.includes(id)))}
+              />
+            </TableHead>
+            <TableHead sort={sortOf('name')} onSort={() => toggleSort('name')}>
+              Name
+            </TableHead>
+            <TableHead>Role</TableHead>
+            <TableHead numeric sort={sortOf('seats')} onSort={() => toggleSort('seats')}>
+              Seats
+            </TableHead>
+            <TableHead sort={sortOf('active')} onSort={() => toggleSort('active')}>
+              Last active
+            </TableHead>
+            <TableHead className="w-12">
+              <span className="sr-only">Actions</span>
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {rows.length === 0 ? (
+            <TableEmpty colSpan={6}>No members match “{query}”. Check the spelling or clear the filter.</TableEmpty>
+          ) : (
+            rows.map((m) => {
+              const isSel = selected.includes(m.id)
+              return (
+                <TableRow key={m.id} selected={isSel}>
+                  <TableCell>
+                    <Checkbox
+                      aria-label={`Select ${m.name}`}
+                      checked={isSel}
+                      onCheckedChange={(on) => setSelected(on ? [...selected, m.id] : selected.filter((id) => id !== m.id))}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex flex-col">
+                      <span className="text-label-md">{m.name}</span>
+                      <span className="text-body-sm text-fg-tertiary">{m.email}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <Badge tone={m.role === 'Owner' ? 'success' : 'neutral'}>{m.role}</Badge>
+                  </TableCell>
+                  <TableCell numeric>{m.seats}</TableCell>
+                  <TableCell className="text-fg-secondary">
+                    {new Date(m.active + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                  </TableCell>
+                  <TableCell>
+                    <IconButton size="sm" label={`More actions for ${m.name}`} icon={<MoreHorizontal />} />
+                  </TableCell>
+                </TableRow>
+              )
+            })
+          )}
+        </TableBody>
+      </Table>
+    </div>
+  )
+}
+
+const USAGE = [
+  { month: 'July', builds: 1284, minutes: 9310.5, cost: 186.21 },
+  { month: 'August', builds: 1432, minutes: 10224.25, cost: 204.49 },
+  { month: 'September', builds: 1190, minutes: 8402, cost: 168.04 },
+  { month: 'October', builds: 1611, minutes: 12007.75, cost: 240.16 },
 ]
 
 export default function ComponentsPage() {
@@ -613,6 +728,43 @@ export default function ComponentsPage() {
                 <CardDescription>16px padding instead of 24px.</CardDescription>
               </CardHeader>
             </Card>
+          </Example>
+        </Section>
+
+        <Section
+          id="table"
+          title="Table"
+          blurb="Rows of records with the same columns. Real table markup, so screen readers announce the column with every cell. Never use a table for layout."
+        >
+          <Example title="Sort, select and filter" note="Header buttons sort; the arrow shows the direction and screen readers hear it. A selected row is tinted and its checkbox is checked. Filter to nothing to see the empty state.">
+            <MembersTable />
+          </Example>
+
+          <Example title="Compact, numeric and narrow" note="Numbers right-align with even-width digits. When the table is wider than its frame, the frame scrolls sideways and can be scrolled with the keyboard.">
+            <div className="w-full max-w-sm">
+              <Table caption="Build usage by month" density="compact">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Month</TableHead>
+                    <TableHead numeric>Builds</TableHead>
+                    <TableHead numeric>Build minutes</TableHead>
+                    <TableHead numeric>Minutes per build</TableHead>
+                    <TableHead numeric>Cost (USD)</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {USAGE.map((u) => (
+                    <TableRow key={u.month}>
+                      <TableCell>{u.month}</TableCell>
+                      <TableCell numeric>{u.builds.toLocaleString('en-US')}</TableCell>
+                      <TableCell numeric>{u.minutes.toLocaleString('en-US', { minimumFractionDigits: 2 })}</TableCell>
+                      <TableCell numeric>{(u.minutes / u.builds).toFixed(1)}</TableCell>
+                      <TableCell numeric>{u.cost.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           </Example>
         </Section>
 
