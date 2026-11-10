@@ -73,7 +73,7 @@
       },
       "default": {
         "$value": "{color.neutral.300}",
-        "$description": "Table cells, secondary button outline"
+        "$description": "Table cells and firmer outlines (decorative)"
       },
       "control": {
         "$value": "{color.neutral.400}",
@@ -81,6 +81,10 @@
       },
       "control-hover": {
         "$value": "{color.neutral.500}"
+      },
+      "danger": {
+        "$value": "{color.red.600}",
+        "$description": "Border of an invalid field. Must reach 3:1 (WCAG 1.4.11)."
       }
     },
     "focus": {

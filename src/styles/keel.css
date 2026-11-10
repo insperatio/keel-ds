@@ -22,6 +22,7 @@
   --keel-border-default: #CED5DE;
   --keel-border-control: #86909D;
   --keel-border-control-hover: #687380;
+  --keel-border-danger: #C51D28;
   --keel-focus-ring: #337AEF;
   --keel-focus-ring-offset: #FFFFFF;
   --keel-action-primary-bg: #105FD9;
@@ -197,6 +198,7 @@
   --keel-border-default: #37414D;
   --keel-border-control: #687380;
   --keel-border-control-hover: #86909D;
+  --keel-border-danger: #F97770;
   --keel-focus-ring: #5E99FD;
   --keel-focus-ring-offset: #060C13;
   --keel-action-primary-bg: #5E99FD;
@@ -267,6 +269,7 @@
   --color-line-default: var(--keel-border-default);
   --color-line-control: var(--keel-border-control);
   --color-line-control-hover: var(--keel-border-control-hover);
+  --color-line-danger: var(--keel-border-danger);
   --color-focus-ring: var(--keel-focus-ring);
   --color-focus-ring-offset: var(--keel-focus-ring-offset);
   --color-action-primary-bg: var(--keel-action-primary-bg);
