@@ -5,6 +5,23 @@ import { Badge } from '@/components/ui/badge'
 import { Button, IconButton } from '@/components/ui/button'
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Checkbox, CheckboxGroup } from '@/components/ui/checkbox'
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+  Dialog,
+  DialogBody,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 import { Field, FieldDescription, FieldError, FieldLabel } from '@/components/ui/field'
 import { Form } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
@@ -286,6 +303,121 @@ const USAGE = [
   { month: 'September', builds: 1190, minutes: 8402, cost: 168.04 },
   { month: 'October', builds: 1611, minutes: 12007.75, cost: 240.16 },
 ]
+
+function EditProfileDialog() {
+  const [open, setOpen] = useState(false)
+  const [name, setName] = useState('Mariana Johnels')
+  return (
+    <div className="flex items-center gap-3">
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger render={<Button iconStart={<Pencil />} />}>Edit profile</DialogTrigger>
+        <DialogContent>
+          <Form
+            className="contents"
+            onFormSubmit={(values) => {
+              setName(String(values.name))
+              setOpen(false)
+            }}
+          >
+            <DialogHeader>
+              <DialogTitle>Edit profile</DialogTitle>
+              <DialogDescription>Your name and role show to everyone on the team.</DialogDescription>
+            </DialogHeader>
+            <DialogBody className="flex flex-col gap-4">
+              <Field name="name">
+                <FieldLabel>Full name</FieldLabel>
+                <Input required defaultValue={name} autoComplete="name" />
+                <FieldError match="valueMissing">Enter your name.</FieldError>
+              </Field>
+              <Field name="role">
+                <FieldLabel>Role</FieldLabel>
+                <Select items={ROLES} defaultValue="admin">
+                  {ROLES.map((r) => (
+                    <SelectItem key={r.value} value={r.value}>
+                      {r.label}
+                    </SelectItem>
+                  ))}
+                </Select>
+              </Field>
+            </DialogBody>
+            <DialogFooter>
+              <DialogClose render={<Button variant="ghost" />}>Cancel</DialogClose>
+              <Button type="submit" variant="primary">
+                Save changes
+              </Button>
+            </DialogFooter>
+          </Form>
+        </DialogContent>
+      </Dialog>
+      <p role="status" className="text-body-sm text-fg-secondary">
+        Name: {name}
+      </p>
+    </div>
+  )
+}
+
+function DeleteProjectDialog() {
+  const [deleted, setDeleted] = useState(false)
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="flex items-center gap-3">
+      <AlertDialog open={open} onOpenChange={setOpen}>
+        <AlertDialogTrigger render={<Button variant="danger" iconStart={<Trash2 />} />}>Delete project</AlertDialogTrigger>
+        <AlertDialogContent>
+          <DialogHeader className="pr-6">
+            <AlertDialogTitle>Delete “Atlas redesign”?</AlertDialogTitle>
+            <AlertDialogDescription>Its 14 pages and all history are removed for everyone. This can’t be undone.</AlertDialogDescription>
+          </DialogHeader>
+          <DialogFooter className="mt-4">
+            <AlertDialogCancel />
+            <Button
+              variant="danger"
+              onClick={() => {
+                setDeleted(true)
+                setOpen(false)
+              }}
+            >
+              Delete project
+            </Button>
+          </DialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      <p role="status" className="text-body-sm text-fg-secondary">
+        {deleted ? 'Project deleted' : ''}
+      </p>
+    </div>
+  )
+}
+
+function TermsDialog() {
+  return (
+    <Dialog>
+      <DialogTrigger render={<Button variant="ghost" />}>Read the terms</DialogTrigger>
+      <DialogContent size="lg">
+        <DialogHeader>
+          <DialogTitle>Terms of service</DialogTitle>
+          <DialogDescription>Last updated November 1, 2026.</DialogDescription>
+        </DialogHeader>
+        <DialogBody className="flex flex-col gap-4 text-fg-secondary">
+          {Array.from({ length: 12 }, (_, i) => (
+            <section key={i}>
+              <h3 className="text-heading-sm text-fg-primary">
+                {i + 1}. Section {i + 1}
+              </h3>
+              <p className="mt-1">
+                Placeholder text for a long agreement. The body scrolls on its own, so the title stays visible at the top and the
+                actions stay at the bottom while you read.
+              </p>
+            </section>
+          ))}
+        </DialogBody>
+        <DialogFooter>
+          <DialogClose render={<Button variant="primary" />}>Done</DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
 
 export default function ComponentsPage() {
   const [mode, setMode] = useMode()
@@ -765,6 +897,24 @@ export default function ComponentsPage() {
                 </TableBody>
               </Table>
             </div>
+          </Example>
+        </Section>
+
+        <Section
+          id="dialog"
+          title="Dialog"
+          blurb="A focused task or decision on top of the page. Focus moves in, stays inside, and returns to the button that opened it. Escape closes it."
+        >
+          <Example title="Form in a dialog" note="Title and description name the dialog for screen readers. Save validates first; Cancel or Escape discards.">
+            <EditProfileDialog />
+          </Example>
+
+          <Example title="Confirm before deleting" note="AlertDialog: clicking outside doesn't close it, and focus starts on Cancel, so a stray Enter can't delete anything. The button says what it does.">
+            <DeleteProjectDialog />
+          </Example>
+
+          <Example title="Long content" note="The body scrolls; the title and the footer stay in place.">
+            <TermsDialog />
           </Example>
         </Section>
 

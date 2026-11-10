@@ -64,6 +64,9 @@
       "row-hover": {
         "$value": "{color.neutral.950}"
       },
+      "scrim": {
+        "$value": "{color.base.black}"
+      },
       "inverse": {
         "$value": "{color.neutral.50}",
         "$description": "Tooltips, toasts on light pages"

@@ -65,6 +65,10 @@
         "$value": "{color.neutral.50}",
         "$description": "Hovered row in tables and lists (tables sit on surface.raised). One step from raised: lighter in light mode, darker in dark mode, so text and checkboxes in the row keep their contrast."
       },
+      "scrim": {
+        "$value": "{color.neutral.950}",
+        "$description": "Backdrop behind dialogs. Always used at 60% opacity (opacity-60), never as a solid fill."
+      },
       "inverse": {
         "$value": "{color.neutral.900}",
         "$description": "Tooltips, toasts on light pages"
