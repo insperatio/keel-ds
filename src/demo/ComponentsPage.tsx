@@ -2,10 +2,12 @@ import { useState } from 'react'
 import { ArrowRight, ChevronDown, Copy, Download, MoreHorizontal, Pencil, Plus, Search, Settings, Trash2, X } from 'lucide-react'
 import { brand } from '@/brand.generated'
 import { Button, IconButton } from '@/components/ui/button'
+import { Checkbox, CheckboxGroup } from '@/components/ui/checkbox'
 import { Field, FieldDescription, FieldError, FieldLabel } from '@/components/ui/field'
 import { Form } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Select, SelectGroup, SelectItem, SelectSeparator } from '@/components/ui/select'
+import { Switch } from '@/components/ui/switch'
 import { PageLinks, useMode } from './shell'
 
 const VARIANTS = ['primary', 'secondary', 'ghost', 'danger'] as const
@@ -83,6 +85,71 @@ function EmailDemo() {
         </p>
       </div>
     </Form>
+  )
+}
+
+const NOTIFY = [
+  { value: 'mentions', label: 'Mentions' },
+  { value: 'replies', label: 'Replies to my comments' },
+  { value: 'assigned', label: 'Tasks assigned to me' },
+]
+
+function SelectAllDemo() {
+  const [value, setValue] = useState<string[]>(['mentions'])
+  return (
+    <CheckboxGroup
+      legend="Email me about"
+      description="Choose any. Use the first box to change them all."
+      value={value}
+      onValueChange={setValue}
+      allValues={NOTIFY.map((n) => n.value)}
+    >
+      <Checkbox parent>All activity</Checkbox>
+      <div className="flex flex-col gap-3 pl-8">
+        {NOTIFY.map((n) => (
+          <Checkbox key={n.value} value={n.value}>
+            {n.label}
+          </Checkbox>
+        ))}
+      </div>
+    </CheckboxGroup>
+  )
+}
+
+function TermsDemo() {
+  const [done, setDone] = useState(false)
+  return (
+    <Form className="w-full max-w-md" onFormSubmit={() => setDone(true)}>
+      <Field name="terms">
+        <Checkbox required>I agree to the terms of service</Checkbox>
+        <FieldError match="valueMissing">Agree to the terms to create your account.</FieldError>
+      </Field>
+      <div className="flex items-center gap-3">
+        <Button type="submit" variant="primary">
+          Create account
+        </Button>
+        <p role="status" className="text-body-sm text-fg-secondary">
+          {done ? 'Account created' : ''}
+        </p>
+      </div>
+    </Form>
+  )
+}
+
+function SettingsDemo() {
+  const [compact, setCompact] = useState(false)
+  return (
+    <div className="w-full max-w-md divide-y divide-line-subtle rounded-xl border border-line-subtle bg-surface-raised">
+      <Switch defaultChecked description="A dot on the app icon when something new arrives." className="p-4">
+        Notifications
+      </Switch>
+      <Switch checked={compact} onCheckedChange={setCompact} description={compact ? 'On: tighter rows in lists.' : 'Off: comfortable rows in lists.'} className="p-4">
+        Compact layout
+      </Switch>
+      <Switch disabled description="Your admin manages this setting." className="p-4">
+        Share usage data
+      </Switch>
+    </div>
   )
 }
 
@@ -315,6 +382,49 @@ export default function ComponentsPage() {
                 <FieldDescription>Can't change after setup.</FieldDescription>
               </Field>
             </FieldBox>
+          </Example>
+        </Section>
+
+        <Section
+          id="checkbox"
+          title="Checkbox"
+          blurb="Turns one option on or off in a form that saves when submitted. The whole label is clickable. For a setting that applies the moment it changes, use Switch."
+        >
+          <Example title="With labels" note="Say what turning it on means. Help text goes under the label and is announced with the box.">
+            <div className="flex w-full max-w-md flex-col gap-4 self-start">
+              <Checkbox defaultChecked>Email me when someone replies</Checkbox>
+              <Checkbox description="One email a week, every Monday.">Weekly summary</Checkbox>
+            </div>
+          </Example>
+
+          <Example title="States" note="Checked and mixed use the primary color with a check or dash, so the state never relies on color alone.">
+            <div className="grid w-full grid-cols-2 gap-4 self-start md:grid-cols-3">
+              <Checkbox>Unchecked</Checkbox>
+              <Checkbox defaultChecked>Checked</Checkbox>
+              <Checkbox indeterminate>Mixed</Checkbox>
+              <Checkbox disabled>Disabled</Checkbox>
+              <Checkbox disabled defaultChecked>
+                Disabled, checked
+              </Checkbox>
+            </div>
+          </Example>
+
+          <Example title="Group with select all" note="A legend names the group. The parent box shows a dash when only some are checked.">
+            <SelectAllDemo />
+          </Example>
+
+          <Example title="Required" note="Submit without checking it to see the error.">
+            <TermsDemo />
+          </Example>
+        </Section>
+
+        <Section
+          id="switch"
+          title="Switch"
+          blurb="A setting that takes effect immediately, like a light switch. If the change waits for a Save button, use Checkbox. Label it with the setting, not the action."
+        >
+          <Example title="Settings list" note="Label first, switch at the end of the row. The thumb moves and changes color when on.">
+            <SettingsDemo />
           </Example>
         </Section>
 
