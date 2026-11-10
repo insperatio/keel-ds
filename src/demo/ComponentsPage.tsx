@@ -3,6 +3,7 @@ import { AlertTriangle, ArrowRight, CheckCircle2, Circle, XCircle, ChevronDown, 
 import { brand } from '@/brand.generated'
 import { Badge } from '@/components/ui/badge'
 import { Button, IconButton } from '@/components/ui/button'
+import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Checkbox, CheckboxGroup } from '@/components/ui/checkbox'
 import { Field, FieldDescription, FieldError, FieldLabel } from '@/components/ui/field'
 import { Form } from '@/components/ui/form'
@@ -164,6 +165,12 @@ const DEPLOYS = [
   { name: 'keel-site', when: 'Queued', status: 'neutral' as const, label: 'Waiting' },
 ]
 const STATUS_ICON = { success: <CheckCircle2 />, warning: <AlertTriangle />, danger: <XCircle />, neutral: <Circle /> }
+
+const PROJECTS = [
+  { id: 'atlas', name: 'Atlas redesign', desc: 'Marketing site, 14 pages', status: 'success' as const, label: 'On track', updated: 'Updated 2 hours ago' },
+  { id: 'harbor', name: 'Harbor app', desc: 'Mobile web checkout', status: 'warning' as const, label: 'At risk', updated: 'Updated yesterday' },
+  { id: 'compass', name: 'Compass reports', desc: 'Internal dashboards', status: 'neutral' as const, label: 'Planning', updated: 'Updated Nov 2' },
+]
 
 export default function ComponentsPage() {
   const [mode, setMode] = useMode()
@@ -538,6 +545,74 @@ export default function ComponentsPage() {
                 </TabsPanel>
               ))}
             </Tabs>
+          </Example>
+        </Section>
+
+        <Section
+          id="card"
+          title="Card"
+          blurb="Groups content about one thing on a raised surface. A clickable card has one link, its title, with a click area that covers the whole card."
+        >
+          <Example title="Anatomy" note="Header with title, description and an optional action on the right; then content; then a footer for actions.">
+            <Card className="w-full max-w-sm self-start">
+              <CardHeader>
+                <CardTitle>Storage</CardTitle>
+                <CardDescription>Across all projects</CardDescription>
+                <CardAction>
+                  <Badge tone="warning">82% used</Badge>
+                </CardAction>
+              </CardHeader>
+              <CardContent>
+                <p>
+                  <span className="text-heading-lg text-fg-primary">41 GB</span> of 50 GB
+                </p>
+                <p className="mt-1 text-body-sm text-fg-tertiary">At this rate, full in about 3 weeks.</p>
+              </CardContent>
+              <CardFooter>
+                <Button variant="primary" size="sm">
+                  Upgrade plan
+                </Button>
+                <Button variant="ghost" size="sm">
+                  Clean up files
+                </Button>
+              </CardFooter>
+            </Card>
+          </Example>
+
+          <Example title="Clickable cards" note="The whole card opens the project. Screen readers hear one link per card, named by its title. Hover shows a stronger border; Tab shows the focus ring around the card.">
+            <ul className="grid w-full gap-4 md:grid-cols-3">
+              {PROJECTS.map((p) => (
+                <li key={p.id} className="flex">
+                  <Card className="w-full">
+                    <CardHeader>
+                      <CardTitle href={`#/components?project=${p.id}`}>{p.name}</CardTitle>
+                      <CardDescription>{p.desc}</CardDescription>
+                      <CardAction>
+                        <Badge tone={p.status}>{p.label}</Badge>
+                      </CardAction>
+                    </CardHeader>
+                    <CardFooter>
+                      <span className="text-body-sm text-fg-tertiary">{p.updated}</span>
+                    </CardFooter>
+                  </Card>
+                </li>
+              ))}
+            </ul>
+          </Example>
+
+          <Example title="Elevated and small" note="Elevated swaps the border for a shadow, for cards over busy content. Small tightens the padding for dense layouts.">
+            <Card variant="elevated" className="w-full max-w-xs self-start">
+              <CardHeader>
+                <CardTitle>Elevated</CardTitle>
+                <CardDescription>Shadow md, no border.</CardDescription>
+              </CardHeader>
+            </Card>
+            <Card size="sm" className="w-full max-w-xs self-start">
+              <CardHeader>
+                <CardTitle>Small</CardTitle>
+                <CardDescription>16px padding instead of 24px.</CardDescription>
+              </CardHeader>
+            </Card>
           </Example>
         </Section>
 
