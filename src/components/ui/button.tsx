@@ -77,6 +77,7 @@ function Button({ className, variant, size, loading = false, disabled, iconStart
     <ButtonPrimitive
       data-slot="button"
       data-variant={variant ?? 'secondary'}
+      data-size={size ?? 'md'}
       className={cn(buttonVariants({ variant, size }), className)}
       disabled={disabled || loading}
       focusableWhenDisabled={loading}
@@ -109,6 +110,7 @@ function IconButton({ className, variant = 'ghost', size, label, icon, loading =
     <ButtonPrimitive
       data-slot="icon-button"
       data-variant={variant}
+      data-size={size ?? 'md'}
       aria-label={label}
       className={cn(buttonVariants({ variant, size }), iconButtonSizes[size ?? 'md'], className)}
       disabled={disabled || loading}
