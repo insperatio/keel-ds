@@ -62,7 +62,9 @@ function Table({ className, caption, hideCaption, density = 'comfortable', child
         // Only a scrolling frame needs to be focusable (so arrow keys can scroll it)
         {...(scrolls ? { role: 'region', 'aria-labelledby': captionId, tabIndex: 0 } : {})}
         className={cn(
-          'w-full overflow-x-auto rounded-xl border border-line-subtle bg-surface-raised',
+          // min-w-0 + max-w-full: inside a flex row, scroll here instead of widening the page
+          // relative: keeps absolutely positioned bits (like sr-only header text) inside the scroll area
+          'relative w-full min-w-0 max-w-full overflow-x-auto rounded-xl border border-line-subtle bg-surface-raised',
           'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid focus-visible:outline-focus-ring',
           className,
         )}

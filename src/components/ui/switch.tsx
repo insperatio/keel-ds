@@ -55,7 +55,7 @@ function Switch({ className, children, description, disabled, ...props }: Switch
   return (
     <label
       data-slot="switch-label"
-      className={cn('flex items-start justify-between gap-4', disabled ? 'cursor-not-allowed' : 'cursor-pointer', className)}
+      className={cn('relative flex items-start justify-between gap-4', disabled ? 'cursor-not-allowed' : 'cursor-pointer', className)}
     >
       <span className="flex flex-col gap-0.5">
         <span id={labelId} className={cn('text-body-md', disabled ? 'text-fg-disabled' : 'text-fg-primary')}>

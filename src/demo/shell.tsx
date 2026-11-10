@@ -20,41 +20,44 @@ export function useMode(): [Mode, (m: Mode) => void] {
   return [mode, setMode]
 }
 
-/** Which demo page the URL hash points to: #/components, otherwise tokens. */
-export function usePage(): Page {
-  const read = (): Page => (window.location.hash.startsWith('#/components') ? 'components' : 'tokens')
-  const [page, setPage] = useState<Page>(read)
+/**
+ * Hash routes for the demo: #/ and #/tokens/<section>, #/components and
+ * #/components/<section>. Old in-page anchors like #color still open the tokens page.
+ */
+function parse(hash: string): { page: Page; section: string | null } {
+  const m = hash.match(/^#\/(tokens|components)?(?:\/([\w-]+))?/)
+  if (m) return { page: (m[1] as Page) ?? 'tokens', section: m[2] ?? null }
+  return { page: 'tokens', section: hash.length > 1 ? hash.slice(1) : null }
+}
+
+export const sectionHref = (page: Page, id: string) => `#/${page}/${id}`
+
+export function useRoute() {
+  const [route, setRoute] = useState(() => parse(window.location.hash))
   useEffect(() => {
     const onHash = () => {
-      const next = read()
-      setPage((prev) => {
-        if (prev !== next) window.scrollTo(0, 0)
+      const next = parse(window.location.hash)
+      setRoute((prev) => {
+        if (prev.page !== next.page && !next.section) window.scrollTo(0, 0)
         return next
       })
     }
     window.addEventListener('hashchange', onHash)
     return () => window.removeEventListener('hashchange', onHash)
   }, [])
-  return page
-}
-
-export function PageLinks({ current }: { current: Page }) {
-  const links: [Page, string, string][] = [
-    ['tokens', 'Tokens', '#/'],
-    ['components', 'Components', '#/components'],
-  ]
-  return (
-    <nav aria-label="Pages" className="flex gap-1">
-      {links.map(([id, label, href]) => (
-        <a
-          key={id}
-          href={href}
-          aria-current={current === id ? 'page' : undefined}
-          className="rounded-md px-2 py-1 text-label-md text-action-ghost-fg hover:bg-action-ghost-bg-hover aria-[current=page]:bg-selected-bg aria-[current=page]:text-selected-fg aria-[current=page]:underline aria-[current=page]:decoration-selected-indicator aria-[current=page]:decoration-2 aria-[current=page]:underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring"
-        >
-          {label}
-        </a>
-      ))}
-    </nav>
-  )
+  // Jump to the section and move focus to its heading, so keyboard and screen reader
+  // users land where they asked to go (not just the scroll position).
+  useEffect(() => {
+    if (!route.section) return
+    const id = route.section
+    requestAnimationFrame(() => {
+      const target = document.getElementById(id)
+      if (!target) return
+      const heading = (target.querySelector('h2') as HTMLElement | null) ?? target
+      heading.tabIndex = -1
+      target.scrollIntoView()
+      heading.focus({ preventScroll: true })
+    })
+  }, [route])
+  return route
 }

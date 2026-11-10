@@ -30,19 +30,20 @@ import { Switch } from '@/components/ui/switch'
 import { Table, TableBody, TableCell, TableEmpty, TableHead, TableHeader, TableRow, type Sort } from '@/components/ui/table'
 import { Tab, Tabs, TabsList, TabsPanel } from '@/components/ui/tabs'
 import { useToast } from '@/components/ui/toast'
-import { PageLinks, useMode } from './shell'
+import { PageHeader } from '@/components/ui/app-shell'
+import { DemoLayout } from './DemoLayout'
 
 const VARIANTS = ['primary', 'secondary', 'ghost', 'danger'] as const
 const SIZES = ['sm', 'md', 'lg'] as const
 
 function Section({ id, title, blurb, children }: { id: string; title: string; blurb: string; children: React.ReactNode }) {
   return (
-    <section id={id} aria-labelledby={`${id}-title`} className="border-t border-line-subtle py-12">
+    <section id={id} aria-labelledby={`${id}-title`} className="scroll-mt-20 border-t border-line-subtle py-12">
       <h2 id={`${id}-title`} className="text-heading-lg">
         {title}
       </h2>
       <p className="mt-2 max-w-2xl text-body-md text-fg-secondary">{blurb}</p>
-      <div className="mt-8 grid gap-10">{children}</div>
+      <div className="mt-8 grid gap-10 *:min-w-0">{children}</div>
     </section>
   )
 }
@@ -52,7 +53,7 @@ function Example({ title, note, children }: { title: string; note?: string; chil
     <div>
       <h3 className="text-heading-sm">{title}</h3>
       {note && <p className="mt-1 max-w-2xl text-body-sm text-fg-secondary">{note}</p>}
-      <div className="mt-4 flex flex-wrap items-center gap-3 rounded-xl border border-line-subtle bg-surface-subtle p-6">{children}</div>
+      <div className="mt-4 flex flex-wrap items-center gap-3 rounded-xl border border-line-subtle bg-surface-subtle p-4 *:min-w-0 *:max-w-full md:p-6">{children}</div>
     </div>
   )
 }
@@ -457,32 +458,25 @@ function ToastDemo() {
   )
 }
 
-export default function ComponentsPage() {
-  const [mode, setMode] = useMode()
+export default function ComponentsPage({ section }: { section: string | null }) {
 
   return (
-    <div className="min-h-screen bg-surface-page text-fg-primary">
-      <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:rounded-lg focus:bg-surface-overlay focus:px-3 focus:py-2">
-        Skip to content
-      </a>
-      <header className="sticky top-0 z-10 border-b border-line-subtle bg-surface-page/95 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center gap-6 px-6 py-3">
-          <span className="text-heading-sm">{brand.logo.wordmark}</span>
-          <PageLinks current="components" />
-          <Button size="sm" aria-pressed={mode === 'dark'} onClick={() => setMode(mode === 'dark' ? 'light' : 'dark')} className="ml-auto">
-            Dark mode: {mode === 'dark' ? 'on' : 'off'}
-          </Button>
-        </div>
-      </header>
-
-      <main id="main" className="mx-auto max-w-6xl px-6">
-        <div className="py-12">
-          <p className="text-overline uppercase text-fg-tertiary">Components</p>
-          <h1 className="mt-2 text-heading-xl">{brand.name} components</h1>
-          <p className="mt-3 max-w-2xl text-body-lg text-fg-secondary">
-            Built on Base UI, styled only with {brand.name} tokens. Tab through this page to see every focus ring.
-          </p>
-        </div>
+    <DemoLayout
+      page="components"
+      section={section}
+      sidebarTitle="Components"
+      sections={[
+        { title: 'Actions', items: [['button', 'Button'], ['icon-button', 'Icon button']] },
+        { title: 'Forms', items: [['input', 'Input'], ['select', 'Select'], ['checkbox', 'Checkbox'], ['switch', 'Switch'], ['form-row', 'In a row']] },
+        { title: 'Display', items: [['badge', 'Badge'], ['tabs', 'Tabs'], ['card', 'Card'], ['table', 'Table']] },
+        { title: 'Overlays', items: [['dialog', 'Dialog'], ['toast', 'Toast']] },
+      ]}
+    >
+      <PageHeader
+        overline="Components"
+        title={`${brand.name} components`}
+        description={`Built on Base UI, styled only with ${brand.name} tokens. Tab through this page to see every focus ring.`}
+      />
 
         <Section
           id="button"
@@ -992,7 +986,6 @@ export default function ComponentsPage() {
             </div>
           </Example>
         </Section>
-      </main>
-    </div>
+    </DemoLayout>
   )
 }

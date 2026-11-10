@@ -56,7 +56,7 @@ function Checkbox({ className, children, description, disabled, ...props }: Chec
   const descriptionId = React.useId()
   if (!children) return <CheckboxBox disabled={disabled} className={className} {...props} />
   return (
-    <label data-slot="checkbox-label" className={cn('flex items-start gap-3', disabled ? 'cursor-not-allowed' : 'cursor-pointer', className)}>
+    <label data-slot="checkbox-label" className={cn('relative flex items-start gap-3', disabled ? 'cursor-not-allowed' : 'cursor-pointer', className)}>
       <CheckboxBox
         disabled={disabled}
         aria-labelledby={labelId}
