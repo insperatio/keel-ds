@@ -21,6 +21,7 @@ const VERBOSE = process.argv.includes('--verbose')
 const PAGES = [
   ['tokens', '/#/'],
   ['components', '/#/components'],
+  ['example', '/#/example'],
 ]
 const HEIGHTS = { sm: 32, md: 40, lg: 48 }
 

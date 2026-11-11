@@ -34,7 +34,9 @@ const buttonVariants = cva(
           'bg-action-primary-bg text-action-primary-fg hover:bg-action-primary-bg-hover active:bg-action-primary-bg-active',
         secondary:
           'border-action-secondary-border bg-action-secondary-bg text-action-secondary-fg hover:bg-action-secondary-bg-hover active:bg-action-secondary-bg-active',
-        ghost: 'bg-transparent text-action-ghost-fg hover:bg-action-ghost-bg-hover active:bg-action-ghost-bg-active',
+        // Disabled ghost stays transparent (it has no fill at rest); only its label dims
+        ghost:
+          'bg-transparent text-action-ghost-fg hover:bg-action-ghost-bg-hover active:bg-action-ghost-bg-active data-disabled:not-aria-busy:bg-transparent',
         danger:
           'bg-action-danger-bg text-action-danger-fg hover:bg-action-danger-bg-hover active:bg-action-danger-bg-active',
       },
