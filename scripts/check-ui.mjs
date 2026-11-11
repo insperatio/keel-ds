@@ -106,6 +106,26 @@ for (const mode of ['light', 'dark']) {
     }
     if (VERBOSE) for (const s of stops) console.log(`  ${where}  ${s.label}  ${s.ring ? s.ring.width + 'px ' + s.contrast.toFixed(2) + ':1' : 'NO RING'}`)
 
+    // 2b. Focus that arrives by shortcut: F6 moves focus to the toast region
+    if (name === 'components') {
+      const trigger = page.locator('#toast').getByRole('button', { name: 'Warning', exact: true })
+      await trigger.click()
+      await page.waitForTimeout(300)
+      await trigger.focus()
+      await page.keyboard.press('F6')
+      await page.waitForTimeout(150)
+      const f6 = await page.evaluate(() => {
+        const el = document.activeElement
+        const s = getComputedStyle(el)
+        const ok = s.outlineStyle !== 'none' && parseFloat(s.outlineWidth) >= 2
+        return { label: __describe(el), ok, contrast: ok ? __ratio(__rgba(s.outlineColor), __bgBehind(el.parentElement)) : 0 }
+      })
+      if (!f6.ok) fail(`${where}: F6 focuses ${f6.label} with no visible focus ring`)
+      else if (f6.contrast < 3) fail(`${where}: F6 focus ring on ${f6.label} is ${f6.contrast.toFixed(2)}:1, needs 3:1`)
+      await page.keyboard.press('Escape')
+      await page.evaluate(() => document.activeElement?.blur())
+    }
+
     // 3. Target size (WCAG 2.5.8): 24x24, or a 24px circle around it touches no other target
     const small = await page.evaluate(() => {
       const sel = 'a[href],button,input:not([type=hidden]),select,textarea,[role=checkbox],[role=switch],[role=tab],[role=combobox],[tabindex="0"]'
