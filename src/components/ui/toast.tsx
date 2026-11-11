@@ -81,7 +81,7 @@ function ToastProvider({ children, limit = 3 }: { children: React.ReactNode; lim
       <ToastPrimitive.Portal>
         <ToastPrimitive.Viewport
           data-slot="toast-viewport"
-          className="pointer-events-none fixed right-4 bottom-4 left-4 z-60 flex flex-col-reverse gap-2 outline-none sm:left-auto sm:w-96"
+          className="pointer-events-none fixed right-4 bottom-4 left-4 z-60 flex flex-col-reverse gap-2 rounded-xl outline-offset-4 sm:left-auto sm:w-96"
         >
           <ToastList />
         </ToastPrimitive.Viewport>
