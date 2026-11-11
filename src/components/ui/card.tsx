@@ -119,9 +119,9 @@ function CardContent({ className, ...props }: React.ComponentProps<'div'>) {
   return <div data-slot="card-content" className={cn('text-body-md text-fg-secondary', className)} {...props} />
 }
 
-/** Actions or meta at the bottom. Its buttons and links stay clickable inside a clickable card. */
+/** Actions or meta at the bottom; wraps onto more lines on narrow screens. Its buttons and links stay clickable inside a clickable card. */
 function CardFooter({ className, ...props }: React.ComponentProps<'div'>) {
-  return <div data-slot="card-footer" className={cn(aboveCardLink, 'mt-auto flex items-center gap-3', className)} {...props} />
+  return <div data-slot="card-footer" className={cn(aboveCardLink, 'mt-auto flex flex-wrap items-center gap-3', className)} {...props} />
 }
 
 export { Card, CardHeader, CardTitle, CardDescription, CardAction, CardContent, CardFooter, cardVariants }

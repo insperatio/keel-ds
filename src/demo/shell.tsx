@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 export type Mode = 'light' | 'dark'
-export type Page = 'tokens' | 'components'
+export type Page = 'tokens' | 'components' | 'example'
 
 export function useMode(): [Mode, (m: Mode) => void] {
   const [mode, setMode] = useState<Mode>(() => {
@@ -25,7 +25,7 @@ export function useMode(): [Mode, (m: Mode) => void] {
  * #/components/<section>. Old in-page anchors like #color still open the tokens page.
  */
 function parse(hash: string): { page: Page; section: string | null } {
-  const m = hash.match(/^#\/(tokens|components)?(?:\/([\w-]+))?/)
+  const m = hash.match(/^#\/(tokens|components|example)?(?:\/([\w-]+))?/)
   if (m) return { page: (m[1] as Page) ?? 'tokens', section: m[2] ?? null }
   return { page: 'tokens', section: hash.length > 1 ? hash.slice(1) : null }
 }

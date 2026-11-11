@@ -30,6 +30,7 @@ export function DemoLayout({
       topNav={[
         { label: 'Tokens', href: '#/tokens', current: page === 'tokens' },
         { label: 'Components', href: '#/components', current: page === 'components' },
+        { label: 'Example', href: '#/example', current: page === 'example' },
       ]}
       actions={
         <Button
