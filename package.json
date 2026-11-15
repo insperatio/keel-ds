@@ -21,7 +21,9 @@
     "audit": "node scripts/audit.mjs",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "check:stories": "npm run build-storybook -- --quiet --disable-telemetry && node scripts/check-stories.mjs"
+    "check:stories": "npm run build-storybook -- --quiet --disable-telemetry && node scripts/check-stories.mjs",
+    "registry": "node scripts/build-registry.mjs",
+    "registry:check": "node scripts/build-registry.mjs --check"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

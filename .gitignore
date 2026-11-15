@@ -148,3 +148,6 @@ vite.config.ts.timestamp-*
 # Turbo Repo
 .turbo
 storybook-static
+
+# The component registry, built from src by `npm run registry` and published by CI
+registry

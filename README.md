@@ -41,6 +41,7 @@ check:stories` makes that a gate: every story, in both modes, in a real browser.
 | **Rules** | 33 project rules in [AGENTS.md](AGENTS.md) and a file per component in [docs/rules/](docs/rules/) |
 | **Checks** | 150 contrast pairs, plus sizes, focus, target size, reflow and axe in a real browser |
 | **Figma** | A plugin that pushes the repo's tokens into Figma, and a diff that reports drift |
+| **Published** | [Storybook](https://insperatio.github.io/keel-ds/) and an [install registry](https://insperatio.github.io/keel-ds/r/), deployed by CI on every push to main |
 
 ## The checks
 
@@ -50,6 +51,7 @@ npm run tokens:check   # tokens: contrast, aliases, 4px grid, generated files up
 npm run check:ui       # the built pages in a real browser, light and dark
 npm run check:docs     # rule files still match the components they describe
 npm run check:stories  # every Storybook story: axe and console errors, light and dark
+npm run registry:check # every registry item installs into an empty project without a missing file
 npm run lint
 ```
 
@@ -82,6 +84,35 @@ These found real bugs during the build, not hypothetical ones: a focus ring that
 black, a page 657px wide on a 375px phone, gray text at 4.44:1 on a selected row, a toast region
 with no visible focus, and a checkbox border that would have been 2.93:1 against a hover color
 that hadn't been written yet.
+
+**`registry:check`** builds the install registry and then asks the question that matters: if
+someone ran `shadcn add` for this item in an empty project, would every import in every file it
+writes land on something? It follows each item's dependencies, collects what the install would
+contain, and fails when a file imports a module nobody ships or a package nobody declares. It
+found two real holes the first time it ran: `cn` reads Keel's text-style names from a token file
+that wasn't being shipped with it, and the shared `control.ts` imports a package that the items
+carrying it never declared. Both would have broken on someone else's machine, not mine.
+
+## Install a component in your own project
+
+Keel publishes a [shadcn](https://ui.shadcn.com)-compatible registry, so a component and
+everything it needs lands in your project with one command:
+
+```bash
+npx shadcn@latest add https://insperatio.github.io/keel-ds/r/button.json
+```
+
+That writes `components/ui/button.tsx`, the `cn` helper and `src/styles/keel.css`, and installs the
+packages it needs. Import the stylesheet after Tailwind:
+
+```css
+@import "tailwindcss";
+@import "./styles/keel.css";
+```
+
+Every item is listed at [`/r/`](https://insperatio.github.io/keel-ds/r/). The registry is generated
+from `src/`, never written by hand, so an item can't promise a file that moved or forget a
+dependency a component picked up.
 
 ## Make it your brand
 

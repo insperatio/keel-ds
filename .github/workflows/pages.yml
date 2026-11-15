@@ -1,0 +1,64 @@
+# Publishes Keel to GitHub Pages on every push to main:
+#   /      Storybook — every component, in light and dark
+#   /r/    the shadcn registry, so `npx shadcn@latest add <url>` works
+#
+# One-time setup in the repo: Settings → Pages → Source: GitHub Actions.
+name: Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Pages needs these; the default token is read-only.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never two deploys at once, and let a newer push finish rather than cancelling it.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      # Storybook is served from a subpath (/keel-ds/), so every asset reference has to be relative.
+      - uses: actions/configure-pages@v5
+        id: pages
+
+      - name: Build Storybook
+        run: npm run build-storybook -- --quiet --disable-telemetry
+
+      # The registry URLs have to be the public ones, or an installed component points at localhost.
+      - name: Build the registry
+        run: npm run registry
+        env:
+          REGISTRY_URL: ${{ steps.pages.outputs.base_url }}
+
+      # Storybook is the site; the registry rides along at /r/ and /registry.json.
+      - name: Put the registry beside Storybook
+        run: cp -r registry/r storybook-static/r && cp registry/registry.json storybook-static/
+
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: storybook-static
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deploy

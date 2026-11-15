@@ -203,7 +203,7 @@ for (const file of files) {
 // Coverage counts component files, not rule files: button.md and icon-button.md both describe
 // button.tsx, so the honest number is how many sources have a rule file at all.
 const sources = new Set(files.map((f) => frontmatter(readFileSync(join(RULES, f), 'utf8'))?.source).filter(Boolean))
-const components = readdirSync(join(ROOT, 'src/components/ui')).filter((f) => f.endsWith('.tsx'))
+const components = readdirSync(join(ROOT, 'src/components/ui')).filter((f) => f.endsWith('.tsx') && !f.endsWith('.stories.tsx'))
 const uncovered = components.filter((f) => !sources.has(`src/components/ui/${f}`))
 const commands = readdirSync(join(ROOT, '.claude/commands')).filter((f) => f.endsWith('.md')).length
 console.log(
