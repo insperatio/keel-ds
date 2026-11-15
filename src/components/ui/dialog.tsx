@@ -80,7 +80,7 @@ function DialogContent({ className, size = 'md', showClose = true, children, ...
 
 /** Title and description. Leaves room for the close button. */
 function DialogHeader({ className, ...props }: React.ComponentProps<'div'>) {
-  return <div data-slot="dialog-header" className={cn('flex flex-col gap-1.5 px-6 pt-6 pr-14', className)} {...props} />
+  return <div data-slot="dialog-header" className={cn('flex flex-col gap-1.5 px-6 pt-6 pr-16', className)} {...props} />
 }
 
 /** Every dialog needs a title: it names the dialog for screen readers. */
