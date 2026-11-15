@@ -36,9 +36,9 @@ check:stories` makes that a gate: every story, in both modes, in a real browser.
 
 | | |
 | --- | --- |
-| **Tokens** | 117 primitives and 158 semantic roles, in light and dark |
+| **Tokens** | 118 primitives and 160 semantic roles, in light and dark |
 | **Components** | Button, IconButton, Input, Select, Checkbox, Switch, Badge, Tabs, Card, Table, Dialog, Toast, plus Field, Form and an app shell |
-| **Rules** | 33 project rules in [AGENTS.md](AGENTS.md) and a file per component in [docs/rules/](docs/rules/) |
+| **Rules** | 34 project rules in [AGENTS.md](AGENTS.md) and a rule file for each of the 14 components in [docs/rules/](docs/rules/) |
 | **Checks** | 150 contrast pairs, plus sizes, focus, target size, reflow and axe in a real browser |
 | **Figma** | A plugin that pushes the repo's tokens into Figma, and a diff that reports drift |
 | **Published** | [Storybook](https://insperatio.github.io/keel-ds/) and an [install registry](https://insperatio.github.io/keel-ds/r/), deployed by CI on every push to main |
@@ -46,6 +46,8 @@ check:stories` makes that a gate: every story, in both modes, in a real browser.
 ## The checks
 
 ```bash
+npm run check          # all of the below, and what "done" means
+
 npm run audit          # source files against the rules a machine can judge
 npm run tokens:check   # tokens: contrast, aliases, 4px grid, generated files up to date
 npm run check:ui       # the built pages in a real browser, light and dark

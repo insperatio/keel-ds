@@ -1,7 +1,21 @@
 import { useEffect, useState } from 'react'
 
 export type Mode = 'light' | 'dark'
-export type Page = 'tokens' | 'components' | 'example'
+
+/**
+ * Every page of the demo, in nav order. This is the one list: the route type, the hash parser
+ * and the navigation are all derived from it, so adding a page is one line here plus the branch
+ * that renders it in App.tsx. It used to be four separate edits, and forgetting the parser's
+ * regex sent the route silently back to the tokens page.
+ */
+export const PAGES = [
+  { id: 'tokens', label: 'Tokens' },
+  { id: 'components', label: 'Components' },
+  { id: 'example', label: 'Example' },
+] as const
+
+export type Page = (typeof PAGES)[number]['id']
+const PAGE_IDS: readonly string[] = PAGES.map((p) => p.id)
 
 export function useMode(): [Mode, (m: Mode) => void] {
   const [mode, setMode] = useState<Mode>(() => {
@@ -25,8 +39,11 @@ export function useMode(): [Mode, (m: Mode) => void] {
  * #/components/<section>. Old in-page anchors like #color still open the tokens page.
  */
 function parse(hash: string): { page: Page; section: string | null } {
-  const m = hash.match(/^#\/(tokens|components|example)?(?:\/([\w-]+))?/)
-  if (m) return { page: (m[1] as Page) ?? 'tokens', section: m[2] ?? null }
+  const m = hash.match(/^#\/([\w-]*)(?:\/([\w-]+))?/)
+  if (m) {
+    const page = PAGE_IDS.includes(m[1]) ? (m[1] as Page) : 'tokens'
+    return { page, section: m[2] ?? null }
+  }
   return { page: 'tokens', section: hash.length > 1 ? hash.slice(1) : null }
 }
 

@@ -2,7 +2,7 @@ import { Moon, Sun } from 'lucide-react'
 import { brand } from '@/brand.generated'
 import { AppShell, SidebarNav, type NavSection } from '@/components/ui/app-shell'
 import { Button } from '@/components/ui/button'
-import { sectionHref, useMode, type Page } from './shell'
+import { PAGES, sectionHref, useMode, type Page } from './shell'
 
 /** The demo pages, built on Keel's own AppShell. */
 export function DemoLayout({
@@ -27,11 +27,7 @@ export function DemoLayout({
     <AppShell
       homeHref="#/"
       topNavLabel="Pages"
-      topNav={[
-        { label: 'Tokens', href: '#/tokens', current: page === 'tokens' },
-        { label: 'Components', href: '#/components', current: page === 'components' },
-        { label: 'Example', href: '#/example', current: page === 'example' },
-      ]}
+      topNav={PAGES.map((p) => ({ label: p.label, href: `#/${p.id}`, current: page === p.id }))}
       actions={
         <Button
           size="sm"

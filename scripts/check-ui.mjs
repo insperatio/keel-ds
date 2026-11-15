@@ -15,17 +15,38 @@ import { preview } from 'vite'
 import { HEIGHTS, PAGE_HELPERS, axeViolations, focusProblems, measureSizes, reflowFailures, smallTargets, walkFocus } from './lib/ui-probe.mjs'
 
 const VERBOSE = process.argv.includes('--verbose')
-const PAGES = [
-  ['tokens', '/#/'],
-  ['components', '/#/components'],
-  ['example', '/#/example'],
-]
 const failures = []
 const fail = (msg) => failures.push(msg)
 
 const server = await preview({ preview: { port: 4317, strictPort: false }, logLevel: 'silent' })
 const base = server.resolvedUrls.local[0].replace(/\/$/, '')
 const browser = await chromium.launch()
+
+// Which pages get checked is the app's own navigation, not a list kept here. Add a page to the
+// router and the nav and it is checked from that moment. Before this, PAGES was hard-coded, so a
+// new page shipped unchecked while check:ui reported success — and docs/commands/new-page.md
+// told you the opposite. Found by handing the kit to someone who had never seen it.
+const PAGES = await (async () => {
+  const ctx = await browser.newContext()
+  const page = await ctx.newPage()
+  await page.goto(`${base}/#/`)
+  await page.waitForTimeout(400)
+  const links = await page.evaluate(() =>
+    [...document.querySelectorAll('[data-slot=app-shell] nav a[href^="#/"]')]
+      .map((a) => ({ label: a.textContent.trim(), hash: a.getAttribute('href') }))
+      .filter((l) => /^#\/[\w-]*$/.test(l.hash)),
+  )
+  await ctx.close()
+  const seen = new Map()
+  for (const l of links) seen.set(l.hash, l.label.toLowerCase() || 'home')
+  return [...seen].map(([hash, label]) => [label, `/${hash}`])
+})()
+
+if (PAGES.length < 3) {
+  console.error(`Found ${PAGES.length} pages in the app's navigation, expected at least 3. Has the nav markup changed?`)
+  process.exit(1)
+}
+console.log(`Checking ${PAGES.length} pages from the app's own navigation: ${PAGES.map(([n]) => n).join(', ')}\n`)
 
 for (const mode of ['light', 'dark']) {
   for (const [name, path] of PAGES) {
@@ -72,6 +93,42 @@ for (const mode of ['light', 'dark']) {
       else if (f6.contrast < 3) fail(`${where}: F6 focus ring on ${f6.label} is ${f6.contrast.toFixed(2)}:1, needs 3:1`)
       await page.keyboard.press('Escape')
       await page.evaluate(() => document.activeElement?.blur())
+    }
+
+    // 2c. Dialogs, opened for real. docs/rules/dialog.md claims the checks run axe with a dialog
+    // open; until a cold reader called that bluff, nothing ever opened one. A dialog is where
+    // focus handling and labelling are easiest to get wrong, so it is worth the two clicks.
+    if (name === 'components') {
+      // Scoped to the dialog section: "Delete project" also appears as a plain danger button
+      // elsewhere on the page, and clicking that one opens nothing.
+      const dialogs = page.locator('#dialog')
+      for (const [label, role, firstFocus] of [
+        ['Edit profile', 'dialog', null],
+        ['Delete project', 'alertdialog', 'Cancel'],
+      ]) {
+        await dialogs.getByRole('button', { name: label, exact: true }).first().click()
+        const popup = page.getByRole(role)
+        await popup.waitFor({ timeout: 5000 }).catch(() => {})
+        // Let the backdrop finish fading: axe measures contrast against whatever is behind the
+        // element at that instant, and a half-faded scrim is not what anyone will ever see.
+        await page.waitForTimeout(450)
+        if (!(await popup.count())) {
+          fail(`${where}: "${label}" opened no ${role}`)
+          continue
+        }
+        const named = await popup.first().evaluate((el) => {
+          const id = el.getAttribute('aria-labelledby')
+          return Boolean((id && document.getElementById(id)?.textContent?.trim()) || el.getAttribute('aria-label'))
+        })
+        if (!named) fail(`${where}: the ${role} has no accessible name`)
+        if (firstFocus) {
+          const focused = await page.evaluate(() => (document.activeElement?.textContent ?? '').trim())
+          if (!focused.startsWith(firstFocus)) fail(`${where}: ${role} starts focus on "${focused}", expected "${firstFocus}" — the safe choice`)
+        }
+        for (const v of await axeViolations(page)) fail(`${where}: axe with the ${role} open — ${v.id}: ${v.where}`)
+        await page.keyboard.press('Escape')
+        await page.waitForTimeout(250)
+      }
     }
 
     // 3. Target size (WCAG 2.5.8): 24x24, or a 24px circle around it touches no other target

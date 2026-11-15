@@ -49,23 +49,36 @@ Otherwise build, and say which reading you took.
 - Anything that saves, deletes or sends: confirm destructive actions with `AlertDialog`, and
   report the result with `useToast`. Never leave the result only in a toast.
 
-## 4. Check it, and fix what fails
+## 4. Register it
+
+A page file lives in `src/demo/` and is named for what it is: `BillingPage.tsx`, `SettingsPage.tsx`.
+Two edits make it real:
+
+- **`src/demo/shell.tsx`** — add `{ id: 'billing', label: 'Billing' }` to `PAGES`. That one line
+  gives you the route type, the hash parser and the navigation entry.
+- **`src/App.tsx`** — add the branch that renders it for that id.
+
+Nothing else. The navigation comes from `PAGES`, and `check:ui` visits whatever the navigation
+lists, so the page is covered by the browser checks as soon as it is reachable. A demo page needs
+no story, no rule file and no `llms.txt` entry — those are for components and documents.
+
+## 5. Check it, and fix what fails
 
 ```bash
-npm run lint && npx tsc -b
-npm run check:ui
+npm run check
 ```
 
-`check:ui` builds and drives a real browser in light and dark: control heights, a visible focus
+That is the whole gate, and the same set CI runs — see [AGENTS.md](../../AGENTS.md#commands).
+Within it, `check:ui` drives a real browser in light and dark: control heights, a visible focus
 ring at 3:1 on every tab stop, 24px targets, axe for WCAG 2.2 AA, and reflow at 320px with no
-sideways scrolling. If the new page isn't in the demo router, add it there first, so the checks
-cover it.
+sideways scrolling. It visits whatever pages the app's own navigation lists, so a page registered
+in step 4 is checked from that moment — nothing to add to a test file.
 
 Fix the cause, never the threshold. If a check fails because Keel is missing something — a token,
 a wrapping footer, a component that won't shrink — fix it in the component and say so. That's a
 gap in the system, not in the page.
 
-## 5. Hand it back
+## 6. Hand it back
 
 Report, briefly:
 
