@@ -21,6 +21,11 @@ here, the result is on-brand and accessible by default.
 
 ## Commands
 
+Two jobs have a written procedure, so nobody has to remember the order: `/new-page` builds a page
+from Keel and proves it passes the checks, and `/add-component` adds a component with its demo,
+rule file and checks. Claude Code finds them as slash commands; other tools can be handed
+`.claude/commands/new-page.md` or `.claude/commands/add-component.md` as a prompt.
+
 | Command | What it does |
 | --- | --- |
 | `npm run dev` | Demo site: tokens, components, and an example settings page |

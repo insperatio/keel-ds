@@ -18,6 +18,16 @@ follow its why.
 - [README.md](README.md): what Keel is, how to run it, and how the checks work.
 - [CLAUDE.md](CLAUDE.md): points Claude Code at AGENTS.md. No rules of its own.
 
+## Commands
+
+Prompts that walk a tool through a whole job, with the reading and the checks built in. Claude Code
+picks them up as `/new-page` and `/add-component`; any other tool can be handed the file's contents.
+
+- [.claude/commands/new-page.md](.claude/commands/new-page.md): build a page from Keel, decide its
+  shape first, then prove it passes every check.
+- [.claude/commands/add-component.md](.claude/commands/add-component.md): add a component, with its
+  demo, its rule file and its checks. Starts by asking whether Keel needs it at all.
+
 ## Components
 
 One file per component: when to use it, when to use something else, its props, numbered rules with

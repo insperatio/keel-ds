@@ -83,6 +83,11 @@ Figma as variables and styles, and `npm run figma:diff` reports anything that dr
 [llms.txt](llms.txt) indexes everything, for people and for AI tools.
 [docs/QUICKSTART-AI.md](docs/QUICKSTART-AI.md) is the five-minute version.
 
+Two jobs come with a written procedure, in [.claude/commands/](.claude/commands/): `/new-page`
+builds a page from Keel and proves it passes the checks, and `/add-component` adds a component
+with its demo, rule file and checks. Claude Code finds them as slash commands; any other tool can
+be handed the file as a prompt.
+
 ## License
 
 MIT © Insperatio Designs LLC. See [LICENSE](LICENSE).
