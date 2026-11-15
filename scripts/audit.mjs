@@ -28,7 +28,7 @@ const SKIP = ['src/brand.generated.ts', 'src/styles/keel.css']
 // The one place raw token values belong is the page whose subject is the tokens: a swatch has to
 // be painted with the ramp step it documents, and primitives have no CSS variable to point at.
 // Everywhere else, an inline style or a raw value is a finding.
-const TOKEN_DOCS = ['src/demo/TokensPage.tsx', 'src/demo/token-data.ts']
+const TOKEN_DOCS = ['src/demo/TokensPage.tsx', 'src/demo/token-data.ts', 'src/demo/foundations.stories.tsx']
 
 // Arbitrary Tailwind values that describe structure rather than a design value. Rule 9 allows
 // these: there is no token for a grid template or a viewport fraction.
