@@ -18,7 +18,9 @@
     "figma:diff": "node scripts/figma-diff.mjs",
     "check:ui": "npm run build && node scripts/check-ui.mjs",
     "check:docs": "node scripts/check-docs.mjs",
-    "audit": "node scripts/audit.mjs"
+    "audit": "node scripts/audit.mjs",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
@@ -34,6 +36,8 @@
   },
   "devDependencies": {
     "@babel/parser": "7.29.13",
+    "@storybook/addon-a11y": "10.6.7",
+    "@storybook/react-vite": "10.6.7",
     "@types/node": "^24.19.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
@@ -42,6 +46,7 @@
     "oxlint": "^1.90.0",
     "playwright": "1.63.0",
     "shadcn": "^4.23.0",
+    "storybook": "10.6.7",
     "typescript": "~7.0.2",
     "vite": "^8.3.6"
   }

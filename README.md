@@ -23,6 +23,14 @@ npm run dev
 The demo has three pages: every token with its value, every component with its states, and an
 example settings page built only from Keel.
 
+```bash
+npm run storybook
+```
+
+Storybook runs each component on its own, with a light and dark switch in the toolbar that
+toggles the same class the app does, so a story is rendered by exactly the CSS the product ships.
+The accessibility panel runs axe against WCAG 2.2 A and AA on every story.
+
 ## What's in it
 
 | | |
