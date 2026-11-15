@@ -1,0 +1,43 @@
+# Every check that protects Keel, on every pull request.
+# The order is cheapest first, so a typo fails in seconds instead of after a browser run.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Types
+        run: npx tsc -b
+
+      - name: Audit (raw colors, off-scale sizes, focus rings, one primary per group)
+        run: npm run audit
+
+      - name: Tokens (contrast pairs, aliases, 4px grid, generated files up to date)
+        run: npm run tokens:check
+
+      - name: Docs (llms.txt index, commands, rule files against their components)
+        run: npm run check:docs
+
+      - name: Install the browser the UI check drives
+        run: npx playwright install --with-deps chromium
+
+      - name: UI (sizes, focus rings, target size, axe, reflow — light and dark)
+        run: npm run check:ui

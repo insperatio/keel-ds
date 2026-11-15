@@ -33,11 +33,12 @@ rule file and checks. Claude Code finds them as slash commands; other tools can 
 | `npm run tokens:check` | Check tokens: contrast pairs, aliases, grid, generated files up to date |
 | `npm run check:ui` | Build, then test the demo pages in a real browser (light and dark) |
 | `npm run check:docs` | Check llms.txt indexes every document, and that the rule files still match their components |
-| `npm run audit` | Check source files against the rules a machine can judge: raw colors, palette classes, opacity fades, off-scale sizes, inline styles, primitives in UI code. Takes a path |
+| `npm run audit` | Check source files against the rules a machine can judge: raw colors, palette classes, opacity fades, off-scale sizes, inline styles, primitives in UI code, two primary buttons in one group, a focus ring removed or rebuilt. Takes a path |
 | `npm run lint` | Lint |
 
 **Done means** `npm run audit`, `npm run tokens:check`, `npm run check:ui`, `npm run check:docs`
-and `npm run lint` all pass.
+and `npm run lint` all pass. They run on every pull request too, so a branch that skips them
+fails in CI instead.
 Don't call work finished until they do.
 
 ## Rules
