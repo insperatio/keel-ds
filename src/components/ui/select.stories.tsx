@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Field, FieldDescription, FieldError, FieldLabel } from './field'
 import { Select, SelectGroup, SelectItem, SelectSeparator } from './select'
+import { hiddenControl } from '@/storybook/controls'
 
 const ROLES = { viewer: 'Viewer', editor: 'Editor', admin: 'Admin', owner: 'Owner' }
 
@@ -13,7 +14,7 @@ const meta = {
   component: Select,
   // Every story renders its own Field and options; these satisfy the required props.
   args: { items: ROLES, children: null },
-  argTypes: { size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] } },
+  argTypes: { size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] }, children: hiddenControl },
   render: (args) => (
     <Field className="w-80">
       <FieldLabel>Role</FieldLabel>

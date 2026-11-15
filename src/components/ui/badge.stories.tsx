@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { AlertTriangle, CheckCircle2, XCircle } from 'lucide-react'
 import { Badge } from './badge'
+import { iconControl } from '@/storybook/controls'
 
 /**
  * A short label for status or a count, and never clickable. There is no accent tone on purpose:
@@ -15,6 +16,7 @@ const meta = {
     tone: { control: 'inline-radio', options: ['neutral', 'success', 'warning', 'danger'] },
     variant: { control: 'inline-radio', options: ['subtle', 'solid'] },
     size: { control: 'inline-radio', options: ['sm', 'md'] },
+    icon: iconControl,
   },
 } satisfies Meta<typeof Badge>
 

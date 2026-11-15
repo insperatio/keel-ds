@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { MoreHorizontal, Pencil, Trash2, X } from 'lucide-react'
 import { IconButton } from './button'
+import { iconControl } from '@/storybook/controls'
 
 /**
  * A square button with an icon and no visible text, for toolbars, table rows and dialog corners.
@@ -13,6 +14,7 @@ const meta = {
   argTypes: {
     variant: { control: 'inline-radio', options: ['primary', 'secondary', 'ghost', 'danger'] },
     size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
+    icon: iconControl,
   },
 } satisfies Meta<typeof IconButton>
 

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Button } from './button'
 import { Checkbox, CheckboxGroup } from './checkbox'
+import { textControl } from '@/storybook/controls'
 import { Field, FieldError } from './field'
 import { Form } from './form'
 
@@ -13,6 +14,7 @@ const meta = {
   title: 'Components/Checkbox',
   component: Checkbox,
   args: { children: 'Email me when someone replies' },
+  argTypes: { children: textControl, description: textControl },
 } satisfies Meta<typeof Checkbox>
 
 export default meta

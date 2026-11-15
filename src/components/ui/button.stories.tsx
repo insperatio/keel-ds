@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Plus } from 'lucide-react'
 import { Button } from './button'
+import { iconControl } from '@/storybook/controls'
 
 /**
  * Actions on the current page. One primary per group; everything else is secondary or ghost.
@@ -13,6 +14,8 @@ const meta = {
   argTypes: {
     variant: { control: 'inline-radio', options: ['primary', 'secondary', 'ghost', 'danger'] },
     size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
+    iconStart: iconControl,
+    iconEnd: iconControl,
   },
 } satisfies Meta<typeof Button>
 
