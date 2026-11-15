@@ -57,7 +57,7 @@ Allowed, so don't report them:
 - `outline-none` where a visible ring is put back somewhere else, for example on a wrapper or a
   `::after` layer;
 - `style={{ ... }}` whose values are `var(--keel-*)`, and anything in the page whose subject is
-  the tokens themselves (`src/demo/TokensPage.tsx`, `src/demo/token-data.ts`): a swatch has to be
+  the tokens themselves (`src/demo/TokensPage.tsx`, `src/demo/token-data.ts`, `src/demo/foundations.stories.tsx`): a swatch has to be
   painted with the ramp step it documents, and primitives have no CSS variable to point at.
 
 A finding you can't justify in one line isn't a finding. Say what rule it breaks, or drop it.
