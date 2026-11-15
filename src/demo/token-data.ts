@@ -124,4 +124,6 @@ export const radii = under('radius').map((t) => ({ name: t.path.replace('radius.
 export const shadows = under('shadow').map((t) => ({ name: t.path.replace('shadow.', ''), description: t.description }))
 export const durations = under('duration').map((t) => ({ name: t.path.replace('duration.', ''), ms: (t.value as Dim).value, description: t.description }))
 export const easings = under('easing').map((t) => ({ name: t.path.replace('easing.', ''), value: t.value as number[], description: t.description }))
+/** The white and black primitives, for the contrast figures on this page. */
+export const base = { white: colorFile.color.base.white.$value, black: colorFile.color.base.black.$value }
 export const fontSans = (primitives.get('font.family.sans')?.value as string[])[0]

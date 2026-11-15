@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { brand } from '@/brand.generated'
 import {
+  base,
   colorGroups,
   colorRoles,
   contrast,
@@ -168,7 +169,7 @@ export default function TokensPage({ section }: { section: string | null }) {
                     <li key={s.step}>
                       <div className="h-12 rounded-md border border-line-subtle" style={{ background: s.hex }} title={`${r.name}.${s.step} ${s.hex}`} />
                       <div className="mt-1 text-caption">{s.step}</div>
-                      <div className="text-caption text-fg-tertiary">{contrast(s.hex, '#FFFFFF')}</div>
+                      <div className="text-caption text-fg-tertiary">{contrast(s.hex, base.white)}</div>
                     </li>
                   ))}
                 </ol>

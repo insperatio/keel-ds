@@ -27,6 +27,11 @@ picks them up as `/new-page` and `/add-component`; any other tool can be handed 
   shape first, then prove it passes every check.
 - [.claude/commands/add-component.md](.claude/commands/add-component.md): add a component, with its
   demo, its rule file and its checks. Starts by asking whether Keel needs it at all.
+- [.claude/commands/audit.md](.claude/commands/audit.md): review code against Keel's rules. Runs the
+  machine checks, greps for what a machine can catch, then judges what it can't, and reports with
+  the rule and its why.
+- [.claude/commands/new-theme.md](.claude/commands/new-theme.md): make a new brand from the one
+  brand file, and prove it passes in both modes.
 
 ## Components
 
