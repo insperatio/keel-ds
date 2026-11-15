@@ -54,7 +54,7 @@ import { Button } from '@/components/ui/button'
    Why: the primary says what the main next step is; two primaries say nothing.
 2. **The label says what happens:** "Save changes", "Delete project". Never "OK", "Yes", "Submit".
    Why: screen readers and dialogs often read the label with no surrounding text.
-3. **Use `danger` for destructive actions, behind an `AlertDialog`.**
+3. **Use `danger` for destructive actions, behind an [AlertDialog](dialog.md).**
    Why: red alone is not a confirmation, and deletes are hard to undo.
 4. **Controls in one row share a `size`.** Button, IconButton, Input and Select are all 32 / 40 / 48px.
    Why: a toolbar lines up with no custom heights.

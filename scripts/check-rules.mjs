@@ -5,9 +5,11 @@
 // For each docs/rules/*.md (except _template.md):
 // 1. Frontmatter is complete, and `source` and `import` point at a file that exists.
 // 2. Every name in `exports` is really exported from that file.
-// 3. Every value in `variants`, `sizes` and `tones` exists in the component's variant definition
+// 3. Every value in `variants`, `sizes`, `tones`, `densities` and `types` exists in the source,
+//    whether the component defines them with cva, a const object, or a TypeScript union
 //    (following sibling imports, so Input and Select find control.ts).
-// 4. `defaults` match the code's defaults (cva defaultVariants or a prop default).
+// 4. `defaults` match the code (cva defaultVariants, or a prop default in `component`
+//    or in the function named by `defaultsFrom`).
 // 5. The body has the sections the template requires, and every numbered rule has a why.
 // 6. Links to other files resolve, and every `npm run x` named exists in package.json.
 import { readFileSync, readdirSync, existsSync } from 'node:fs'
@@ -55,9 +57,9 @@ function sourceText(sourcePath) {
   return text
 }
 
-/** The {...} block that follows `key:`, with braces balanced. */
-function block(text, key) {
-  const start = text.indexOf(`${key}: {`)
+/** The {...} block that starts at `opener`, with braces balanced. */
+function block(text, opener) {
+  const start = text.indexOf(opener)
   if (start === -1) return ''
   let depth = 0
   for (let i = text.indexOf('{', start); i < text.length; i++) {
@@ -65,6 +67,17 @@ function block(text, key) {
     if (text[i] === '}' && --depth === 0) return text.slice(start, i + 1)
   }
   return ''
+}
+
+/**
+ * Everywhere a component might define the values of one axis: a cva variants block
+ * (`variant: { ... }`), a const object (`const sizes = { ... }`), or a TypeScript union
+ * (`type Density = 'comfortable' | 'compact'`).
+ */
+function definedValues(code, key) {
+  let text = block(code, `${key}: {`) + block(code, `const ${key}s = {`)
+  for (const m of code.matchAll(/^type\s+(\w+)\s*=\s*([^\n;]+)/gm)) if (m[1].toLowerCase().includes(key)) text += '\n' + m[2]
+  return text
 }
 
 const files = readdirSync(RULES).filter((f) => f.endsWith('.md') && f !== '_template.md')
@@ -98,23 +111,33 @@ for (const file of files) {
   for (const m of code.matchAll(/export\s+(?:async\s+)?(?:function|const)\s+(\w+)/g)) exported.add(m[1])
   for (const name of fm.exports ?? []) if (!exported.has(name)) fail(file, `exports lists "${name}", which ${fm.source} does not export`)
 
-  for (const [key, list] of [['variant', fm.variants], ['size', fm.sizes], ['tone', fm.tones]]) {
+  const axes = [['variant', fm.variants], ['size', fm.sizes], ['tone', fm.tones], ['density', fm.densities], ['type', fm.types]]
+  for (const [key, list] of axes) {
     if (!list?.length) continue
-    const variantBlock = block(code, key)
-    if (!variantBlock) {
-      fail(file, `frontmatter lists ${key}s but no "${key}: {" block was found in the source`)
+    const defined = definedValues(code, key)
+    if (!defined) {
+      fail(file, `frontmatter lists ${key}s but the source defines none`)
       continue
     }
     for (const value of list)
-      if (!new RegExp(`(^|[\\s{])${value}:`, 'm').test(variantBlock)) fail(file, `${key} "${value}" is not defined in the source`)
+      if (!new RegExp(`(^|[\\s{])${value}:|'${value}'`, 'm').test(defined)) fail(file, `${key} "${value}" is not defined in the source`)
   }
 
-  const componentBody = code.slice(code.indexOf(`function ${fm.component}(`))
-  const cvaDefaults = block(code, 'defaultVariants')
+  // Defaults come from cva's defaultVariants or from a prop default in the function that takes
+  // them, which isn't always the component itself: `defaultsFrom: DialogContent`.
+  const defaultsIn = fm.defaultsFrom ?? fm.component
+  const at = code.indexOf(`function ${defaultsIn}(`)
+  const cvaDefaults = block(code, 'defaultVariants: {')
+  if (Object.keys(fm.defaults ?? {}).length && at === -1 && !cvaDefaults)
+    fail(file, `defaults are listed but the source has no "function ${defaultsIn}(" and no defaultVariants`)
+  const body = at === -1 ? '' : code.slice(at)
+  const signature = body.slice(0, body.indexOf(') {') + 1)
   for (const [key, value] of Object.entries(fm.defaults ?? {})) {
-    const inCva = new RegExp(`${key}:\\s*'${value}'`).test(cvaDefaults)
-    const inProps = new RegExp(`${key}\\s*=\\s*'${value}'`).test(componentBody.slice(0, 400))
-    if (!inCva && !inProps) fail(file, `default ${key} "${value}" does not match the source`)
+    // A prop default in the signature wins: cva defaults can come from a sibling file that
+    // this component doesn't actually use for this axis.
+    const set = new RegExp(`${key}\\s*=\\s*'?${value}'?[,\\s)]`).test(signature)
+    const ok = new RegExp(`${key}\\s*=`).test(signature) ? set : new RegExp(`${key}:\\s*'?${value}'?`).test(cvaDefaults)
+    if (!ok) fail(file, `default ${key} "${value}" does not match the source`)
   }
 
   for (const section of SECTIONS) if (!text.includes(`\n${section}\n`)) fail(file, `missing section "${section}"`)
@@ -130,8 +153,15 @@ for (const file of files) {
     if (!(m[1] in scripts)) fail(file, `names "npm run ${m[1]}", which package.json does not define`)
 }
 
-const components = readdirSync(join(ROOT, 'src/components/ui')).filter((f) => f.endsWith('.tsx')).length
-console.log(`${files.length} rule files checked, covering ${files.length} of ${components} components.`)
+// Coverage counts component files, not rule files: button.md and icon-button.md both describe
+// button.tsx, so the honest number is how many sources have a rule file at all.
+const sources = new Set(files.map((f) => frontmatter(readFileSync(join(RULES, f), 'utf8'))?.source).filter(Boolean))
+const components = readdirSync(join(ROOT, 'src/components/ui')).filter((f) => f.endsWith('.tsx'))
+const uncovered = components.filter((f) => !sources.has(`src/components/ui/${f}`))
+console.log(
+  `${files.length} rule files checked, covering ${sources.size} of ${components.length} components` +
+    (uncovered.length ? ` (no rule file yet: ${uncovered.join(', ')})` : '') + '.',
+)
 
 if (failures.length) {
   console.error(`\nRule check failed (${failures.length}):\n- ` + failures.join('\n- '))

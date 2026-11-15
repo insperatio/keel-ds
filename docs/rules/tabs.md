@@ -22,7 +22,7 @@ Switch between a few views of the same thing without leaving the page.
 - They're steps in order → a stepper, or separate pages with Next and Back.
 - Each one is really its own page people link to or bookmark → links and routes.
   If you do want links in tabs, keep them real `<a href>` so they can be opened in a new tab.
-- There are more than about 7 → a sidebar or a Select.
+- There are more than about 7 → a sidebar or a [Select](select.md).
 - You're hiding content people need to compare → show it all.
 
 ## Import
