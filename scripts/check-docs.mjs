@@ -229,6 +229,28 @@ for (const file of storyFiles) {
   }
 }
 
+// Part 5: every story is linked to the Figma frame it was built from.
+// The ids live in one map (src/storybook/figma.ts) so a moved frame is a single edit; this
+// checks that the map covers every component with a story, that nothing in the map is dead,
+// and that every story meta actually uses it. Without this the Design tab silently empties
+// as components are added.
+const figmaMap = readFileSync(join(ROOT, 'src/storybook/figma.ts'), 'utf8')
+const mapped = [...figmaMap.matchAll(/^\s+'?([\w-]+)'?:\s*'(\d+-\d+)',/gm)].map((m) => m[1])
+const linked = []
+for (const file of storyFiles.concat('../../demo/foundations.stories.tsx')) {
+  const path = file.startsWith('..') ? join(ROOT, 'src/demo/foundations.stories.tsx') : join(ROOT, 'src/components/ui', file)
+  const story = readFileSync(path, 'utf8')
+  const name = file.replace('.stories.tsx', '').replace('../../demo/', '')
+  const used = story.match(/figma\('([\w-]+)'\)/)
+  if (!used) {
+    fail(name, 'has no Figma frame: add `parameters: figma(...)` so the Design tab points at the component it was built from')
+    continue
+  }
+  linked.push(used[1])
+  if (!mapped.includes(used[1])) fail(name, `links to figma('${used[1]}'), which src/storybook/figma.ts does not define`)
+}
+for (const key of mapped) if (!linked.includes(key)) fail('src/storybook/figma.ts', `defines "${key}", which no story links to`)
+
 // Coverage counts component files, not rule files: button.md and icon-button.md both describe
 // button.tsx, so the honest number is how many sources have a rule file at all.
 const sources = new Set(files.map((f) => frontmatter(readFileSync(join(RULES, f), 'utf8'))?.source).filter(Boolean))
@@ -239,7 +261,8 @@ console.log(
   `llms.txt indexes all ${docs.length} documents. ${commands} commands checked. ` +
     `${files.length} rule files checked, covering ${sources.size} of ${components.length} components` +
     (uncovered.length ? ` (no rule file yet: ${uncovered.join(', ')})` : '') + '. ' +
-    `${reactNodeProps} ReactNode props in ${storyFiles.length} story files have a control that can't crash the preview.`,
+    `${reactNodeProps} ReactNode props in ${storyFiles.length} story files have a control that can't crash the preview. ` +
+    `${linked.length} stories link to their Figma frame.`,
 )
 
 if (failures.length) {

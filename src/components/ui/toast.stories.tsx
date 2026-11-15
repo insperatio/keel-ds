@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Button } from './button'
 import { ToastProvider, useToast } from './toast'
+import { figma } from '@/storybook/figma'
 
 /**
  * A short message about something that just happened. Never the only place for important
@@ -12,6 +13,7 @@ import { ToastProvider, useToast } from './toast'
 const meta = {
   title: 'Components/Toast',
   component: ToastProvider,
+  parameters: figma('toast'),
   decorators: [
     (Story) => (
       <ToastProvider>

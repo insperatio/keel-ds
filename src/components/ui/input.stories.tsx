@@ -3,6 +3,7 @@ import { Field, FieldDescription, FieldError, FieldLabel } from './field'
 import { Form } from './form'
 import { Button } from './button'
 import { Input } from './input'
+import { figma } from '@/storybook/figma'
 
 /**
  * One line of text. Always inside a `Field` with a visible `FieldLabel`: the placeholder is a
@@ -11,6 +12,7 @@ import { Input } from './input'
 const meta = {
   title: 'Components/Input',
   component: Input,
+  parameters: figma('input'),
   args: { placeholder: 'name@example.com' },
   argTypes: { size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] } },
   render: (args) => (

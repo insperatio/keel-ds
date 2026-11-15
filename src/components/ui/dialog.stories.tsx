@@ -21,6 +21,7 @@ import {
 import { Field, FieldError, FieldLabel } from './field'
 import { Form } from './form'
 import { Input } from './input'
+import { figma } from '@/storybook/figma'
 
 /**
  * A focused task on top of the page: finish it or dismiss it. Focus moves in, stays inside, and
@@ -32,6 +33,7 @@ type Args = { size?: 'sm' | 'md' | 'lg' }
 
 const meta: Meta<Args> = {
   title: 'Components/Dialog',
+  parameters: figma('dialog'),
   argTypes: { size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] } },
 }
 

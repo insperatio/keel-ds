@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { AlertTriangle, CheckCircle2, XCircle } from 'lucide-react'
 import { Badge } from './badge'
 import { iconControl } from '@/storybook/controls'
+import { figma } from '@/storybook/figma'
 
 /**
  * A short label for status or a count, and never clickable. There is no accent tone on purpose:
@@ -11,6 +12,7 @@ import { iconControl } from '@/storybook/controls'
 const meta = {
   title: 'Components/Badge',
   component: Badge,
+  parameters: figma('badge'),
   args: { children: 'Active' },
   argTypes: {
     tone: { control: 'inline-radio', options: ['neutral', 'success', 'warning', 'danger'] },
