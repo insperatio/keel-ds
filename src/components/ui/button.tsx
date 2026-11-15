@@ -43,7 +43,7 @@ const buttonVariants = cva(
       size: {
         sm: 'h-8 rounded-md px-3 text-label-md [&_svg]:size-4',
         md: 'h-10 rounded-lg px-4 text-label-md [&_svg]:size-4',
-        lg: 'h-12 rounded-lg px-5 text-body-md font-medium [&_svg]:size-5',
+        lg: 'h-12 rounded-lg px-5 text-label-lg [&_svg]:size-5',
       },
     },
     defaultVariants: { variant: 'secondary', size: 'md' },

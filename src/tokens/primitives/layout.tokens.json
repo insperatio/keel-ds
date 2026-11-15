@@ -6,6 +6,7 @@
     "0-5": { "$value": { "value": 2, "unit": "px" }, "$description": "Hairline offsets only (focus ring gap, icon nudge)" },
     "1": { "$value": { "value": 4, "unit": "px" } },
     "2": { "$value": { "value": 8, "unit": "px" } },
+    "2-5": { "$value": { "value": 10, "unit": "px" }, "$description": "Padding inside small controls, where 12px would crowd a 32px height" },
     "3": { "$value": { "value": 12, "unit": "px" } },
     "4": { "$value": { "value": 16, "unit": "px" } },
     "5": { "$value": { "value": 20, "unit": "px" } },

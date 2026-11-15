@@ -130,6 +130,11 @@
   --keel-type-body-sm-line-height: 20px;
   --keel-type-body-sm-weight: 400;
   --keel-type-body-sm-tracking: 0em;
+  --keel-type-label-lg-family: 'Manrope Variable', Manrope, ui-sans-serif, system-ui, sans-serif;
+  --keel-type-label-lg-size: 16px;
+  --keel-type-label-lg-line-height: 24px;
+  --keel-type-label-lg-weight: 500;
+  --keel-type-label-lg-tracking: 0em;
   --keel-type-label-md-family: 'Manrope Variable', Manrope, ui-sans-serif, system-ui, sans-serif;
   --keel-type-label-md-size: 14px;
   --keel-type-label-md-line-height: 20px;
@@ -378,6 +383,10 @@
   --text-body-sm--line-height: var(--keel-type-body-sm-line-height);
   --text-body-sm--font-weight: var(--keel-type-body-sm-weight);
   --text-body-sm--letter-spacing: var(--keel-type-body-sm-tracking);
+  --text-label-lg: var(--keel-type-label-lg-size);
+  --text-label-lg--line-height: var(--keel-type-label-lg-line-height);
+  --text-label-lg--font-weight: var(--keel-type-label-lg-weight);
+  --text-label-lg--letter-spacing: var(--keel-type-label-lg-tracking);
   --text-label-md: var(--keel-type-label-md-size);
   --text-label-md--line-height: var(--keel-type-label-md-line-height);
   --text-label-md--font-weight: var(--keel-type-label-md-weight);

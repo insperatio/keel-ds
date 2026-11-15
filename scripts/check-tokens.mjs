@@ -65,11 +65,20 @@ for (const tok of Object.values(primitives)) {
 const px = (p) => primitives[p]?.value?.value
 const under = (prefix) => Object.keys(primitives).filter((p) => p.startsWith(prefix + '.'))
 
+// Space sits on the 4px grid. Half-steps (0-5, 2-5) are the one exception and must still land
+// on 2px: they exist because a 32px control needs padding between 8 and 12, and naming them as
+// halves keeps the grid readable instead of inviting arbitrary values.
 for (const p of under('space')) {
-  if (p === 'space.0-5') continue
-  if (px(p) % 4 !== 0) fail(p, `${px(p)}px is off the 4px grid`)
-  const n = Number(p.split('.')[1])
-  if (!Number.isNaN(n) && px(p) !== n * 4) fail(p, `name says ${n * 4}px but value is ${px(p)}px`)
+  const key = p.split('.')[1]
+  const half = key.endsWith('-5')
+  const n = Number(half ? key.slice(0, -2) : key)
+  if (Number.isNaN(n)) continue
+  const expected = (half ? n + 0.5 : n) * 4
+  if (px(p) !== expected) fail(p, `name says ${expected}px but value is ${px(p)}px`)
+  else if (half) {
+    if (px(p) % 2 !== 0) fail(p, `${px(p)}px is off the 2px grid that half-steps sit on`)
+    if (px(p) > 12) fail(p, `${px(p)}px is too big for a half-step: use a whole step on the 4px grid`)
+  } else if (px(p) % 4 !== 0) fail(p, `${px(p)}px is off the 4px grid`)
 }
 for (const p of under('font.size')) {
   const key = p.split('.').pop()
