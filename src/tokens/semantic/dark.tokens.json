@@ -334,6 +334,16 @@
         "letterSpacing": "{font.letter-spacing.normal}"
       }
     },
+    "label-lg": {
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": "{font.size.md}",
+        "lineHeight": "{font.line-height.md}",
+        "fontWeight": "{font.weight.medium}",
+        "letterSpacing": "{font.letter-spacing.normal}"
+      },
+      "$description": "Large buttons and prominent labels"
+    },
     "label-md": {
       "$value": {
         "fontFamily": "{font.family.sans}",
