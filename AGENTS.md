@@ -12,7 +12,8 @@ here, the result is on-brand and accessible by default.
 
 | When you are | Read |
 | --- | --- |
-| Building UI | The component's source in `src/components/ui/`. The comment at the top is its usage guide. |
+| Using a component | Its rule file in `docs/rules/` (`button.md`, `icon-button.md`, `input.md`, `select.md`): when to use it, when not to, its rules and the mistakes to avoid |
+| Building UI with a component that has no rule file yet | Its source in `src/components/ui/`. The comment at the top is its usage guide |
 | Making or changing a brand | `docs/brand.md` |
 | Syncing with Figma | `docs/figma.md` |
 | Looking for a working page to copy | `src/demo/SettingsPage.tsx`, built only from Keel |
@@ -25,9 +26,11 @@ here, the result is on-brand and accessible by default.
 | `npm run tokens` | Rebuild everything from the token files, then run all token checks |
 | `npm run tokens:check` | Check tokens: contrast pairs, aliases, grid, generated files up to date |
 | `npm run check:ui` | Build, then test the demo pages in a real browser (light and dark) |
+| `npm run check:rules` | Check the rule files in `docs/rules/` against the components they describe |
 | `npm run lint` | Lint |
 
-**Done means** `npm run tokens:check`, `npm run check:ui` and `npm run lint` all pass.
+**Done means** `npm run tokens:check`, `npm run check:ui`, `npm run check:rules` and
+`npm run lint` all pass.
 Don't call work finished until they do.
 
 ## Rules
@@ -145,6 +148,8 @@ Don't call work finished until they do.
     Why: the contrast checks live in the repo; a color edited in Figma was never checked.
 32. **Add every new `.md` file to `llms.txt`.**
     Why: AI tools find the docs through that index.
+33. **Change a component, update its rule file in the same commit.**
+    Why: a rule file that lags the code teaches the wrong thing to everyone who reads it next.
 
 ## Adding a token
 
@@ -163,7 +168,10 @@ Don't call work finished until they do.
 2. Put a usage comment at the top: when to use it, when not to, and a short example.
 3. Add `data-slot`, plus `data-size` if it has sizes.
 4. Show it on the components page (`src/demo/ComponentsPage.tsx`), with its states.
-5. Run `npm run check:ui` in light and dark, at 320px.
+5. Write its rule file: copy `docs/rules/_template.md` to `docs/rules/<component>.md` and fill it
+   in. Every numbered rule needs a one-line why, and `npm run check:rules` checks the file against
+   your code.
+6. Run `npm run check:ui` in light and dark, at 320px.
 
 ## Anti-patterns
 
@@ -195,4 +203,5 @@ src/demo/                           demo site: tokens, components, example setti
 scripts/                            token build, checks, UI check, Figma plugin and diff
 figma/plugin/                       Keel tokens Figma plugin
 docs/                               guides: brand.md, figma.md
+docs/rules/                         one file per component: when to use it and its rules
 ```
