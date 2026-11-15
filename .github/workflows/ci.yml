@@ -41,3 +41,6 @@ jobs:
 
       - name: UI (sizes, focus rings, target size, axe, reflow — light and dark)
         run: npm run check:ui
+
+      - name: Storybook builds
+        run: npm run build-storybook -- --quiet --disable-telemetry
