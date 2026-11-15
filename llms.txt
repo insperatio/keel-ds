@@ -1,0 +1,51 @@
+# Keel
+
+> A token-driven design system for React, built so an AI coding tool can use it correctly
+> without being told twice. Every color, size and duration comes from token files that are
+> checked for contrast and consistency, and every rule is written down with the reason behind it.
+> React 19, TypeScript, Tailwind CSS v4, shadcn/ui on Base UI. MIT licensed, by Insperatio Designs LLC.
+
+Read AGENTS.md first: it holds every rule, each with a one-line why, plus the definition of done.
+Then read the rule file for the component you're about to use. If a rule doesn't cover your case,
+follow its why.
+
+## Start here
+
+- [AGENTS.md](AGENTS.md): the rules for building with Keel. 33 rules in six groups (color, type,
+  space and layout, components, accessibility, tokens and files), anti-patterns, and what "done" means.
+- [docs/QUICKSTART-AI.md](docs/QUICKSTART-AI.md): the five-minute version. What to read, what to run,
+  and the ten mistakes that break a Keel build.
+- [README.md](README.md): what Keel is, how to run it, and how the checks work.
+- [CLAUDE.md](CLAUDE.md): points Claude Code at AGENTS.md. No rules of its own.
+
+## Components
+
+One file per component: when to use it, when to use something else, its props, numbered rules with
+reasons, what accessibility is already handled, and good and bad examples.
+
+- [docs/rules/button.md](docs/rules/button.md): actions on the page. One primary per group.
+- [docs/rules/icon-button.md](docs/rules/icon-button.md): square icon-only button. `label` is required.
+- [docs/rules/input.md](docs/rules/input.md): one line of text, always inside a Field with a visible label.
+- [docs/rules/select.md](docs/rules/select.md): pick one of 3 to 15 options.
+- [docs/rules/checkbox.md](docs/rules/checkbox.md): on/off saved with a form; groups and select-all.
+- [docs/rules/switch.md](docs/rules/switch.md): a setting that applies the moment it changes.
+- [docs/rules/badge.md](docs/rules/badge.md): short status label, never clickable, never accent.
+- [docs/rules/tabs.md](docs/rules/tabs.md): 2 to 7 views of one object, not steps and not navigation.
+- [docs/rules/card.md](docs/rules/card.md): everything about one object; clickable via `CardTitle href`.
+- [docs/rules/table.md](docs/rules/table.md): rows with the same columns; sorting, selection, empty state.
+- [docs/rules/dialog.md](docs/rules/dialog.md): a focused task; AlertDialog for destructive confirmations.
+- [docs/rules/toast.md](docs/rules/toast.md): short message about what just happened.
+- [docs/rules/_template.md](docs/rules/_template.md): the shape every rule file follows.
+
+## Tokens and brands
+
+- [docs/brand.md](docs/brand.md): how one brand file makes a whole new brand, and what it controls.
+- [docs/figma.md](docs/figma.md): how Figma and the repo stay in sync, and how drift is caught.
+
+## Optional
+
+- [src/demo/SettingsPage.tsx](src/demo/SettingsPage.tsx): a realistic page built only from Keel.
+  Copy its patterns.
+- [src/components/ui/](src/components/ui/): the components. The comment at the top of each file is
+  its usage guide.
+- [scripts/](scripts/): the token build and the checks that enforce all of the above.
