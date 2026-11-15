@@ -32,6 +32,7 @@ rule file and checks. Claude Code finds them as slash commands; other tools can 
 | `npm run tokens` | Rebuild everything from the token files, then run all token checks |
 | `npm run tokens:check` | Check tokens: contrast pairs, aliases, grid, generated files up to date |
 | `npm run check:ui` | Build, then test the demo pages in a real browser (light and dark) |
+| `npm run check:stories` | Build Storybook, then run every story through axe in a real browser, light and dark |
 | `npm run check:docs` | Check llms.txt indexes every document, and that the rule files still match their components |
 | `npm run audit` | Check source files against the rules a machine can judge: raw colors, palette classes, opacity fades, off-scale sizes, inline styles, primitives in UI code, two primary buttons in one group, a focus ring removed or rebuilt. Takes a path |
 | `npm run lint` | Lint |
@@ -175,7 +176,9 @@ Don't call work finished until they do.
 1. Build it on Base UI if Base UI has it. Style it only with token classes.
 2. Put a usage comment at the top: when to use it, when not to, and a short example.
 3. Add `data-slot`, plus `data-size` if it has sizes.
-4. Show it on the components page (`src/demo/ComponentsPage.tsx`), with its states.
+4. Show it on the components page (`src/demo/ComponentsPage.tsx`), with its states, and write
+   its stories in `src/components/ui/<name>.stories.tsx`: the default, each variant and size,
+   and every state. A story is checked by `check:stories`, so it is a test as much as a demo.
 5. Write its rule file: copy `docs/rules/_template.md` to `docs/rules/<component>.md` and fill it
    in. Every numbered rule needs a one-line why, and `npm run check:docs` checks the file against
    your code.
