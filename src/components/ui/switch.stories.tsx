@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Switch } from './switch'
+import { textControl } from '@/storybook/controls'
 
 /**
  * A setting that takes effect right away. If the change waits for a Save button, use Checkbox.
@@ -10,6 +11,7 @@ const meta = {
   title: 'Components/Switch',
   component: Switch,
   args: { children: 'Notifications' },
+  argTypes: { children: textControl, description: textControl },
 } satisfies Meta<typeof Switch>
 
 export default meta

@@ -200,6 +200,35 @@ for (const file of files) {
     if (!(m[1] in scripts)) fail(file, `names "npm run ${m[1]}", which package.json does not define`)
 }
 
+// Part 4: every ReactNode prop a story exposes needs a control that survives being clicked.
+// Storybook infers an object editor for a ReactNode, and "Set object" writes `{}` — which React
+// throws on (#31), killing the preview. This was found on the published site, by clicking it.
+// The fix is an argTypes entry (an icon list, a text box, or no control); this makes sure a new
+// prop can't ship without one.
+const storyFiles = readdirSync(join(ROOT, 'src/components/ui')).filter((f) => f.endsWith('.stories.tsx'))
+let reactNodeProps = 0
+
+for (const file of storyFiles) {
+  const story = readFileSync(join(ROOT, 'src/components/ui', file), 'utf8')
+  const component = story.match(/^\s*component:\s*([A-Za-z]+)\s*,/m)?.[1]
+  if (!component) continue // a story with no `component` gets no inferred controls
+
+  // Which file declares it, and which props of it are ReactNode
+  const source = story.match(new RegExp(`import \\{[^}]*\\b${component}\\b[^}]*\\} from '\\.\\/([\\w-]+)'`))?.[1]
+  if (!source) continue
+  const code = readFileSync(join(ROOT, 'src/components/ui', `${source}.tsx`), 'utf8')
+  const props = block(code, `type ${component}Props`)
+  const nodes = [...props.matchAll(/^\s*(\w+)\??: React\.ReactNode/gm)].map((m) => m[1])
+  if (!nodes.length) continue
+
+  const argTypes = block(story, 'argTypes:')
+  for (const prop of nodes) {
+    reactNodeProps++
+    if (!new RegExp(`\\b${prop}\\s*:`).test(argTypes))
+      fail(file, `${prop} is a ReactNode with no argTypes entry: Storybook gives it an object editor, and setting it crashes the preview`)
+  }
+}
+
 // Coverage counts component files, not rule files: button.md and icon-button.md both describe
 // button.tsx, so the honest number is how many sources have a rule file at all.
 const sources = new Set(files.map((f) => frontmatter(readFileSync(join(RULES, f), 'utf8'))?.source).filter(Boolean))
@@ -209,7 +238,8 @@ const commands = readdirSync(join(ROOT, '.claude/commands')).filter((f) => f.end
 console.log(
   `llms.txt indexes all ${docs.length} documents. ${commands} commands checked. ` +
     `${files.length} rule files checked, covering ${sources.size} of ${components.length} components` +
-    (uncovered.length ? ` (no rule file yet: ${uncovered.join(', ')})` : '') + '.',
+    (uncovered.length ? ` (no rule file yet: ${uncovered.join(', ')})` : '') + '. ' +
+    `${reactNodeProps} ReactNode props in ${storyFiles.length} story files have a control that can't crash the preview.`,
 )
 
 if (failures.length) {
