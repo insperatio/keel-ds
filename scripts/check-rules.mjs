@@ -5,7 +5,7 @@
 // For each docs/rules/*.md (except _template.md):
 // 1. Frontmatter is complete, and `source` and `import` point at a file that exists.
 // 2. Every name in `exports` is really exported from that file.
-// 3. Every value in `variants` and `sizes` exists in the component's variant definition
+// 3. Every value in `variants`, `sizes` and `tones` exists in the component's variant definition
 //    (following sibling imports, so Input and Select find control.ts).
 // 4. `defaults` match the code's defaults (cva defaultVariants or a prop default).
 // 5. The body has the sections the template requires, and every numbered rule has a why.
@@ -98,7 +98,7 @@ for (const file of files) {
   for (const m of code.matchAll(/export\s+(?:async\s+)?(?:function|const)\s+(\w+)/g)) exported.add(m[1])
   for (const name of fm.exports ?? []) if (!exported.has(name)) fail(file, `exports lists "${name}", which ${fm.source} does not export`)
 
-  for (const [key, list] of [['variant', fm.variants], ['size', fm.sizes]]) {
+  for (const [key, list] of [['variant', fm.variants], ['size', fm.sizes], ['tone', fm.tones]]) {
     if (!list?.length) continue
     const variantBlock = block(code, key)
     if (!variantBlock) {

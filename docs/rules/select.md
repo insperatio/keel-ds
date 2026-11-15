@@ -21,8 +21,8 @@ Pick one option from a known list.
 
 - 2 to 4 options that all fit on screen → radio buttons, so people see every choice at once.
 - More than ~15, or people know what they want → a searchable combobox.
-- Several can be chosen → a `CheckboxGroup`.
-- It's on or off → `Switch` (applies at once) or `Checkbox` (saved with the form).
+- Several can be chosen → a [CheckboxGroup](checkbox.md).
+- It's on or off → [Switch](switch.md) (applies at once) or [Checkbox](checkbox.md) (saved with the form).
 
 ## Import
 
