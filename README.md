@@ -34,11 +34,18 @@ example settings page built only from Keel.
 ## The checks
 
 ```bash
+npm run audit          # source files against the rules a machine can judge
 npm run tokens:check   # tokens: contrast, aliases, 4px grid, generated files up to date
 npm run check:ui       # the built pages in a real browser, light and dark
 npm run check:docs     # rule files still match the components they describe
 npm run lint
 ```
+
+**`npm run audit`** reads the source for the rules that don't need a browser: raw colors, Tailwind
+palette classes that no longer exist, opacity used as a disabled state, off-scale sizes, inline
+styles, and primitives used where a semantic role belongs. Each finding carries the rule number,
+the reason behind it and the fix. The exemptions are written as code rather than left to
+argument, because a check that cries wolf gets ignored and then protects nothing.
 
 **`tokens:check`** reads every text, border and fill pair that can appear together and fails if
 one drops below its minimum: 4.5:1 for text, 3:1 for borders, icons and fills. It also checks
