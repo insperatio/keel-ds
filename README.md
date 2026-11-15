@@ -1,5 +1,7 @@
 # Keel
 
+[![CI](https://github.com/insperatio/keel-ds/actions/workflows/ci.yml/badge.svg)](https://github.com/insperatio/keel-ds/actions/workflows/ci.yml)
+
 A token-driven design system for React, built so that an AI coding tool can use it correctly
 without being told twice.
 
@@ -43,7 +45,9 @@ npm run lint
 
 **`npm run audit`** reads the source for the rules that don't need a browser: raw colors, Tailwind
 palette classes that no longer exist, opacity used as a disabled state, off-scale sizes, inline
-styles, and primitives used where a semantic role belongs. Each finding carries the rule number,
+styles, and primitives used where a semantic role belongs. Two rules need the shape of the code
+rather than a line of it, so those are parsed: more than one primary button in a group, and a
+focus ring removed or rebuilt by hand. Each finding carries the rule number,
 the reason behind it and the fix. The exemptions are written as code rather than left to
 argument, because a check that cries wolf gets ignored and then protects nothing.
 
@@ -60,6 +64,9 @@ confirms the pages reflow at 320px with no sideways scrolling. Light and dark, e
 **`check:docs`** compares every rule file with the component it describes: the exports it claims,
 the variants, sizes and defaults it lists, that every rule has a reason, and that every link and
 command it names is real.
+
+All of it runs on every pull request ([ci.yml](.github/workflows/ci.yml)), cheapest check first,
+so a typo fails in seconds rather than after a browser run.
 
 These found real bugs during the build, not hypothetical ones: a focus ring that faded in from
 black, a page 657px wide on a 375px phone, gray text at 4.44:1 on a selected row, a toast region

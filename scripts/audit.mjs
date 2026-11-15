@@ -7,8 +7,12 @@
 // rule rather than just pointing at a line. The exemptions are code, not a note in a doc: a rule
 // that cries wolf gets ignored, and then it protects nothing.
 //
-// What this can't judge — one primary per group, whether a label says what happens, whether the
-// right component was used — is in .claude/commands/audit.md for a person or an AI to read.
+// Two rules need the shape of the JSX, not a line of text, so those are parsed properly:
+// one primary button per group, and a focus ring that was removed or replaced by hand.
+//
+// What this still can't judge — whether a label says what happens, whether the right component
+// was used — is in .claude/commands/audit.md for a person or an AI to read.
+import { createRequire } from 'node:module'
 import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { dirname, join, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -105,6 +109,101 @@ const targets = (scopes.length ? scopes : ['src']).flatMap((scope) => {
   return statSync(join(ROOT, path)).isDirectory() ? files(path) : [path]
 })
 
+// ---- Rules that need the JSX tree ----
+const { parse } = createRequire(import.meta.url)('@babel/parser')
+const FOCUSABLE = /^(button|a|input|select|textarea|summary|Button|IconButton|Input|Select|SelectTrigger|Tab|Checkbox|Switch)$/
+const ACTIONS = /^(Button|IconButton)$/
+
+const tagOf = (node) => {
+  const name = node.openingElement?.name ?? node.name
+  if (!name) return ''
+  return name.type === 'JSXMemberExpression' ? name.property.name : (name.name ?? '')
+}
+const sourceOf = (code, node) => code.slice(node.start, node.end)
+
+/** The className text of an element, including everything inside cn(...). */
+function classesOf(code, node) {
+  const attr = (node.openingElement ?? node).attributes?.find((a) => a.name?.name === 'className')
+  return attr?.value ? sourceOf(code, attr.value) : ''
+}
+
+function parseRules(file, code) {
+  const out = []
+  let tree
+  try {
+    tree = parse(code, { sourceType: 'module', plugins: ['jsx', 'typescript'], errorRecovery: true })
+  } catch {
+    return out // a file that doesn't parse is tsc's problem to report, not the audit's
+  }
+
+  const visit = (node) => {
+    if (!node || typeof node.type !== 'string') return
+    if (node.type === 'JSXElement' || node.type === 'JSXFragment') {
+      const open = node.openingElement ?? node.openingFragment
+      const tag = tagOf(node)
+
+      // Rule 15: one primary Button per group. A group is an element whose own children include
+      // more than one action; a button deeper down belongs to its own container.
+      const elements = node.children.filter((c) => c.type === 'JSXElement')
+      const actions = elements.filter((c) => ACTIONS.test(tagOf(c)))
+      if (actions.length > 1) {
+        const primaries = actions.filter((c) => /variant="primary"/.test(sourceOf(code, c.openingElement)))
+        if (primaries.length > 1)
+          out.push({
+            line: primaries[1].loc.start.line,
+            match: `${primaries.length} primary buttons in <${tag || 'fragment'}>`,
+            rule: {
+              id: 'two-primaries',
+              rule: 15,
+              why: 'the primary button says what the main next step is; two of them say nothing',
+              fix: 'keep one primary; the rest are secondary or ghost',
+            },
+          })
+      }
+
+      // Rule 25: the focus ring is never removed, and never rebuilt by hand.
+      const classes = classesOf(code, node)
+      if (/\boutline-(none|hidden)\b/.test(classes)) {
+        const restored = /outline-focus-ring|focus-visible:outline|focus:outline-|after:outline/.test(classes)
+        // An element focused only by script (a dialog, the main landmark) is not a control, so it
+        // has no ring to show: it is announced instead.
+        const programmatic = /tabIndex=\{-1\}/.test(sourceOf(code, open))
+        if (!restored && !programmatic && FOCUSABLE.test(tag))
+          out.push({
+            line: open.loc.start.line,
+            match: `outline-none on <${tag}> with nothing to replace it`,
+            rule: {
+              id: 'focus-ring',
+              rule: 25,
+              why: "keyboard users can't see where they are without a focus ring",
+              fix: 'drop outline-none, or restore one: focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring',
+            },
+          })
+      }
+      // A ring is a focus indicator by another name. A shadow is not: a skip link that gains
+      // elevation when it appears still gets its ring from the base styles.
+      if (/focus(-visible)?:ring-/.test(classes))
+        out.push({
+          line: open.loc.start.line,
+          match: `focus ring built by hand on <${tag}>`,
+          rule: {
+            id: 'focus-ring',
+            rule: 25,
+            why: "Keel's focus ring is an outline with an offset, checked at 3:1; a ring skips both",
+            fix: 'use focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring, or leave the default',
+          },
+        })
+    }
+    for (const key of Object.keys(node)) {
+      const value = node[key]
+      if (Array.isArray(value)) value.forEach(visit)
+      else if (value && typeof value.type === 'string') visit(value)
+    }
+  }
+  visit(tree.program)
+  return out
+}
+
 const findings = []
 for (const file of targets) {
   const lines = readFileSync(join(ROOT, file), 'utf8').split('\n')
@@ -115,6 +214,7 @@ for (const file of targets) {
         findings.push({ file, line: i + 1, rule, match: m[0].slice(0, 60) })
       }
   })
+  if (file.endsWith('.tsx')) for (const f of parseRules(file, lines.join('\n'))) findings.push({ file, ...f })
 }
 
 if (!quiet)
