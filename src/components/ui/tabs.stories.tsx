@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Tab, Tabs, TabsList, TabsPanel } from './tabs'
+import { figma } from '@/storybook/figma'
 
 /**
  * Switch between 2 to 7 views of one object. Not steps in order, and not links to other pages.
@@ -8,6 +9,7 @@ import { Tab, Tabs, TabsList, TabsPanel } from './tabs'
 const meta = {
   title: 'Components/Tabs',
   component: Tabs,
+  parameters: figma('tabs'),
   render: (args) => (
     <Tabs {...args} defaultValue="overview" className="w-full max-w-xl">
       <TabsList label="Project sections">

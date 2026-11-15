@@ -70,6 +70,21 @@ Then decide, for each line:
 Changes always go through the token files because that is where the checks live. A color
 edited in Figma has never been contrast-checked.
 
+## Storybook's Design tab
+
+Every story carries the Figma frame it was built from, so a developer reading a story can open
+the design without hunting for it. The node ids live in one place:
+
+```
+src/storybook/figma.ts     the component -> frame map
+```
+
+A story picks its frame up with `parameters: figma('button')`. Two checks keep it honest:
+`check:docs` fails when a story has no frame or the map holds a frame nothing links to, and
+`check:stories` opens the Design tab in a browser and fails if the addon stopped embedding it.
+
+When a frame moves in Figma, change its id in that map — nothing else.
+
 ## Files
 
 | File | Role |

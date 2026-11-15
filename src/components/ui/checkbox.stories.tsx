@@ -5,6 +5,7 @@ import { Checkbox, CheckboxGroup } from './checkbox'
 import { textControl } from '@/storybook/controls'
 import { Field, FieldError } from './field'
 import { Form } from './form'
+import { figma } from '@/storybook/figma'
 
 /**
  * On or off, saved when the form is submitted. For a setting that applies the moment it changes,
@@ -13,6 +14,7 @@ import { Form } from './form'
 const meta = {
   title: 'Components/Checkbox',
   component: Checkbox,
+  parameters: figma('checkbox'),
   args: { children: 'Email me when someone replies' },
   argTypes: { children: textControl, description: textControl },
 } satisfies Meta<typeof Checkbox>

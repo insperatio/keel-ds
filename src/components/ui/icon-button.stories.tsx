@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { MoreHorizontal, Pencil, Trash2, X } from 'lucide-react'
 import { IconButton } from './button'
 import { iconControl } from '@/storybook/controls'
+import { figma } from '@/storybook/figma'
 
 /**
  * A square button with an icon and no visible text, for toolbars, table rows and dialog corners.
@@ -10,6 +11,7 @@ import { iconControl } from '@/storybook/controls'
 const meta = {
   title: 'Components/Icon button',
   component: IconButton,
+  parameters: figma('icon-button'),
   args: { label: 'Edit', icon: <Pencil /> },
   argTypes: {
     variant: { control: 'inline-radio', options: ['primary', 'secondary', 'ghost', 'danger'] },

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Plus } from 'lucide-react'
 import { Button } from './button'
 import { iconControl } from '@/storybook/controls'
+import { figma } from '@/storybook/figma'
 
 /**
  * Actions on the current page. One primary per group; everything else is secondary or ghost.
@@ -10,6 +11,7 @@ import { iconControl } from '@/storybook/controls'
 const meta = {
   title: 'Components/Button',
   component: Button,
+  parameters: figma('button'),
   args: { children: 'Save changes' },
   argTypes: {
     variant: { control: 'inline-radio', options: ['primary', 'secondary', 'ghost', 'danger'] },

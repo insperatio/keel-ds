@@ -2,10 +2,11 @@
 // themselves, so it reads their values from the token files and paints with them directly.
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { colorGroups, colorRoles, durations, radii, ramps, shadows, spacing, textStyles } from './token-data'
+import { figma } from '@/storybook/figma'
 
 const meta: Meta = {
   title: 'Foundations',
-  parameters: { layout: 'padded' },
+  parameters: { ...figma('foundations'), layout: 'padded' },
 }
 
 export default meta

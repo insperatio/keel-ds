@@ -71,10 +71,33 @@ for (const mode of ['light', 'dark']) {
   await context.close()
 }
 
+// The Design tab, checked in the manager UI rather than in the story frame. check:docs proves
+// every story carries a Figma link; this proves the addon is still wired up to show it, which
+// the parameters alone can't tell you — drop the addon from main.ts and the links go silent.
+{
+  const page = await browser.newPage({ viewport: { width: 1440, height: 900 } })
+  const [id, node] = ['components-button--primary', '25-291']
+  await page.goto(`http://localhost:${port}/?path=/story/${id}`, { waitUntil: 'networkidle' })
+  const tab = page.locator('[role="tab"]', { hasText: /Design/ }).first()
+  if ((await tab.count()) === 0) failures.push('Design tab is missing: is @storybook/addon-designs still in .storybook/main.ts?')
+  else {
+    await tab.click()
+    const embed = page.locator('#storybook-panel-root iframe[src*="figma.com"]').first()
+    await embed.waitFor({ timeout: 10000 }).catch(() => {})
+    const src = (await embed.count()) ? await embed.getAttribute('src') : ''
+    if (!src) failures.push('Design tab opened but embedded no Figma frame')
+    else if (!src.includes(node)) failures.push(`Design tab points at ${src.match(/node-id=([\d-]+)/)?.[1] ?? 'nothing'}, expected ${node}`)
+  }
+  await page.close()
+}
+
 await browser.close()
 server.close()
 
-console.log(`${stories.length} stories in light and dark: ${failures.length ? `${failures.length} problem(s)` : 'no axe violations, no console errors'}.`)
+console.log(
+  `${stories.length} stories in light and dark: ${failures.length ? `${failures.length} problem(s)` : 'no axe violations, no console errors'}.` +
+    (failures.length ? '' : ' Design tab embeds the Figma frame.'),
+)
 if (failures.length) {
   console.error('\n- ' + failures.join('\n- '))
   process.exit(1)
