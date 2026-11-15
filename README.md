@@ -29,7 +29,8 @@ npm run storybook
 
 Storybook runs each component on its own, with a light and dark switch in the toolbar that
 toggles the same class the app does, so a story is rendered by exactly the CSS the product ships.
-The accessibility panel runs axe against WCAG 2.2 A and AA on every story.
+The accessibility panel runs axe against WCAG 2.2 A and AA on every story, and `npm run
+check:stories` makes that a gate: every story, in both modes, in a real browser.
 
 ## What's in it
 
@@ -48,6 +49,7 @@ npm run audit          # source files against the rules a machine can judge
 npm run tokens:check   # tokens: contrast, aliases, 4px grid, generated files up to date
 npm run check:ui       # the built pages in a real browser, light and dark
 npm run check:docs     # rule files still match the components they describe
+npm run check:stories  # every Storybook story: axe and console errors, light and dark
 npm run lint
 ```
 

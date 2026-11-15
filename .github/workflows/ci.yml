@@ -42,5 +42,5 @@ jobs:
       - name: UI (sizes, focus rings, target size, axe, reflow — light and dark)
         run: npm run check:ui
 
-      - name: Storybook builds
-        run: npm run build-storybook -- --quiet --disable-telemetry
+      - name: Storybook builds, and every story passes axe in light and dark
+        run: npm run check:stories
