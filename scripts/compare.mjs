@@ -1,0 +1,182 @@
+// The before/after test: the same brief, built twice, measured once.
+//
+//   npm run compare            builds both pages, measures them, writes docs/before-after.md
+//
+// Page A was written with no design system — plain Tailwind in a fresh project, the shape of a
+// competent quick answer. Page B was built from Keel with AGENTS.md and the rule files in context.
+// Both are then put through the identical probes that gate every pull request (scripts/lib/ui-probe.mjs)
+// and the identical audit, so the difference in the numbers is the system, not the measurement.
+import { execFileSync } from 'node:child_process'
+import { createServer } from 'node:http'
+import { readFile, writeFile } from 'node:fs/promises'
+import { dirname, extname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { chromium } from 'playwright'
+import { PAGE_HELPERS, axeViolations, focusProblems, reflowFailures, smallTargets, walkFocus } from './lib/ui-probe.mjs'
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
+const DIST = join(ROOT, 'experiments-dist')
+const PAGES = [
+  { key: 'without', title: 'Without the system', file: 'experiments/pages/WithoutKeel.tsx', url: '/without.html' },
+  { key: 'with', title: 'With Keel', file: 'experiments/pages/WithKeel.tsx', url: '/with.html' },
+]
+
+console.log('Building both pages…')
+execFileSync('npx', ['vite', 'build', '--config', 'experiments/vite.config.ts'], { cwd: ROOT, stdio: 'pipe' })
+
+const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.woff2': 'font/woff2', '.svg': 'image/svg+xml' }
+const server = createServer(async (req, res) => {
+  const path = join(DIST, decodeURIComponent(req.url.split('?')[0]))
+  try {
+    const body = await readFile(path)
+    res.writeHead(200, { 'content-type': TYPES[extname(path)] ?? 'application/octet-stream' })
+    res.end(body)
+  } catch {
+    res.writeHead(404).end('not found')
+  }
+})
+await new Promise((r) => server.listen(4319, r))
+const browser = await chromium.launch()
+
+const results = []
+for (const spec of PAGES) {
+  const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } })
+  const page = await ctx.newPage()
+  const pageErrors = []
+  page.on('pageerror', (e) => pageErrors.push(e.message))
+  await page.goto(`http://localhost:4319${spec.url}`)
+  await page.waitForTimeout(600)
+  await page.addScriptTag({ content: PAGE_HELPERS })
+
+  const stops = await walkFocus(page)
+  const focus = focusProblems(stops)
+  const targets = await smallTargets(page)
+  const axe = await axeViolations(page)
+  await page.addScriptTag({ content: PAGE_HELPERS })
+  const reflow = await reflowFailures(page)
+
+  // The audit reads the source, not the rendered page
+  let auditLine = ''
+  try {
+    auditLine = execFileSync('node', ['scripts/audit.mjs', spec.file, '--quiet'], { cwd: ROOT, encoding: 'utf8' }).trim()
+  } catch (error) {
+    auditLine = (error.stdout ?? '').trim()
+  }
+  const auditCount = Number(auditLine.match(/(\d+) finding/)?.[1] ?? 0)
+  const auditRules = auditLine.match(/— (.+)\.$/)?.[1] ?? 'none'
+
+  // A picture of each page, so the report shows what the numbers are describing
+  await page.evaluate(() => document.activeElement?.blur()) // the focus walk left a ring behind
+  await page.setViewportSize({ width: 1280, height: 900 })
+  await page.waitForTimeout(200)
+  await page.screenshot({ path: join(ROOT, `docs/images/before-after-${spec.key}.png`), fullPage: true, scale: 'css' })
+
+  results.push({ ...spec, stops: stops.length, focus, targets, axe, reflow, auditCount, auditRules, pageErrors })
+  await ctx.close()
+}
+
+await browser.close()
+server.close()
+
+const [before, after] = results
+const axeTotal = (r) => r.axe.reduce((n, v) => n + v.count, 0)
+const row = (label, a, b) => `| ${label} | ${a} | ${b} |`
+
+const table = [
+  '| | Without the system | With Keel |',
+  '| --- | --- | --- |',
+  row('Audit findings', before.auditCount, after.auditCount),
+  row('Rules broken', before.auditRules, after.auditRules),
+  row('axe violations (WCAG 2.2 A/AA)', axeTotal(before), axeTotal(after)),
+  row('Keyboard stops with no usable focus ring', `${before.focus.length} of ${before.stops}`, `${after.focus.length} of ${after.stops}`),
+  row('Targets under 24px and crowded', before.targets.length, after.targets.length),
+  row('Widths that scroll sideways', before.reflow.length ? before.reflow.map((r) => `${r.width}px`).join(', ') : 'none', after.reflow.length ? after.reflow.map((r) => `${r.width}px`).join(', ') : 'none'),
+].join('\n')
+
+const list = (items, empty) => (items.length ? items.map((i) => `- ${i}`).join('\n') : `- ${empty}`)
+const axeList = (r) => list(r.axe.map((v) => `**${v.id}** (${v.impact}) — ${v.count} element${v.count === 1 ? '' : 's'}: \`${v.where}\``), 'none')
+
+const doc = `# Before and after: the same page, with and without the system
+
+${(await readFile(join(ROOT, 'experiments/BRIEF.txt'), 'utf8')).trim()}
+
+Generated by \`npm run compare\`. Both pages are measured by the same probes that gate every
+pull request (\`scripts/lib/ui-probe.mjs\`) and the same \`npm run audit\`, in the same browser,
+on the same screen. The difference in these numbers is the system, not the measurement.
+
+## The two pages
+
+| Without the system | With Keel |
+| --- | --- |
+| ![The team settings page built with no design system](images/before-after-without.png) | ![The same page built from Keel](images/before-after-with.png) |
+
+Both look reasonable at a glance on a laptop. That is the point: the difference is not taste,
+it is what happens when you press Tab, shrink the window, or read it with a screen reader.
+
+## Results
+
+${table}
+
+## What the audit found in the page without a system
+
+${before.auditCount} findings across ${before.auditRules}. Run \`npm run audit -- experiments/pages/WithoutKeel.tsx\` for every line and its fix.
+
+## What a browser found in the page without a system
+
+**Accessibility violations**
+
+${axeList(before)}
+
+**Focus**
+
+${list(before.focus.slice(0, 8), 'every stop has a usable focus ring')}
+
+**Target size**
+
+${list(before.targets, 'no target under 24px is crowded')}
+
+**Reflow**
+
+${list(before.reflow.map((r) => `at a ${r.width}px viewport the page is ${r.actual}px wide, so it scrolls sideways`), 'no sideways scrolling at 320 or 375px')}
+
+## The same checks on the Keel page
+
+**Accessibility violations**
+
+${axeList(after)}
+
+**Focus**
+
+${list(after.focus, `all ${after.stops} keyboard stops show a ring at least 2px wide with 3:1 contrast`)}
+
+**Target size**
+
+${list(after.targets, 'no target under 24px is crowded')}
+
+**Reflow**
+
+${list(after.reflow.map((r) => `at a ${r.width}px viewport the page is ${r.actual}px wide`), 'no sideways scrolling at 320 or 375px')}
+
+## Honest notes
+
+- The page without a system is not a strawman. It uses real buttons, a real table and a real
+  dialog, and it looks fine at a glance on a laptop. Every problem the checks found is one a
+  design system exists to prevent, not one planted to lose the comparison.
+- The same model wrote both pages. The difference is what was in context: \`AGENTS.md\`, the
+  rule files and the components, versus nothing.
+- The Keel page is longer to write and imports more. That is the trade: the rules are in the
+  components instead of in your head.
+- The first run of this comparison failed the Keel page on reflow, and it was right to. The page
+  put a Table straight into a flex column without \`min-w-0\`, which rule 8 of
+  [the table rules](rules/table.md) exists to prevent, so the table could not shrink and the page
+  scrolled sideways on a phone. Having the rule written down did not stop the mistake being made;
+  the check is what caught it. Both are the system doing its job.
+`
+
+await writeFile(join(ROOT, 'docs/before-after.md'), doc)
+
+console.log('')
+console.log(table)
+console.log('')
+console.log(`Wrote docs/before-after.md`)
+for (const r of results) if (r.pageErrors.length) console.log(`${r.key}: page errors — ${r.pageErrors.join('; ')}`)

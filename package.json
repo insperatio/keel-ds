@@ -23,7 +23,8 @@
     "build-storybook": "storybook build",
     "check:stories": "npm run build-storybook -- --quiet --disable-telemetry && node scripts/check-stories.mjs",
     "registry": "node scripts/build-registry.mjs",
-    "registry:check": "node scripts/build-registry.mjs --check"
+    "registry:check": "node scripts/build-registry.mjs --check",
+    "compare": "node scripts/compare.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

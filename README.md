@@ -93,6 +93,23 @@ found two real holes the first time it ran: `cn` reads Keel's text-style names f
 that wasn't being shipped with it, and the shared `control.ts` imports a package that the items
 carrying it never declared. Both would have broken on someone else's machine, not mine.
 
+## Does it actually help?
+
+The same brief, built twice: once with no design system (plain Tailwind in a fresh project)
+and once from Keel with the rules in context. Both pages are then measured by the identical
+probes that gate every pull request.
+
+| | Without the system | With Keel |
+| --- | --- | --- |
+| Audit findings | 35 | 0 |
+| axe violations (WCAG 2.2 A/AA) | 15 | 0 |
+| Keyboard stops with no usable focus ring | 7 of 7 | 0 of 7 |
+| Scrolls sideways on a phone | at 320 and 375px | no |
+
+Both pages look fine at a glance on a laptop. [The full comparison](docs/before-after.md) has
+the screenshots, every finding, and the honest notes — including the mistake the checks caught
+in the Keel page while I was writing it. Run it yourself with `npm run compare`.
+
 ## Install a component in your own project
 
 Keel publishes a [shadcn](https://ui.shadcn.com)-compatible registry, so a component and

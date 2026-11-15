@@ -151,3 +151,6 @@ storybook-static
 
 # The component registry, built from src by `npm run registry` and published by CI
 registry
+
+# Built by `npm run compare` from experiments/
+experiments-dist

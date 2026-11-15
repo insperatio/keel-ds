@@ -1,0 +1,11 @@
+The prompt given to both pages, word for word:
+
+  Build a Team settings page for a workspace app. It needs:
+  - a form to invite a teammate by email, with a role picker and a Send invite button
+  - a table of current members showing name, email, role and status
+  - a way to remove a member from the table
+  - a danger zone that deletes the whole workspace, behind a confirmation
+
+One page was written with no design system: plain Tailwind, the way a model answers that
+prompt in a fresh project. The other was built from Keel, with AGENTS.md and the rule files
+in context. Nothing else differs — same brief, same content, same screen.
