@@ -4,7 +4,10 @@
 // Part 1, the index: every .md file in the repo is listed in llms.txt, every link in llms.txt
 // resolves, and llms.txt has the title and summary the llmstxt.org format expects.
 //
-// Part 2, the rule files in docs/rules, so one can't quietly drift from its component:
+// Part 2, the command files in .claude/commands: each has a description, and every path and
+// npm script it names is real.
+//
+// Part 3, the rule files in docs/rules, so one can't quietly drift from its component:
 //
 // For each docs/rules/*.md (except _template.md):
 // 1. Frontmatter is complete, and `source` and `import` point at a file that exists.
@@ -35,14 +38,16 @@ if (!/^# .+/m.test(index)) fail('llms.txt', 'no "# Title" line')
 if (!/^> .+/m.test(index)) fail('llms.txt', 'no "> summary" blockquote')
 
 const docs = []
-;(function walk(dir) {
+function walk(dir) {
   for (const entry of readdirSync(join(ROOT, dir), { withFileTypes: true })) {
     if (entry.name === 'node_modules' || entry.name.startsWith('.')) continue
     const path = dir ? `${dir}/${entry.name}` : entry.name
     if (entry.isDirectory()) walk(path)
     else if (entry.name.endsWith('.md')) docs.push(path)
   }
-})('')
+}
+walk('')
+walk('.claude/commands') // commands are documentation too, and tools find them through the index
 
 for (const doc of docs) if (!index.includes(`(${doc})`)) fail('llms.txt', `does not list ${doc}`)
 for (const m of index.matchAll(/\]\(([^)]+)\)/g)) {
@@ -50,7 +55,22 @@ for (const m of index.matchAll(/\]\(([^)]+)\)/g)) {
   if (!existsSync(join(ROOT, target))) fail('llms.txt', `links to ${m[1]}, which does not exist`)
 }
 
-// ---- Part 2: rule files match their components ----
+// ---- Part 2: command files ----
+for (const file of readdirSync(join(ROOT, '.claude/commands')).filter((f) => f.endsWith('.md'))) {
+  const where = `.claude/commands/${file}`
+  const text = readFileSync(join(ROOT, where), 'utf8')
+  const fm = frontmatter(text)
+  if (!fm?.description) fail(where, 'frontmatter has no description, so the command has no help text')
+  for (const m of text.matchAll(/`npm run ([\w:]+)[^`]*`|^npm run ([\w:]+)/gm)) {
+    const script = m[1] ?? m[2]
+    if (!(script in scripts)) fail(where, `names "npm run ${script}", which package.json does not define`)
+  }
+  // Paths the command tells someone to open. Placeholders like docs/rules/<component>.md are skipped.
+  for (const m of text.matchAll(/`((?:src|docs|scripts|figma|node_modules)\/[\w./@-]+)`/g))
+    if (!m[1].includes('<') && !existsSync(join(ROOT, m[1].replace(/\/$/, '')))) fail(where, `names ${m[1]}, which does not exist`)
+}
+
+// ---- Part 3: rule files match their components ----
 
 function frontmatter(text) {
   const m = text.match(/^---\n([\s\S]*?)\n---\n/)
@@ -185,8 +205,9 @@ for (const file of files) {
 const sources = new Set(files.map((f) => frontmatter(readFileSync(join(RULES, f), 'utf8'))?.source).filter(Boolean))
 const components = readdirSync(join(ROOT, 'src/components/ui')).filter((f) => f.endsWith('.tsx'))
 const uncovered = components.filter((f) => !sources.has(`src/components/ui/${f}`))
+const commands = readdirSync(join(ROOT, '.claude/commands')).filter((f) => f.endsWith('.md')).length
 console.log(
-  `llms.txt indexes all ${docs.length} documents. ` +
+  `llms.txt indexes all ${docs.length} documents. ${commands} commands checked. ` +
     `${files.length} rule files checked, covering ${sources.size} of ${components.length} components` +
     (uncovered.length ? ` (no rule file yet: ${uncovered.join(', ')})` : '') + '.',
 )
