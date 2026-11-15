@@ -20,7 +20,7 @@ One line of text the person types: a name, an email, a search box, a number.
 ## Use something else when
 
 - There are 3 to 15 known options → [Select](select.md).
-- It's a yes/no in a form → `Checkbox`; a setting that applies at once → `Switch`.
+- It's a yes/no in a form → [Checkbox](checkbox.md); a setting that applies at once → [Switch](switch.md).
 - The answer is a paragraph → a `textarea` styled with the same `controlVariants`.
 
 ## Import

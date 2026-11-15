@@ -22,7 +22,7 @@ Starts an action on the current page: submits, saves, opens a dialog, runs somet
 - It goes to another page or view → a link (`<a href>`), styled with `text-fg-link`.
   A button that navigates breaks the back button, middle-click and "open in new tab".
 - It's only an icon, in a toolbar or table row → [IconButton](icon-button.md).
-- It turns a setting on or off right away → [Switch](../../src/components/ui/switch.tsx).
+- It turns a setting on or off right away → [Switch](switch.md).
 
 ## Import
 

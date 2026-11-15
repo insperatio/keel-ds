@@ -12,7 +12,7 @@ here, the result is on-brand and accessible by default.
 
 | When you are | Read |
 | --- | --- |
-| Using a component | Its rule file in `docs/rules/` (`button.md`, `icon-button.md`, `input.md`, `select.md`): when to use it, when not to, its rules and the mistakes to avoid |
+| Using a component | Its rule file, `docs/rules/<component>.md`: when to use it, when not to, its rules and the mistakes to avoid |
 | Building UI with a component that has no rule file yet | Its source in `src/components/ui/`. The comment at the top is its usage guide |
 | Making or changing a brand | `docs/brand.md` |
 | Syncing with Figma | `docs/figma.md` |
