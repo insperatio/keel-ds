@@ -17,6 +17,7 @@ here, the result is on-brand and accessible by default.
 | Making or changing a brand | `docs/brand.md` |
 | Syncing with Figma | `docs/figma.md` |
 | Looking for a working page to copy | `src/demo/SettingsPage.tsx`, built only from Keel |
+| New here, or short on time | `docs/QUICKSTART-AI.md`: what to read, what to run, and the ten mistakes that break a build |
 
 ## Commands
 
@@ -26,10 +27,10 @@ here, the result is on-brand and accessible by default.
 | `npm run tokens` | Rebuild everything from the token files, then run all token checks |
 | `npm run tokens:check` | Check tokens: contrast pairs, aliases, grid, generated files up to date |
 | `npm run check:ui` | Build, then test the demo pages in a real browser (light and dark) |
-| `npm run check:rules` | Check the rule files in `docs/rules/` against the components they describe |
+| `npm run check:docs` | Check llms.txt indexes every document, and that the rule files still match their components |
 | `npm run lint` | Lint |
 
-**Done means** `npm run tokens:check`, `npm run check:ui`, `npm run check:rules` and
+**Done means** `npm run tokens:check`, `npm run check:ui`, `npm run check:docs` and
 `npm run lint` all pass.
 Don't call work finished until they do.
 
@@ -146,8 +147,8 @@ Don't call work finished until they do.
 31. **The repo is the source of truth.** If something changed in Figma, run `npm run figma:diff`
     and move the change into the token files.
     Why: the contrast checks live in the repo; a color edited in Figma was never checked.
-32. **Add every new `.md` file to `llms.txt`.**
-    Why: AI tools find the docs through that index.
+32. **Add every new `.md` file to `llms.txt`,** with a line saying what it's for.
+    Why: AI tools find the docs through that index, and `check:docs` fails without it.
 33. **Change a component, update its rule file in the same commit.**
     Why: a rule file that lags the code teaches the wrong thing to everyone who reads it next.
 
@@ -169,7 +170,7 @@ Don't call work finished until they do.
 3. Add `data-slot`, plus `data-size` if it has sizes.
 4. Show it on the components page (`src/demo/ComponentsPage.tsx`), with its states.
 5. Write its rule file: copy `docs/rules/_template.md` to `docs/rules/<component>.md` and fill it
-   in. Every numbered rule needs a one-line why, and `npm run check:rules` checks the file against
+   in. Every numbered rule needs a one-line why, and `npm run check:docs` checks the file against
    your code.
 6. Run `npm run check:ui` in light and dark, at 320px.
 

@@ -1,6 +1,10 @@
-// Checks the per-component rule files in docs/rules against the code they describe,
-// so a rule file can't quietly drift from the component.
-//   npm run check:rules
+// Checks the documentation against the code and against itself:
+//   npm run check:docs
+//
+// Part 1, the index: every .md file in the repo is listed in llms.txt, every link in llms.txt
+// resolves, and llms.txt has the title and summary the llmstxt.org format expects.
+//
+// Part 2, the rule files in docs/rules, so one can't quietly drift from its component:
 //
 // For each docs/rules/*.md (except _template.md):
 // 1. Frontmatter is complete, and `source` and `import` point at a file that exists.
@@ -24,6 +28,29 @@ const scripts = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')).scr
 
 const failures = []
 const fail = (file, msg) => failures.push(`${file}: ${msg}`)
+
+// ---- Part 1: llms.txt indexes every document ----
+const index = readFileSync(join(ROOT, 'llms.txt'), 'utf8')
+if (!/^# .+/m.test(index)) fail('llms.txt', 'no "# Title" line')
+if (!/^> .+/m.test(index)) fail('llms.txt', 'no "> summary" blockquote')
+
+const docs = []
+;(function walk(dir) {
+  for (const entry of readdirSync(join(ROOT, dir), { withFileTypes: true })) {
+    if (entry.name === 'node_modules' || entry.name.startsWith('.')) continue
+    const path = dir ? `${dir}/${entry.name}` : entry.name
+    if (entry.isDirectory()) walk(path)
+    else if (entry.name.endsWith('.md')) docs.push(path)
+  }
+})('')
+
+for (const doc of docs) if (!index.includes(`(${doc})`)) fail('llms.txt', `does not list ${doc}`)
+for (const m of index.matchAll(/\]\(([^)]+)\)/g)) {
+  const target = m[1].replace(/\/$/, '')
+  if (!existsSync(join(ROOT, target))) fail('llms.txt', `links to ${m[1]}, which does not exist`)
+}
+
+// ---- Part 2: rule files match their components ----
 
 function frontmatter(text) {
   const m = text.match(/^---\n([\s\S]*?)\n---\n/)
@@ -159,12 +186,13 @@ const sources = new Set(files.map((f) => frontmatter(readFileSync(join(RULES, f)
 const components = readdirSync(join(ROOT, 'src/components/ui')).filter((f) => f.endsWith('.tsx'))
 const uncovered = components.filter((f) => !sources.has(`src/components/ui/${f}`))
 console.log(
-  `${files.length} rule files checked, covering ${sources.size} of ${components.length} components` +
+  `llms.txt indexes all ${docs.length} documents. ` +
+    `${files.length} rule files checked, covering ${sources.size} of ${components.length} components` +
     (uncovered.length ? ` (no rule file yet: ${uncovered.join(', ')})` : '') + '.',
 )
 
 if (failures.length) {
-  console.error(`\nRule check failed (${failures.length}):\n- ` + failures.join('\n- '))
+  console.error(`\nDocs check failed (${failures.length}):\n- ` + failures.join('\n- '))
   process.exit(1)
 }
-console.log('Rule files match the code they describe.')
+console.log('Docs match the code they describe.')
