@@ -34,6 +34,7 @@ rule file and checks. Claude Code finds them as slash commands; other tools can 
 | `npm run check:ui` | Build, then test the demo pages in a real browser (light and dark) |
 | `npm run check:stories` | Build Storybook, then run every story through axe in a real browser, light and dark |
 | `npm run registry` | Build the install registry into `registry/` from `src/` (`--check` validates without writing) |
+| `npm run compare` | Build the before/after pages, measure both, and write `docs/before-after.md` |
 | `npm run check:docs` | Check llms.txt indexes every document, and that the rule files still match their components |
 | `npm run audit` | Check source files against the rules a machine can judge: raw colors, palette classes, opacity fades, off-scale sizes, inline styles, primitives in UI code, two primary buttons in one group, a focus ring removed or rebuilt. Takes a path |
 | `npm run lint` | Lint |

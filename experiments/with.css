@@ -1,0 +1,5 @@
+/* Keel's stylesheet, plus the one thing a second app has to say out loud: Tailwind scans from
+   its own root, so without this it never sees the classes used inside Keel's components and
+   silently ships a stylesheet with holes in it. */
+@import "../src/index.css";
+@source "../src";
