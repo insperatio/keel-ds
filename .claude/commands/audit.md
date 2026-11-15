@@ -19,11 +19,16 @@ rather than just this fix.
 ## 2. Run the machine checks first
 
 ```bash
+npm run audit
 npm run lint && npx tsc -b
 npm run tokens:check
 npm run check:ui
 npm run check:docs
 ```
+
+`npm run audit` already does the pattern work in step 3 below, with the exemptions built in.
+Take a path to narrow it: `npm run audit -- src/features/billing`. Run the greps yourself only
+to check something it doesn't cover yet.
 
 Report every failure verbatim, with the file and line. These are facts; everything below is
 judgment.
@@ -51,8 +56,9 @@ Allowed, so don't report them:
   viewport limits (`max-w-[85vw]`), and `calc()` built from `--spacing()`;
 - `outline-none` where a visible ring is put back somewhere else, for example on a wrapper or a
   `::after` layer;
-- `style={{ ... }}` whose values are `var(--keel-*)` in a page that renders tokens dynamically,
-  like the tokens page: one class per token can't exist, so the variable is the honest way.
+- `style={{ ... }}` whose values are `var(--keel-*)`, and anything in the page whose subject is
+  the tokens themselves (`src/demo/TokensPage.tsx`, `src/demo/token-data.ts`): a swatch has to be
+  painted with the ramp step it documents, and primitives have no CSS variable to point at.
 
 A finding you can't justify in one line isn't a finding. Say what rule it breaks, or drop it.
 

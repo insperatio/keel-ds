@@ -17,7 +17,8 @@
     "figma:plugin": "node scripts/figma-plugin.mjs",
     "figma:diff": "node scripts/figma-diff.mjs",
     "check:ui": "npm run build && node scripts/check-ui.mjs",
-    "check:docs": "node scripts/check-docs.mjs"
+    "check:docs": "node scripts/check-docs.mjs",
+    "audit": "node scripts/audit.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
