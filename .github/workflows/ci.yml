@@ -36,6 +36,9 @@ jobs:
       - name: Docs (llms.txt index, commands, rule files against their components)
         run: npm run check:docs
 
+      - name: Registry (every item's files exist, and an install resolves every import)
+        run: npm run registry:check
+
       - name: Install the browser the UI check drives
         run: npx playwright install --with-deps chromium
 
