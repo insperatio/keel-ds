@@ -1,7 +1,7 @@
 {
   "name": "keel-ds",
   "private": true,
-  "version": "0.1.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -55,5 +55,7 @@
     "storybook": "10.6.7",
     "typescript": "~7.0.2",
     "vite": "^8.3.6"
-  }
+  },
+  "license": "MIT",
+  "description": "Keel — a token-driven design system with guardrails that fail the build when something breaks the rules."
 }
