@@ -11,6 +11,12 @@ for using them live in [AGENTS.md](AGENTS.md), one per line, each with the reaso
 a set of checks fails the build when something breaks them. The result: a page built from Keel is
 accessible and on-brand because of how it's built, not because someone remembered to check.
 
+![A token file and a terminal. The value of text.secondary is changed from neutral.600 to
+neutral.400. `npm run tokens:check` then fails, listing seven places where that grey no longer
+reaches 4.5:1 against the surface behind it, each with its measured ratio, plus two warnings
+that the generated CSS and the Figma plugin are now out of date. The token is restored and the
+check passes: 118 primitive and 160 semantic tokens, 190 contrast pairs.](docs/media/contrast-check.gif)
+
 React 19 · TypeScript · Tailwind CSS v4 · shadcn/ui on Base UI · MIT licensed.
 
 ## Quick start

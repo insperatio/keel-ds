@@ -11,7 +11,7 @@ follow its why.
 
 ## Start here
 
-- [AGENTS.md](AGENTS.md): the rules for building with Keel. 33 rules in six groups (color, type,
+- [AGENTS.md](AGENTS.md): the rules for building with Keel. 36 rules in six groups (color, type,
   space and layout, components, accessibility, tokens and files), anti-patterns, and what "done" means.
 - [docs/QUICKSTART-AI.md](docs/QUICKSTART-AI.md): the five-minute version. What to read, what to run,
   and the ten mistakes that break a Keel build.

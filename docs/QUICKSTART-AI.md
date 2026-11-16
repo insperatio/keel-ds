@@ -13,7 +13,7 @@ and those are handled.
 
 ## What to read, in order
 
-1. [AGENTS.md](../AGENTS.md) — all 33 rules, each with its reason.
+1. [AGENTS.md](../AGENTS.md) — all 36 rules, each with its reason.
 2. The rule file for the component you're using: `docs/rules/<component>.md`.
 3. [src/demo/SettingsPage.tsx](../src/demo/SettingsPage.tsx) — a real page built only from Keel.
 
