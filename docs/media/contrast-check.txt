@@ -1,0 +1,14 @@
+$ npm run tokens:check
+Token check failed (9):
+- light.tokens.json text.secondary on surface.page: 3.24:1, needs 4.5:1 (supporting text)
+- light.tokens.json text.secondary on surface.subtle: 3.1:1, needs 4.5:1 (supporting text on subtle sections)
+- light.tokens.json text.secondary on surface.raised: 3.24:1, needs 4.5:1 (supporting text on cards)
+- light.tokens.json text.secondary on surface.overlay: 3.24:1, needs 4.5:1 (supporting text in popovers and dialogs)
+- light.tokens.json text.secondary on selected.bg: 2.98:1, needs 4.5:1 (secondary text in a selected table row; tertiary text is remapped to secondary there (table.tsx))
+- light.tokens.json text.secondary on surface.row-hover: 3.1:1, needs 4.5:1 (secondary text in a hovered table row)
+- light.tokens.json text.secondary on surface.subtle: 3.1:1, needs 4.5:1 (table header labels)
+- src/styles/keel.css: src/styles/keel.css is out of date; run npm run tokens:build
+- figma/plugin/code.js: figma/plugin/code.js is out of date. Run: npm run figma:plugin
+
+$ npm run tokens:check
+All 118 primitive and 160 semantic tokens pass. 190 contrast pairs checked.
