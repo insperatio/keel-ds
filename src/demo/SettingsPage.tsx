@@ -228,7 +228,9 @@ function PlanSection() {
         <CardTitle as="h2">Plan</CardTitle>
         <CardDescription>Billed yearly. Renews January 12, 2027.</CardDescription>
         <CardAction>
-          <Badge tone="success" size="md">
+          {/* neutral: a plan name is a fact, not a state. success means something finished well
+              (badge.md rule 2), and the example page is what people copy. */}
+          <Badge tone="neutral" size="md">
             Team plan
           </Badge>
         </CardAction>

@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
+    "check": "npm run lint && npx tsc -b && npm run audit && npm run tokens:check && npm run check:docs && npm run registry:check && npm run check:ui && npm run check:stories",
     "preview": "vite preview",
     "tokens": "npm run tokens:brand && npm run tokens:build && npm run figma:plugin && npm run tokens:check",
     "tokens:brand": "node scripts/brand.mjs",

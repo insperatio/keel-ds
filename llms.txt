@@ -38,6 +38,9 @@ picks them up as `/new-page` and `/add-component`; any other tool can be handed 
 One file per component: when to use it, when to use something else, its props, numbered rules with
 reasons, what accessibility is already handled, and good and bad examples.
 
+- [App shell](docs/rules/app-shell.md): the frame every page sits in, and the page's one h1.
+- [Field](docs/rules/field.md): one control with its label, help text and error, wired together.
+- [Form](docs/rules/form.md): fields submitted together, each showing its own error.
 - [docs/rules/button.md](docs/rules/button.md): actions on the page. One primary per group.
 - [docs/rules/icon-button.md](docs/rules/icon-button.md): square icon-only button. `label` is required.
 - [docs/rules/input.md](docs/rules/input.md): one line of text, always inside a Field with a visible label.

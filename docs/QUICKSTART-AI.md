@@ -20,16 +20,11 @@ and those are handled.
 ## What to run
 
 ```bash
-npm install
-npm run dev          # the demo: tokens, components, an example settings page
-npm run tokens       # rebuild the tokens, then check them
-npm run tokens:check # contrast pairs, aliases, grid, generated files up to date
-npm run check:ui     # build, then test the pages in a real browser, light and dark
-npm run check:docs   # rule files still match the components they describe
-npm run lint
+npm run check   # the whole gate: lint, types, audit, tokens, docs, registry, browser, stories
 ```
 
-**Done means** `tokens:check`, `check:ui`, `check:docs` and `lint` all pass. If a check fails,
+**Done means `npm run check` passes.** It is the same set CI runs. The individual commands are in
+[AGENTS.md](../AGENTS.md#commands) if you need to run one on its own while fixing something.
 fix the cause; never lower a threshold to make it pass.
 
 ## The ten mistakes that break a Keel build

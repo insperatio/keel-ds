@@ -34,15 +34,20 @@ rule file and checks. Claude Code finds them as slash commands; other tools can 
 | `npm run check:ui` | Build, then test the demo pages in a real browser (light and dark) |
 | `npm run check:stories` | Build Storybook, then run every story through axe in a real browser, light and dark |
 | `npm run registry` | Build the install registry into `registry/` from `src/` (`--check` validates without writing) |
+| `npm run check` | **The gate.** Everything below, in one command — this is what "done" means |
 | `npm run compare` | Build the before/after pages, measure both, and write `docs/before-after.md` |
 | `npm run check:docs` | Check llms.txt indexes every document, and that the rule files still match their components |
 | `npm run audit` | Check source files against the rules a machine can judge: raw colors, palette classes, opacity fades, off-scale sizes, inline styles, primitives in UI code, two primary buttons in one group, a focus ring removed or rebuilt. Takes a path |
 | `npm run lint` | Lint |
 
-**Done means** `npm run audit`, `npm run tokens:check`, `npm run check:ui`, `npm run check:docs`
-and `npm run lint` all pass. They run on every pull request too, so a branch that skips them
-fails in CI instead.
-Don't call work finished until they do.
+**Done means `npm run check` passes.** That one command is the whole gate — lint, types, audit,
+tokens, docs, registry, the browser checks and every Storybook story — and it is the same set CI
+runs on every pull request. This is the only list; anywhere else that talks about finishing links
+here rather than repeating it, because three copies of a list is three chances to disagree.
+Don't call work finished until it passes.
+
+The browser checks drive a real Chromium. After `npm install`, run `npx playwright install chromium`
+once; without it `check:ui` and `check:stories` fail with a missing-browser error.
 
 ## Rules
 

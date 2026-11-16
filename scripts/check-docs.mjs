@@ -256,11 +256,16 @@ for (const key of mapped) if (!linked.includes(key)) fail('src/storybook/figma.t
 const sources = new Set(files.map((f) => frontmatter(readFileSync(join(RULES, f), 'utf8'))?.source).filter(Boolean))
 const components = readdirSync(join(ROOT, 'src/components/ui')).filter((f) => f.endsWith('.tsx') && !f.endsWith('.stories.tsx'))
 const uncovered = components.filter((f) => !sources.has(`src/components/ui/${f}`))
+// Every component has a rule file. This used to be a number in a summary line that quietly drifted
+// from 14 of 14 down to 11 of 14 while the README went on claiming "a file per component" — a cold
+// reader caught the gap. A count nobody fails is a count nobody fixes.
+for (const file of uncovered)
+  fail(file, 'has no rule file: copy docs/rules/_template.md and fill it in, or the component ships with nothing telling anyone how to use it')
 const commands = readdirSync(join(ROOT, '.claude/commands')).filter((f) => f.endsWith('.md')).length
 console.log(
   `llms.txt indexes all ${docs.length} documents. ${commands} commands checked. ` +
     `${files.length} rule files checked, covering ${sources.size} of ${components.length} components` +
-    (uncovered.length ? ` (no rule file yet: ${uncovered.join(', ')})` : '') + '. ' +
+    '. ' +
     `${reactNodeProps} ReactNode props in ${storyFiles.length} story files have a control that can't crash the preview. ` +
     `${linked.length} stories link to their Figma frame.`,
 )
