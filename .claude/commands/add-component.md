@@ -47,7 +47,13 @@ Add a section to `src/demo/ComponentsPage.tsx` with:
 - one realistic use, not just a row of swatches,
 - the section id in the sidebar list in `src/demo/ComponentsPage.tsx`.
 
-## 4. Write its rule file
+## 4. Link it to its Figma frame
+
+Add the component to the map in `src/storybook/figma.ts` with the node id from the Figma URL
+(`?node-id=25-291` becomes `'25-291'`), then put `parameters: figma('<name>')` on the story's
+meta. `check:docs` fails if a story has no frame, or if the map holds a frame nothing uses.
+
+## 5. Write its rule file
 
 Copy `docs/rules/_template.md` to `docs/rules/<name>.md` and fill it in:
 when to use it, **when to use something else** (with links, and update those files to link back),
@@ -56,7 +62,7 @@ already handled versus what the caller owns, a good and a bad example, and which
 
 Add it to `llms.txt` with a line saying what it's for.
 
-## 5. Check it
+## 6. Check it
 
 ```bash
 npm run lint && npx tsc -b
@@ -69,7 +75,7 @@ npm run check:docs
 rule having a reason, and every link and command it names. `check:ui` covers sizes, focus rings,
 targets, axe and reflow, in light and dark.
 
-## 6. Hand it back
+## 7. Hand it back
 
 Report what it's for, what it's built on, any token you added and why, the check results, and
 anything you decided not to support, with the reason.

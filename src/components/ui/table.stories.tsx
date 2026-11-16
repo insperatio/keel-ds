@@ -6,6 +6,7 @@ import { IconButton } from './button'
 import { Checkbox } from './checkbox'
 import { Table, TableBody, TableCell, TableEmpty, TableHead, TableHeader, TableRow, type Sort } from './table'
 import { textControl } from '@/storybook/controls'
+import { figma } from '@/storybook/figma'
 
 const MEMBERS = [
   { id: 'u1', name: 'Ada Lovelace', email: 'ada@example.com', role: 'Owner', seats: 12 },
@@ -20,6 +21,7 @@ const MEMBERS = [
 const meta = {
   title: 'Components/Table',
   component: Table,
+  parameters: figma('table'),
   args: { caption: 'Team members' },
   argTypes: { density: { control: 'inline-radio', options: ['comfortable', 'compact'] }, caption: textControl },
   render: (args) => (

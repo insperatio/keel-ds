@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Badge } from './badge'
 import { Button } from './button'
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './card'
+import { figma } from '@/storybook/figma'
 
 /**
  * Everything about one object, on a raised surface. A clickable card gives `CardTitle` an `href`,
@@ -10,6 +11,7 @@ import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader,
 const meta = {
   title: 'Components/Card',
   component: Card,
+  parameters: figma('card'),
   argTypes: {
     variant: { control: 'inline-radio', options: ['outlined', 'elevated'] },
     size: { control: 'inline-radio', options: ['sm', 'md'] },

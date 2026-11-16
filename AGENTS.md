@@ -166,6 +166,10 @@ once; without it `check:ui` and `check:stories` fail with a missing-browser erro
     Why: AI tools find the docs through that index, and `check:docs` fails without it.
 33. **Change a component, update its rule file in the same commit.**
     Why: a rule file that lags the code teaches the wrong thing to everyone who reads it next.
+34. **Every component story links to its Figma frame, through `src/storybook/figma.ts`.**
+    Why: the frame is where the component was designed, and a developer reading the story
+    should be one click from it. Keeping the ids in one map means a moved frame is a single
+    edit instead of thirteen, and `check:docs` can prove nothing is missing or orphaned.
 
 ## Adding a token
 
