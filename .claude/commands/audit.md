@@ -12,7 +12,7 @@ person asks. A fix they didn't ask for hides the finding.
 
 ## 1. Read the rules you're auditing against
 
-`AGENTS.md` holds the 33 rules, each with its reason. `docs/rules/<component>.md` holds the
+`AGENTS.md` holds the 36 rules, each with its reason. `docs/rules/<component>.md` holds the
 per-component rules. Quote the rule and its why in each finding, so the author learns the system
 rather than just this fix.
 

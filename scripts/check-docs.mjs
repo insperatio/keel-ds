@@ -292,13 +292,28 @@ const uncovered = components.filter((f) => !sources.has(`src/components/ui/${f}`
 // reader caught the gap. A count nobody fails is a count nobody fixes.
 for (const file of uncovered)
   fail(file, 'has no rule file: copy docs/rules/_template.md and fill it in, or the component ships with nothing telling anyone how to use it')
+// ---- Part 6: a stated rule count matches AGENTS.md ----
+// llms.txt and QUICKSTART-AI.md both told every AI tool that read them "33 rules" while AGENTS.md
+// had grown to 36. Nothing was wrong with the rules; the two documents an agent reads FIRST were
+// simply out of date, which is the worst place for a stale number. The count is derived, so it
+// can't drift again.
+const agents = readFileSync(join(ROOT, 'AGENTS.md'), 'utf8')
+const rulesSection = agents.slice(agents.indexOf('\n## Rules')).split(/\n## (?!Rules)/)[0]
+const ruleCount = [...rulesSection.matchAll(/^\d+\. /gm)].length
+for (const doc of [...docs, 'llms.txt']) {
+  const text = readFileSync(join(ROOT, doc), 'utf8')
+  for (const m of text.matchAll(/\b(\d+) rules\b/g))
+    if (Number(m[1]) !== ruleCount)
+      fail(doc, `says "${m[1]} rules" but AGENTS.md has ${ruleCount}: say ${ruleCount}, or add the rule it is counting`)
+}
+
 const commands = readdirSync(join(ROOT, '.claude/commands')).filter((f) => f.endsWith('.md')).length
 console.log(
   `llms.txt indexes all ${docs.length} documents. ${commands} commands checked. ` +
     `${files.length} rule files checked, covering ${sources.size} of ${components.length} components` +
     '. ' +
     `${reactNodeProps} ReactNode props in ${storyFiles.length} story files have a control that can't crash the preview. ` +
-    `${linked.length} stories link to their Figma frame.`,
+    `${linked.length} stories link to their Figma frame. ${ruleCount} rules in AGENTS.md.`,
 )
 
 if (failures.length) {
