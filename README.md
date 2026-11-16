@@ -152,6 +152,10 @@ The repo is the source of truth. A development plugin (`figma/plugin/`) pushes e
 Figma as variables and styles, and `npm run figma:diff` reports anything that drifted. See
 [docs/figma.md](docs/figma.md).
 
+The library is published on Figma Community as
+[Keel Design System](https://www.figma.com/community/file/1704272884398528225/keel-design-system).
+Figma applies CC BY 4.0 to a Community file; the code in this repo is MIT.
+
 ## Docs
 
 [llms.txt](llms.txt) indexes everything, for people and for AI tools.
