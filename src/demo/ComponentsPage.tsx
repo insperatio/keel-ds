@@ -176,20 +176,20 @@ function SettingsDemo() {
   )
 }
 
-const TONES = ['neutral', 'success', 'warning', 'danger'] as const
+const TONES = ['info', 'success', 'warning', 'danger'] as const
 
 const DEPLOYS = [
   { name: 'keel-docs', when: '2 min ago', status: 'success' as const, label: 'Live' },
   { name: 'keel-registry', when: '14 min ago', status: 'warning' as const, label: 'Slow build' },
   { name: 'keel-storybook', when: '1 hr ago', status: 'danger' as const, label: 'Failed' },
-  { name: 'keel-site', when: 'Queued', status: 'neutral' as const, label: 'Waiting' },
+  { name: 'keel-site', when: 'Queued', status: 'info' as const, label: 'Waiting' },
 ]
-const STATUS_ICON = { success: <CheckCircle2 />, warning: <AlertTriangle />, danger: <XCircle />, neutral: <Circle /> }
+const STATUS_ICON = { success: <CheckCircle2 />, warning: <AlertTriangle />, danger: <XCircle />, info: <Circle /> }
 
 const PROJECTS = [
   { id: 'atlas', name: 'Atlas redesign', desc: 'Marketing site, 14 pages', status: 'success' as const, label: 'On track', updated: 'Updated 2 hours ago' },
   { id: 'harbor', name: 'Harbor app', desc: 'Mobile web checkout', status: 'warning' as const, label: 'At risk', updated: 'Updated yesterday' },
-  { id: 'compass', name: 'Compass reports', desc: 'Internal dashboards', status: 'neutral' as const, label: 'Planning', updated: 'Updated Nov 2' },
+  { id: 'compass', name: 'Compass reports', desc: 'Internal dashboards', status: 'info' as const, label: 'Planning', updated: 'Updated Nov 2' },
 ]
 
 const MEMBERS = [
@@ -280,7 +280,7 @@ function MembersTable() {
                     </div>
                   </TableCell>
                   <TableCell>
-                    <Badge tone={m.role === 'Owner' ? 'success' : 'neutral'}>{m.role}</Badge>
+                    <Badge tone={m.role === 'Owner' ? 'success' : 'info'}>{m.role}</Badge>
                   </TableCell>
                   <TableCell numeric>{m.seats}</TableCell>
                   <TableCell className="text-fg-secondary">
@@ -430,7 +430,7 @@ function ToastDemo() {
         <Button onClick={() => toast.success('Changes saved')}>Success</Button>
         <Button onClick={() => toast.info('New version available', { description: 'Refresh to get the latest features.' })}>Info</Button>
         <Button onClick={() => toast.warning('Storage almost full', { description: '41 of 50 GB used. Upgrade or clean up files.' })}>Warning</Button>
-        <Button onClick={() => toast.error('Couldn’t save changes', { description: 'Check your connection and try again.' })}>Error</Button>
+        <Button onClick={() => toast.danger('Couldn’t save changes', { description: 'Check your connection and try again.' })}>Error</Button>
       </div>
       <div className="flex flex-wrap items-center gap-3">
         <Button
@@ -446,7 +446,7 @@ function ToastDemo() {
             toast.promise(new Promise((resolve) => setTimeout(resolve, 1500)), {
               loading: 'Publishing…',
               success: 'Published',
-              error: 'Couldn’t publish',
+              danger: 'Couldn’t publish',
             })
           }
         >

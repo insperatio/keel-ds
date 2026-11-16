@@ -32,3 +32,11 @@ export const figmaUrl = (component: FigmaComponent) => `${FILE}?node-id=${NODES[
 export const figma = (component: FigmaComponent) => ({
   design: { type: 'figma' as const, url: figmaUrl(component) },
 })
+
+/**
+ * For a component with no frame of its own. Field and Form are wiring — their visible parts are
+ * the Input and the Button inside them — and App shell is the page frame rather than a component
+ * on a page. Saying so out loud beats a silent gap: `check:docs` accepts this instead of a frame,
+ * but only with a reason, so nobody can quietly skip the link.
+ */
+export const noFigmaFrame = (reason: string) => ({ design: { disable: true }, figmaNote: reason })

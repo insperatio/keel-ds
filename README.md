@@ -38,7 +38,7 @@ check:stories` makes that a gate: every story, in both modes, in a real browser.
 | --- | --- |
 | **Tokens** | 118 primitives and 160 semantic roles, in light and dark |
 | **Components** | Button, IconButton, Input, Select, Checkbox, Switch, Badge, Tabs, Card, Table, Dialog, Toast, plus Field, Form and an app shell |
-| **Rules** | 34 project rules in [AGENTS.md](AGENTS.md) and a rule file for each of the 14 components in [docs/rules/](docs/rules/) |
+| **Rules** | 36 project rules in [AGENTS.md](AGENTS.md) and a rule file for each of the 14 components in [docs/rules/](docs/rules/) |
 | **Checks** | 150 contrast pairs, plus sizes, focus, target size, reflow and axe in a real browser |
 | **Figma** | A plugin that pushes the repo's tokens into Figma, and a diff that reports drift |
 | **Published** | [Storybook](https://insperatio.github.io/keel-ds/) and an [install registry](https://insperatio.github.io/keel-ds/r/), deployed by CI on every push to main |

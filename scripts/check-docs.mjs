@@ -229,6 +229,25 @@ for (const file of storyFiles) {
   }
 }
 
+// Part 4b: status tones are spelled the same everywhere. Badge said neutral/success/warning/danger
+// and Toast said success/info/warning/error, for the same four token families — so a new component
+// had no way to know which was canonical, and badge.md's "use the same tone for the same state
+// everywhere" had nothing to point at. The token families are the answer, and this keeps it that way.
+const TONES = ['info', 'success', 'warning', 'danger']
+const TONE_LIKE = new Set([...TONES, 'neutral', 'error', 'critical', 'positive', 'negative'])
+for (const file of readdirSync(join(ROOT, 'docs/rules')).filter((f) => f.endsWith('.md') && f !== '_template.md')) {
+  const front = readFileSync(join(ROOT, 'docs/rules', file), 'utf8').split('---')[1] ?? ''
+  for (const axis of ['tones', 'types']) {
+    const listed = front.match(new RegExp(`^${axis}:\\s*\\[(.*)\\]`, 'm'))?.[1]
+    if (!listed) continue
+    const values = listed.split(',').map((v) => v.trim()).filter(Boolean)
+    if (!values.some((v) => TONE_LIKE.has(v))) continue // some other axis that happens to be named types
+    const wrong = values.filter((v) => !TONES.includes(v))
+    if (wrong.length || values.length !== TONES.length)
+      fail(file, `${axis} is [${values.join(', ')}], but status tones are spelled ${TONES.join(', ')} everywhere — they are the names of the token families they map to`)
+  }
+}
+
 // Part 5: every story is linked to the Figma frame it was built from.
 // The ids live in one map (src/storybook/figma.ts) so a moved frame is a single edit; this
 // checks that the map covers every component with a story, that nothing in the map is dead,
@@ -241,11 +260,13 @@ for (const file of storyFiles.concat('../../demo/foundations.stories.tsx')) {
   const path = file.startsWith('..') ? join(ROOT, 'src/demo/foundations.stories.tsx') : join(ROOT, 'src/components/ui', file)
   const story = readFileSync(path, 'utf8')
   const name = file.replace('.stories.tsx', '').replace('../../demo/', '')
+  const exempt = story.match(/noFigmaFrame\('([^']{10,})'\)/)
   const used = story.match(/figma\('([\w-]+)'\)/)
-  if (!used) {
-    fail(name, 'has no Figma frame: add `parameters: figma(...)` so the Design tab points at the component it was built from')
+  if (!used && !exempt) {
+    fail(name, 'has no Figma frame: add `parameters: figma(...)`, or `noFigmaFrame("why")` if the component genuinely has no frame of its own')
     continue
   }
+  if (!used) continue // exempt, with a stated reason
   linked.push(used[1])
   if (!mapped.includes(used[1])) fail(name, `links to figma('${used[1]}'), which src/storybook/figma.ts does not define`)
 }
@@ -255,6 +276,16 @@ for (const key of mapped) if (!linked.includes(key)) fail('src/storybook/figma.t
 // button.tsx, so the honest number is how many sources have a rule file at all.
 const sources = new Set(files.map((f) => frontmatter(readFileSync(join(RULES, f), 'utf8'))?.source).filter(Boolean))
 const components = readdirSync(join(ROOT, 'src/components/ui')).filter((f) => f.endsWith('.tsx') && !f.endsWith('.stories.tsx'))
+// Part 4a: every component has a story. This was the quietest hole in the whole kit: the command
+// that documents how to add a component never mentioned stories, and nothing failed when you
+// skipped one — check:stories only runs the stories that exist, so a component with none passed
+// by being invisible. Found by handing the process to someone who had never used it.
+for (const file of components) {
+  const story = file.replace('.tsx', '.stories.tsx')
+  if (!existsSync(join(ROOT, 'src/components/ui', story)))
+    fail(file, `has no story: write src/components/ui/${story}, or the component is never rendered by check:stories and never seen in Storybook`)
+}
+
 const uncovered = components.filter((f) => !sources.has(`src/components/ui/${f}`))
 // Every component has a rule file. This used to be a number in a summary line that quietly drifted
 // from 14 of 14 down to 11 of 14 while the README went on claiming "a file per component" — a cold

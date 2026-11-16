@@ -179,6 +179,31 @@ const PAIRS = [
   ['border.control', 'surface.overlay', 3, 'input borders inside dialogs'],
   ['action.primary.bg', 'surface.overlay', 3, 'checked controls inside dialogs'],
   ['action.secondary.border', 'surface.overlay', 3, 'secondary buttons inside dialogs'],
+
+  // Controls on a status surface. Nothing measured these until someone built an inline Alert and
+  // asked what a button inside it should be: the secondary outline came out at 2.93:1 on the info
+  // tint, under the 3:1 this file enforces everywhere else. A pair nobody lists is a pair nobody
+  // checks, so every control colour that can land on a tint is listed here now.
+  ['action.secondary.border', 'status.info.bg', 3, 'secondary button outline on a info surface'],
+  ['focus.ring', 'status.info.bg', 3, 'focus ring on a info surface'],
+  ['action.ghost.fg', 'status.info.bg', 4.5, 'ghost button label on a info surface'],
+  ['action.primary.bg', 'status.info.bg', 3, 'primary button edge on a info surface'],
+  ['text.primary', 'status.info.bg', 4.5, 'body text on a info surface'],
+  ['action.secondary.border', 'status.success.bg', 3, 'secondary button outline on a success surface'],
+  ['focus.ring', 'status.success.bg', 3, 'focus ring on a success surface'],
+  ['action.ghost.fg', 'status.success.bg', 4.5, 'ghost button label on a success surface'],
+  ['action.primary.bg', 'status.success.bg', 3, 'primary button edge on a success surface'],
+  ['text.primary', 'status.success.bg', 4.5, 'body text on a success surface'],
+  ['action.secondary.border', 'status.warning.bg', 3, 'secondary button outline on a warning surface'],
+  ['focus.ring', 'status.warning.bg', 3, 'focus ring on a warning surface'],
+  ['action.ghost.fg', 'status.warning.bg', 4.5, 'ghost button label on a warning surface'],
+  ['action.primary.bg', 'status.warning.bg', 3, 'primary button edge on a warning surface'],
+  ['text.primary', 'status.warning.bg', 4.5, 'body text on a warning surface'],
+  ['action.secondary.border', 'status.danger.bg', 3, 'secondary button outline on a danger surface'],
+  ['focus.ring', 'status.danger.bg', 3, 'focus ring on a danger surface'],
+  ['action.ghost.fg', 'status.danger.bg', 4.5, 'ghost button label on a danger surface'],
+  ['action.primary.bg', 'status.danger.bg', 3, 'primary button edge on a danger surface'],
+  ['text.primary', 'status.danger.bg', 4.5, 'body text on a danger surface'],
   ['border.danger', 'surface.raised', 3, 'invalid field border (WCAG 1.4.11)'],
   ['action.primary.bg', 'surface.page', 3, 'checked checkbox and on switch against the page (WCAG 1.4.11)'],
   ['action.primary.bg', 'surface.subtle', 3, 'checked checkbox and on switch on subtle sections'],

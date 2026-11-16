@@ -3,10 +3,10 @@ component: Badge
 source: src/components/ui/badge.tsx
 import: "@/components/ui/badge"
 exports: [Badge, badgeVariants]
-tones: [neutral, success, warning, danger]
+tones: [info, success, warning, danger]
 variants: [subtle, solid]
 sizes: [sm, md]
-defaults: {tone: neutral, variant: subtle, size: sm}
+defaults: {tone: info, variant: subtle, size: sm}
 ---
 
 # Badge
@@ -36,7 +36,7 @@ import { Badge } from '@/components/ui/badge'
 
 | Prop | Values | Default | Notes |
 | --- | --- | --- | --- |
-| `tone` | `neutral`, `success`, `warning`, `danger` | `neutral` | Meaning, not decoration |
+| `tone` | `info`, `success`, `warning`, `danger` | `info` | Meaning, not decoration |
 | `variant` | `subtle`, `solid` | `subtle` | Solid for the one thing that must stand out |
 | `size` | `sm` 20px, `md` 24px | `sm` | `sm` in tables and dense lists |
 | `icon` | node | — | Decorative; the text carries the meaning |

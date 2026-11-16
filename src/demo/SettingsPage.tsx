@@ -230,7 +230,7 @@ function PlanSection() {
         <CardAction>
           {/* neutral: a plan name is a fact, not a state. success means something finished well
               (badge.md rule 2), and the example page is what people copy. */}
-          <Badge tone="neutral" size="md">
+          <Badge tone="info" size="md">
             Team plan
           </Badge>
         </CardAction>

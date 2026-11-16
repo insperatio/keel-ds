@@ -122,7 +122,7 @@ export const WithSelection: Story = {
                 </div>
               </TableCell>
               <TableCell>
-                <Badge tone={m.role === 'Owner' ? 'success' : 'neutral'}>{m.role}</Badge>
+                <Badge tone={m.role === 'Owner' ? 'success' : 'info'}>{m.role}</Badge>
               </TableCell>
               <TableCell>
                 <IconButton size="sm" label={`More actions for ${m.name}`} icon={<MoreHorizontal />} />

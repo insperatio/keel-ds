@@ -135,8 +135,8 @@
           "$value": "{color.neutral.900}"
         },
         "border": {
-          "$value": "{color.neutral.400}",
-          "$description": "Must reach 3:1 against the page: the outline is the only edge of the button (WCAG 1.4.11)."
+          "$value": "{color.neutral.500}",
+          "$description": "Must reach 3:1 on every surface it can sit on \u2014 the page, a card, and the status tints inside an alert \u2014 because the outline is the only edge of the button (WCAG 1.4.11)."
         }
       },
       "ghost": {

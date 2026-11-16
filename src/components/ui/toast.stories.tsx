@@ -33,7 +33,7 @@ function Buttons() {
       <Button onClick={() => toast.success('Changes saved')}>Success</Button>
       <Button onClick={() => toast.info('New version available', { description: 'Refresh to get the latest features.' })}>Info</Button>
       <Button onClick={() => toast.warning('Storage almost full', { description: '41 of 50 GB used.' })}>Warning</Button>
-      <Button onClick={() => toast.error('Couldn’t save changes', { description: 'Check your connection and try again.' })}>Error</Button>
+      <Button onClick={() => toast.danger('Couldn’t save changes', { description: 'Check your connection and try again.' })}>Error</Button>
     </div>
   )
 }
@@ -66,7 +66,7 @@ export const Promise_: Story = {
           toast.promise(new Promise((resolve) => setTimeout(resolve, 1500)), {
             loading: 'Publishing…',
             success: 'Published',
-            error: 'Couldn’t publish',
+            danger: 'Couldn’t publish',
           })
         }
       >
