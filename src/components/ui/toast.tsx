@@ -10,7 +10,7 @@ import { Button, IconButton } from './button'
  *
  *   const toast = useToast()
  *   toast.success('Changes saved')
- *   toast.error('Couldn't save', { description: 'Check your connection and try again.' })
+ *   toast.danger('Couldn't save', { description: 'Check your connection and try again.' })
  *   toast.info('Project archived', { action: { label: 'Undo', onClick: restore } })
  *
  * Built-in rules (WCAG 2.2.1, 4.1.3):
@@ -24,14 +24,14 @@ import { Button, IconButton } from './button'
  * in a toast: it can be missed. Say what happened in a few words, and how to fix
  * it if something went wrong.
  */
-type ToastType = 'success' | 'info' | 'warning' | 'error'
+type ToastType = 'success' | 'info' | 'warning' | 'danger'
 
 const ICONS: Record<ToastType | 'loading', React.ReactNode> = {
   loading: <Loader2 className="text-fg-secondary motion-safe:animate-spin" />,
   success: <CheckCircle2 className="text-status-success-fg" />,
   info: <Info className="text-status-info-fg" />,
   warning: <AlertTriangle className="text-status-warning-fg" />,
-  error: <XCircle className="text-status-danger-fg" />,
+  danger: <XCircle className="text-status-danger-fg" />,
 }
 
 function ToastList() {
@@ -98,7 +98,7 @@ type ToastOptions = {
   timeout?: number
 }
 
-const DEFAULT_TIMEOUT: Record<ToastType, number> = { success: 5000, info: 5000, warning: 0, error: 0 }
+const DEFAULT_TIMEOUT: Record<ToastType, number> = { success: 5000, info: 5000, warning: 0, danger: 0 }
 
 /** Shows toasts. Use the type that matches what happened, not the color you want. */
 function useToast() {
@@ -109,7 +109,7 @@ function useToast() {
         type,
         title,
         description: options.description,
-        priority: type === 'error' ? 'high' : 'low',
+        priority: type === 'danger' ? 'high' : 'low',
         timeout: options.timeout ?? (options.action && DEFAULT_TIMEOUT[type] ? 10000 : DEFAULT_TIMEOUT[type]),
         actionProps: options.action ? { children: options.action.label, onClick: options.action.onClick } : undefined,
       })
@@ -117,16 +117,16 @@ function useToast() {
       success: show('success'),
       info: show('info'),
       warning: show('warning'),
-      error: show('error'),
+      danger: show('danger'),
       /**
        * Shows a loading toast while the promise runs, then turns it into success or error.
        *   toast.promise(save(), { loading: 'Saving…', success: 'Saved', error: 'Couldn't save' })
        */
-      promise: <T,>(promise: Promise<T>, messages: { loading: string; success: string; error: string; description?: { success?: string; error?: string } }) =>
+      promise: <T,>(promise: Promise<T>, messages: { loading: string; success: string; danger: string; description?: { success?: string; danger?: string } }) =>
         manager.promise(promise, {
           loading: { title: messages.loading, type: 'loading', description: undefined },
           success: { title: messages.success, type: 'success', description: messages.description?.success, timeout: DEFAULT_TIMEOUT.success },
-          error: { title: messages.error, type: 'error', description: messages.description?.error, priority: 'high', timeout: DEFAULT_TIMEOUT.error },
+          error: { title: messages.danger, type: 'danger', description: messages.description?.danger, priority: 'high', timeout: DEFAULT_TIMEOUT.danger },
         }),
       close: manager.close,
     }

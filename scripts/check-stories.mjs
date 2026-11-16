@@ -60,11 +60,20 @@ for (const mode of ['light', 'dark']) {
     for (const error of errors) failures.push(`${mode} ${story.id}: ${error}`)
 
     await page.addScriptTag({ content: AXE })
-    const violations = await page.evaluate(async () =>
-      (await window.axe.run(document, { runOnly: ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'] })).violations.map(
-        (v) => `${v.id}: ${v.nodes.map((n) => n.target.join(' ')).slice(0, 2).join(' | ')}`,
-      ),
-    )
+    // Storybook's a11y addon runs axe on the same page, and axe refuses to run twice at once.
+    // Retry rather than fail: a race between two correct checks is not a finding about the story.
+    const violations = await page.evaluate(async () => {
+      for (let attempt = 0; attempt < 10; attempt++) {
+        try {
+          const result = await window.axe.run(document, { runOnly: ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'] })
+          return result.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(' ')).slice(0, 2).join(' | ')}`)
+        } catch (error) {
+          if (!/already running/i.test(String(error?.message ?? error))) throw error
+          await new Promise((r) => setTimeout(r, 300))
+        }
+      }
+      return ['axe could not get a turn to run after 10 tries']
+    })
     for (const v of violations) failures.push(`${mode} ${story.id}: ${v}`)
     await page.close()
   }

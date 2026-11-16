@@ -15,7 +15,7 @@ const meta = {
   parameters: figma('badge'),
   args: { children: 'Active' },
   argTypes: {
-    tone: { control: 'inline-radio', options: ['neutral', 'success', 'warning', 'danger'] },
+    tone: { control: 'inline-radio', options: ['info', 'success', 'warning', 'danger'] },
     variant: { control: 'inline-radio', options: ['subtle', 'solid'] },
     size: { control: 'inline-radio', options: ['sm', 'md'] },
     icon: iconControl,
@@ -34,7 +34,7 @@ export const Tones: Story = {
       {(['subtle', 'solid'] as const).map((variant) => (
         <div key={variant} className="flex items-center gap-2">
           <span className="w-14 text-body-sm text-fg-secondary">{variant}</span>
-          {(['neutral', 'success', 'warning', 'danger'] as const).map((tone) => (
+          {(['info', 'success', 'warning', 'danger'] as const).map((tone) => (
             <Badge key={tone} {...args} tone={tone} variant={variant}>
               {tone[0].toUpperCase() + tone.slice(1)}
             </Badge>
@@ -67,7 +67,7 @@ export const InAList: Story = {
         { name: 'keel-docs', tone: 'success' as const, label: 'Live', icon: <CheckCircle2 /> },
         { name: 'keel-registry', tone: 'warning' as const, label: 'Slow build', icon: <AlertTriangle /> },
         { name: 'keel-storybook', tone: 'danger' as const, label: 'Failed', icon: <XCircle /> },
-        { name: 'keel-site', tone: 'neutral' as const, label: 'Waiting', icon: undefined },
+        { name: 'keel-site', tone: 'info' as const, label: 'Waiting', icon: undefined },
       ].map((row) => (
         <li key={row.name} className="flex items-center justify-between px-4 py-3">
           <span className="text-label-md">{row.name}</span>

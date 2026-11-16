@@ -37,7 +37,7 @@ rule file and checks. Claude Code finds them as slash commands; other tools can 
 | `npm run check` | **The gate.** Everything below, in one command — this is what "done" means |
 | `npm run compare` | Build the before/after pages, measure both, and write `docs/before-after.md` |
 | `npm run check:docs` | Check llms.txt indexes every document, and that the rule files still match their components |
-| `npm run audit` | Check source files against the rules a machine can judge: raw colors, palette classes, opacity fades, off-scale sizes, inline styles, primitives in UI code, two primary buttons in one group, a focus ring removed or rebuilt. Takes a path |
+| `npm run audit` | Check source files against the rules a machine can judge: raw colors, palette classes, opacity fades, off-scale sizes, inline styles, primitives in UI code, two primary buttons in one group, a focus ring removed or rebuilt. Scans `src` by default; pass a path to scan less |
 | `npm run lint` | Lint |
 
 **Done means `npm run check` passes.** That one command is the whole gate — lint, types, audit,
@@ -170,6 +170,15 @@ once; without it `check:ui` and `check:stories` fail with a missing-browser erro
     Why: the frame is where the component was designed, and a developer reading the story
     should be one click from it. Keeping the ids in one map means a moved frame is a single
     edit instead of thirteen, and `check:docs` can prove nothing is missing or orphaned.
+35. **Status tones are spelled `info`, `success`, `warning`, `danger` — everywhere.**
+    Why: they are the names of the token families they map to, so the prop value tells you which
+    tokens you get. Badge used to say `neutral` and Toast used to say `error` for those same
+    families, which left a new component no way to know which was canonical; `check:docs` now
+    fails any rule file that spells them differently.
+36. **Every component has a story, and every story renders in both modes.**
+    Why: a story is the only place a component is seen on its own, and `check:stories` runs axe
+    over every one — a component without a story is a component nothing checks. `check:docs`
+    fails when a component file has no story beside it.
 
 ## Adding a token
 
