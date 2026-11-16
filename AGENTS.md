@@ -36,6 +36,8 @@ rule file and checks. Claude Code finds them as slash commands; other tools can 
 | `npm run registry` | Build the install registry into `registry/` from `src/` (`--check` validates without writing) |
 | `npm run check` | **The gate.** Everything below, in one command — this is what "done" means |
 | `npm run compare` | Build the before/after pages, measure both, and write `docs/before-after.md` |
+| `npm run media` | Rebuild the README animation from a real broken token and the real check output (needs ffmpeg) |
+| `npm run media:check` | Fail if that animation shows output the checks no longer produce |
 | `npm run check:docs` | Check llms.txt indexes every document, and that the rule files still match their components |
 | `npm run audit` | Check source files against the rules a machine can judge: raw colors, palette classes, opacity fades, off-scale sizes, inline styles, primitives in UI code, two primary buttons in one group, a focus ring removed or rebuilt. Scans `src` by default; pass a path to scan less |
 | `npm run lint` | Lint |

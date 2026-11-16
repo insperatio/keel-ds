@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "check": "npm run lint && npx tsc -b && npm run audit && npm run tokens:check && npm run check:docs && npm run registry:check && npm run check:ui && npm run check:stories",
+    "check": "npm run lint && npx tsc -b && npm run audit && npm run tokens:check && npm run check:docs && npm run media:check && npm run registry:check && npm run check:ui && npm run check:stories",
     "preview": "vite preview",
     "tokens": "npm run tokens:brand && npm run tokens:build && npm run figma:plugin && npm run tokens:check",
     "tokens:brand": "node scripts/brand.mjs",
@@ -25,7 +25,9 @@
     "check:stories": "npm run build-storybook -- --quiet --disable-telemetry && node scripts/check-stories.mjs",
     "registry": "node scripts/build-registry.mjs",
     "registry:check": "node scripts/build-registry.mjs --check",
-    "compare": "node scripts/compare.mjs"
+    "compare": "node scripts/compare.mjs",
+    "media": "node scripts/media.mjs",
+    "media:check": "node scripts/media.mjs --check"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
