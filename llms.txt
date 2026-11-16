@@ -16,6 +16,7 @@ follow its why.
 - [docs/QUICKSTART-AI.md](docs/QUICKSTART-AI.md): the five-minute version. What to read, what to run,
   and the ten mistakes that break a Keel build.
 - [README.md](README.md): what Keel is, how to run it, and how the checks work.
+- [Changelog](CHANGELOG.md): what changed in each release, and what the checks caught while it was built.
 - [CLAUDE.md](CLAUDE.md): points Claude Code at AGENTS.md. No rules of its own.
 
 ## Commands
