@@ -4,6 +4,12 @@ The repo is the source of truth for every token. Figma gets its variables and st
 the repo through the **Keel tokens** plugin, and any change made directly in Figma is
 detected and reported, never silently kept.
 
+The published library lives on Figma Community as
+[Keel Design System](https://www.figma.com/community/file/1704272884398528225/keel-design-system).
+Figma licenses a Community file under CC BY 4.0; the code in this repo is MIT. Duplicating the
+Community file gives you the components and variables; it does not stay in sync with the repo,
+so a fork that needs updates should run the plugin against its own copy.
+
 ```
 src/tokens/*.json ──npm run tokens──▶ figma/plugin/code.js ──"Update Figma from repo"──▶ Figma
         ▲                                                                                   │
